@@ -10,6 +10,16 @@
   </head>
 
   <body>
-    <%= yield %>
+
+    <%= render "layouts/header" %>
+
+    <div id="wrap">
+      <div id="main" class="container clear-top">
+        <%= yield %>
+      </div>
+    </div>
+
+    <%= render "layouts/footer" %>
+
   </body>
 </html>
