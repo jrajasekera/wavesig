@@ -12,6 +12,7 @@
  *
  */
 @import "bootstrap";
+@import "font-awesome";
 
 html {
   height: 100%;
@@ -31,23 +32,20 @@ body{
 
 #main {
   overflow:auto;
-  //padding: 5px 5px 120px;
 }
 
 
 // start footer
 
 #myFooter{
-  //margin-top: -120px;
-  //height: 120px;
-
   flex: 0 0 auto;
   -webkit-flex: 0 0 auto;
 }
 
 
 #myFooter {
-  background-color: #3c3d41;
+  //background-color: #3c3d41;
+  background-color: #343a40!important;
   color: white;
   padding-top: 30px;
 }
@@ -142,6 +140,11 @@ body{
   margin: 0 auto;
   margin-top: 10px;
   line-height: 25px;
+}
+
+#footer-logo-div {
+  text-align: center;
+  display: block;
 }
 
 @media screen and (max-width: 767px) {
