@@ -17,3 +17,10 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
+
+// slide alerts away after 3 seconds
+$(function() {
+    setTimeout(function(){
+        $('.alert').slideUp(500);
+    }, 3000);
+});
