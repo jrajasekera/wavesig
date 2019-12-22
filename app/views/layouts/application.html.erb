@@ -15,6 +15,16 @@
 
     <div id="wrap">
       <div id="main" class="container clear-top">
+
+        <!--      authentication -->
+        <% if notice %>
+          <p class="alert alert-success"><%= notice %></p>
+        <% end %>
+        <% if alert %>
+          <p class="alert alert-danger"><%= alert %></p>
+        <% end %>
+        <!--      authentication -->
+
         <%= yield %>
       </div>
     </div>
