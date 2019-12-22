@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "/home/info" => "home#info", as: "home_info"
 
   get "/user/:user/dashboard" => "user#dashboard", as: "user_dashboard"
+  get "/user/:user/find_origin" => "user#find_origin", as: "find_origin"
 
   root 'home#info'
 

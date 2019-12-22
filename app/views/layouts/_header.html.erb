@@ -19,7 +19,7 @@
         </li>
       <% else %>
         <li class="nav-item">
-          <a class="nav-link" href="#">LINK</a>
+          <a class="nav-link" href=<%= user_dashboard_path(current_user.id) %>>My Dashboard</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
@@ -27,7 +27,6 @@
             <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'dropdown-item'  %>
 <!--            <a class="dropdown-item" href=<%#= destroy_user_session_path, method: :delete %>>Log out</a>-->
             <a class="dropdown-item" href=<%= edit_user_registration_path %>>Edit Profile</a>
-            <a class="dropdown-item" href="#">Something else here</a>
           </div>
         </li>
         </ul>
