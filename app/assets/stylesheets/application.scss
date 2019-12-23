@@ -13,6 +13,7 @@
  */
 //= require home
 //= require user
+//= require devise
 
 @import "bootstrap";
 @import "font-awesome";
@@ -43,6 +44,7 @@ body{
   width: 100%;
   color: white;
 
+  text-align: center
 }
 
 
