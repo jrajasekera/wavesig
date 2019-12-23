@@ -18,9 +18,9 @@
 //= require popper
 //= require bootstrap
 
-// slide alerts away after 3 seconds
+// slide alerts away after 2 seconds
 $(function() {
     setTimeout(function(){
         $('.alert').slideUp(500);
-    }, 3000);
+    }, 2000);
 });

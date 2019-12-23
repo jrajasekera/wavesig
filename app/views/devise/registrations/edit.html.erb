@@ -6,7 +6,7 @@
 
     <div class="field text-field">
       <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", :class => 'text-input' %>
     </div>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -21,17 +21,17 @@
       <% end %>
       <br />
 
-      <%= f.password_field :password, autocomplete: "new-password", :placeholder => 'New Password' %>
+      <%= f.password_field :password, autocomplete: "new-password", :placeholder => 'New Password', :class => 'text-input' %>
     </div>
 
     <div class="field text-field">
       <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'New Password' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'New Password', :class => 'text-input' %>
     </div>
 
     <div class="field text-field">
       <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-      <%= f.password_field :current_password, autocomplete: "current-password", :placeholder => 'Current Password' %>
+      <%= f.password_field :current_password, autocomplete: "current-password", :placeholder => 'Current Password', :class => 'text-input' %>
     </div>
 
     <div class="actions submit-btn">

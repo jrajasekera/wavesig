@@ -7,4 +7,6 @@ class ApplicationController < ActionController::Base
     stored_location_for(resource) || user_dashboard_path(resource.id)
   end
 
+
+
 end

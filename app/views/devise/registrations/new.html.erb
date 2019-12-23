@@ -5,19 +5,19 @@
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="field text-field">
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => 'Email' %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => 'Email', :class => 'text-input' %>
     </div>
 
     <div class="field text-field">
       <% if @minimum_password_length %>
-        <%= f.password_field :password, autocomplete: "new-password", :placeholder => ("Password ( > " + @minimum_password_length.to_s + " letters)") %>
+        <%= f.password_field :password, autocomplete: "new-password", :placeholder => ("Password ( > " + @minimum_password_length.to_s + " letters)"), :class => 'text-input' %>
       <% else %>
-        <%= f.password_field :password, autocomplete: "new-password", :placeholder => "Password" %>
+        <%= f.password_field :password, autocomplete: "new-password", :placeholder => "Password", :class => 'text-input' %>
       <% end %>
     </div>
 
     <div class="field text-field">
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'Password Confirmation' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'Password Confirmation', :class => 'text-input' %>
     </div>
 
     <div class="actions submit-btn">

@@ -1,6 +1,6 @@
 #login-container {
   display: inline-block;
-  //text-align: left;
+  text-align: center;
   margin-top: 50px;
   background-color: #343a40!important;
   padding: 30px 30px 40px;
@@ -8,7 +8,7 @@
 
 #register-container {
   display: inline-block;
-  //text-align: left;
+  text-align: center;
   margin-top: 50px;
   background-color: #343a40!important;
   padding: 30px 30px 40px;
@@ -16,7 +16,7 @@
 
 #edit-user-container {
   display: inline-block;
-  //text-align: left;
+  text-align: center;
   margin-top: 50px;
   background-color: #343a40!important;
   padding: 30px 30px 40px;
@@ -24,6 +24,14 @@
 
 .text-field {
   margin: 18px;
+
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-input {
+  width: 100%;
 }
 
 #remember-checkbox {

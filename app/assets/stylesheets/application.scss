@@ -37,6 +37,8 @@ body{
 
 #wrap {
   min-height: 100%;
+
+  flex: 1 0 auto;
 }
 
 #main {
@@ -44,15 +46,15 @@ body{
   width: 100%;
   color: white;
 
-  text-align: center
+  text-align: center;
 }
 
 
 // start footer
 
 #myFooter{
-  flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
+  flex-shrink: 0;
+  margin-top: 50px;
 }
 
 
