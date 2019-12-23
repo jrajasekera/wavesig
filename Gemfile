@@ -36,6 +36,8 @@ gem 'jbuilder', '~> 2.5'
 # use devise for Authentication
 gem 'devise'
 
+# user mailcatcher to monitor email in dev
+gem 'mailcatcher'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

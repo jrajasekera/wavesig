@@ -20,6 +20,26 @@
 
 html {
   height: 100%;
+  font-family: "Roboto Light";
+  font-size: 1rem;
+}
+
+@include media-breakpoint-up(sm) {
+  html {
+    font-size: 1.0rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  html {
+    font-size: 1.1rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  html {
+    font-size: 1.2rem;
+  }
 }
 
 body{
@@ -49,6 +69,10 @@ body{
   text-align: center;
 }
 
+.btn {
+  background-color: #2843cb!important;
+  border-color: #2843cb!important;
+}
 
 // start footer
 
