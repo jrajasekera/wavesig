@@ -4,6 +4,25 @@
   <div class="breaker"></div>
 
   <h5 id="audio-uploaded-accordion-title" ><b>Uploaded Files</b></h5>
+
+  <!-- START button bar-->
+  <div id="audio-file-btn-group">
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+      <button type="button" class="btn btn-secondary">Add File</button>
+
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Remove File
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item" href="#">File 1</a>
+          <a class="dropdown-item" href="#">File 2</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END button bar-->
+
   <div class="accordion" id="audio-upload-accordion">
   <!-- start single file template-->
     <div class="card">
