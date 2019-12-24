@@ -1,0 +1,22 @@
+<h1>Upload an audio file</h1>
+<%= form_for @uploadedfile, url: create_upload_file_path, html: { method: :post } do |f| %>
+
+  <div class="field">
+    <%= f.label :fileName %><br />
+    <%= f.text_field :fileName %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Audio File" %><br />
+    <%= f.file_field :audio_file %>
+  </div>
+
+  <div class="actions submit-btn">
+    <%= f.submit "Upload File" %>
+  </div>
+<% end %>

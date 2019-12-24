@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   get "/user/:user/dashboard" => "user#dashboard", as: "user_dashboard"
   get "/user/:user/find_origin" => "user#find_origin", as: "find_origin"
 
+  get "user/:user/upload_file/new" => "uploadedfile#new", as: "new_upload_file"
+  post "user/:user/upload_file" => "uploadedfile#create", as: "create_upload_file"
+
   root 'home#info'
 
 
