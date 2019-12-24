@@ -13,13 +13,24 @@
 
 #audio-uploaded-accordion-title {
   text-align: left;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+#audio-shared-accordion-title {
+  text-align: left;
+  padding-top: 40px;
   padding-left: 10px;
   padding-bottom: 10px;
 }
 
 #audio-upload-accordion {
   text-align: left;
+}
 
+#audio-shared-accordion {
+  text-align: left;
 }
 
 .card {
@@ -31,10 +42,26 @@
 
   button {
     color: white;
+    width: 100%;
   }
 }
 
-.collapse {
-  background-color: ghostwhite;
-  color: black
+.card {
+  .collapse {
+    background-color: ghostwhite;
+    color: black
+  }
+}
+
+
+.audio-file-name {
+  text-align: left;
+  display: table-cell;
+  width: 100%;
+}
+
+.collapse-arrow {
+  text-align: right;
+  display: table-cell;
+  width: 100%;
 }
