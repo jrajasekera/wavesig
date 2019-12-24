@@ -11,3 +11,30 @@
 
 }
 
+#audio-uploaded-accordion-title {
+  text-align: left;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+#audio-upload-accordion {
+  text-align: left;
+
+}
+
+.card {
+  border-color: #343a40!important;
+}
+
+.card-header {
+  background-color: slategray!important;
+
+  button {
+    color: white;
+  }
+}
+
+.collapse {
+  background-color: ghostwhite;
+  color: black
+}

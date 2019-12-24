@@ -69,7 +69,14 @@ body{
   text-align: center;
 }
 
-.btn {
+.breaker{
+  color : white;
+  border : 1px solid white;
+  margin-top: 20px;
+  margin-bottom : 20px;
+}
+
+.btn-primary {
   background-color: #2843cb!important;
   border-color: #2843cb!important;
 }
