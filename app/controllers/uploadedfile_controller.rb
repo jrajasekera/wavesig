@@ -1,5 +1,4 @@
 class UploadedfileController < ApplicationController
-  # TODO make sure current user is the one uploading
 
   def new
     @uploadedfile = Uploadedfile.new
@@ -8,19 +7,34 @@ class UploadedfileController < ApplicationController
   def create
     pp "___________________CREATE METHOD REACHED___________________________________"
 
-    user_id = params[:user]
-    @user = User.find_by id: user_id
-
     @uploadedfile = Uploadedfile.new(uploadedfile_params)
-    @uploadedfile.user_id = @user.id
+    @uploadedfile.user_id = current_user.id
+
+    pp @uploadedfile.audio_file
+    #pp "__________________"
 
     if @uploadedfile.save
       flash.now[:notice] = 'File uploaded successfully!'
       pp "SUCCESS"
       #redirect somewhere
     else
-      flash.now[:alert] = 'File upload error!'
+      flash.now[:alert] = 'File upload error! Please try again.'
       render "new"
+    end
+
+  end
+
+  def show
+    @uploadedfile = Uploadedfile.find_by id: params[:file_id]
+
+    @audio_file =  @uploadedfile.audio_file
+    pp "_____________________________________"
+    pp @audio_file
+    pp "_____________________________________"
+
+    # redirect user if they are not the owner
+    if current_user.id != @uploadedfile.user_id
+      redirect_to user_dashboard_path(current_user.id)
     end
 
   end

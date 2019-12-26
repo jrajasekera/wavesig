@@ -1,14 +1,12 @@
 class UserController < ApplicationController
 
   def dashboard
-    user_id = params[:user]
-    @user = User.find_by id: user_id
+    @user = current_user
 
   end
 
   def find_origin
-    user_id = params[:user]
-    @user = User.find_by id: user_id
+    @user = current_user
 
   end
 

@@ -24,3 +24,9 @@ $(function() {
         $('.alert').slideUp(500);
     }, 2000);
 });
+
+$(document).ready(function() {
+    $(".player").click(function() {
+        $(this).children('audio')[0].play();
+    });
+});  

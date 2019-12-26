@@ -1,0 +1,9 @@
+<div id="show-audio-file-container">
+  <h1><%= @uploadedfile.fileName %></h1>
+  <h2>Decription: <%= @uploadedfile.description %></h2>
+  <h2>Uploaded: <%= @uploadedfile.updated_at %></h2>
+  <div class="player btn btn-outline-secondary">
+    <%= audio_tag rails_blob_url @audio_file %>
+    Play
+  </div>
+</div>
