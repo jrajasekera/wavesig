@@ -40,39 +40,34 @@
       <div id=<%= "collapse" + uploadedfile.id.to_s %> class="collapse" aria-labelledby=<%= "card-header-" + uploadedfile.id.to_s %> data-parent="#audio-upload-accordion">
         <div class="card-body">
           <div class="preview-container">
-            <article class="description-article">
-              <table class="preview-field">
-                <tr>
-                  <th>Description</th>
-                </tr>
-                <tr>
-                  <td><%= uploadedfile.description %></td>
-                </tr>
-              </table>
-            </article>
-            <aside class="aside aside-1">
-              <table class="preview-field">
-                <tr>
-                  <th>Uploaded</th>
-                </tr>
-                <tr>
-                  <td><%= uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></td>
-                </tr>
-              </table>
-            </aside>
-            <aside class="aside aside-2">
-              <table class="preview-field">
-                <tr>
-                  <th></th>
-                </tr>
-                <tr>
-                  <td>
-                    <a href=<%= show_upload_file_path(uploadedfile.id) %> class="btn btn-secondary btn-sm forward-btn">
-                      <div class="collapse-arrow" >View File <i class="arrow right"></i></div>
-                    </a></td>
-                </tr>
-              </table>
-            </aside>
+            <div class="row">
+              <div class="col-sm-5">
+                <table class="preview-field">
+                  <tr>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td><%= uploadedfile.description %></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-sm-4">
+                <table class="preview-field">
+                  <tr>
+                    <th>Uploaded</th>
+                  </tr>
+                  <tr>
+                    <td><%= uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-sm-3 view-file-btn-container">
+                <a href=<%= show_upload_file_path(uploadedfile.id) %> class="btn btn-secondary btn-sm forward-btn">
+                  <div class="collapse-arrow" >View File <i class="arrow right"></i></div>
+                </a>
+              </div>
+            </div>
+
           </div>
 
         </div>

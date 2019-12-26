@@ -59,32 +59,43 @@
   }
 }
 
-.preview-container {
-  display: flex;
-  flex-flow: row wrap;
-  text-align: center;
+//.preview-container {
+//  display: flex;
+//  flex-flow: row wrap;
+//  text-align: center;
+//}
+//
+//.preview-container > * {
+//  padding: 10px;
+//  flex: 1 100%;
+//}
+//
+//@media all and (min-width: 600px) {
+//  .aside { flex: 1 0 0; }
+//}
+//
+//@media all and (min-width: 800px) {
+//  .description-article    { flex: 3 0px; }
+//  .aside-1 { order: 1; }
+//  .main    { order: 2; }
+//  .aside-2 { order: 3; }
+//}
+
+.view-file-btn-container {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
-.preview-container > * {
-  padding: 10px;
-  flex: 1 100%;
-}
 
-@media all and (min-width: 600px) {
-  .aside { flex: 1 0 0; }
-}
 
-@media all and (min-width: 800px) {
-  .description-article    { flex: 3 0px; }
-  .aside-1 { order: 1; }
-  .main    { order: 2; }
-  .aside-2 { order: 3; }
+
+.preview-div {
+
 }
 
 .preview-field {
-  width: 100%;
-  height: 100%;
   text-align: left;
+  margin-bottom: 10px;
 }
 
 .audio-file-name {

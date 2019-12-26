@@ -11,7 +11,7 @@ class UploadedfileController < ApplicationController
     pp @uploadedfile.audio_file
 
     if @uploadedfile.save
-      flash.now[:notice] = 'File uploaded successfully!'
+      flash[:notice] = 'File uploaded successfully!'
       redirect_to show_upload_file_path(@uploadedfile.id)
     else
       flash.now[:alert] = 'File upload error! Please try again.'
