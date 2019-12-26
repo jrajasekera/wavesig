@@ -4,6 +4,6 @@
   <h2>Uploaded: <%= @uploadedfile.updated_at %></h2>
   <div class="player btn btn-outline-secondary">
     <%= audio_tag rails_blob_url @audio_file %>
-    Play
+    <div id="play-pause-text" >Play</div>
   </div>
 </div>

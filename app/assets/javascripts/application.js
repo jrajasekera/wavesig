@@ -27,6 +27,13 @@ $(function() {
 
 $(document).ready(function() {
     $(".player").click(function() {
-        $(this).children('audio')[0].play();
+        if($("#play-pause-text").text() == "Play") {
+            $(this).children('audio')[0].play();
+            $("#play-pause-text").text("Pause");
+        } else {
+            $(this).children('audio')[0].pause();
+            $("#play-pause-text").text("Play");
+        }
+
     });
-});  
+});
