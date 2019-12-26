@@ -1,9 +1,14 @@
 <div id="show-audio-file-container">
-  <h1><%= @uploadedfile.fileName %></h1>
-  <h2>Decription: <%= @uploadedfile.description %></h2>
-  <h2>Uploaded: <%= @uploadedfile.updated_at %></h2>
-  <div class="player btn btn-outline-secondary">
+  <h1>Name: <%= @uploadedfile.fileName %></h1>
+  <h2>Description: <%= @uploadedfile.description %></h2>
+  <h2>Uploaded: <%= @uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></h2>
+  <div id="play-pause-btn" class="player btn btn-outline-secondary">
     <%= audio_tag rails_blob_url @audio_file %>
     <div id="play-pause-text" >Play</div>
   </div>
+<!--  <i class="fas fa-cloud-download-alt fa-lg"></i>-->
+  <div id="download-link-container">
+    <a href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name">Download</a>
+  </div>
+
 </div>
