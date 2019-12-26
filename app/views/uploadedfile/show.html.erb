@@ -1,4 +1,7 @@
 <div id="show-audio-file-container">
+  <a href=<%= user_dashboard_path %> class="btn btn-secondary btn-sm back-btn">
+    <div class="collapse-arrow" ><i class="arrow left"></i> Back to Dashboard</div>
+  </a>
   <h1>Name: <%= @uploadedfile.fileName %></h1>
   <h2>Description: <%= @uploadedfile.description %></h2>
   <h2>Uploaded: <%= @uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></h2>
