@@ -16,8 +16,9 @@
           Remove File
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-          <a class="dropdown-item" href="#">File 1</a>
-          <a class="dropdown-item" href="#">File 2</a>
+          <% @uploadedfiles.each do |uploadedfile| %>
+            <%= link_to uploadedfile.fileName, delete_upload_file_path(uploadedfile.id), method: "delete" , class: "dropdown-item" %>
+          <% end %>
         </div>
       </div>
     </div>
@@ -38,27 +39,6 @@
       </div>
       <div id=<%= "collapse" + uploadedfile.id.to_s %> class="collapse" aria-labelledby=<%= "card-header-" + uploadedfile.id.to_s %> data-parent="#audio-upload-accordion">
         <div class="card-body">
-<!--          <table>-->
-<!--            <tr>-->
-<!--              <th>Description</th>-->
-<!--              <th>Uploaded</th>-->
-<!--              <th>----</th>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td><%#= uploadedfile.description %></td>-->
-<!--              <td><%#= uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></td>-->
-<!--              <td>-->
-<!--                <a href=<%#= show_upload_file_path(uploadedfile.id) %> class="btn btn-secondary btn-sm forward-btn">-->
-<!--                  <div class="collapse-arrow" >View File <i class="arrow right"></i></div>-->
-<!--                </a>-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--          </table>-->
-
-<!--          Description: <%#= uploadedfile.description %><br />-->
-<!--          Uploaded: <%#= uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %>-->
-<!--          <br />-->
-
           <div class="preview-container">
             <article class="description-article">
               <table class="preview-field">

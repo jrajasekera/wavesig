@@ -32,6 +32,28 @@ class UploadedfileController < ApplicationController
 
   end
 
+  def delete
+    @uploadedfile = Uploadedfile.find_by id: params[:file_id]
+
+    if current_user.id == @uploadedfile.user_id
+      # TODO delete shared files?
+
+      # delete attachment
+      @uploadedfile.audio_file.purge
+      #@uploadedfile.audio_file.purge_later ASYNC
+
+      #delete file row
+      if @uploadedfile.destroy
+        flash[:notice] = 'File Deleted!'
+        redirect_to user_dashboard_path(current_user.id)
+      else
+        flash.now[:alert] = 'Error deleting file! Please try again.'
+      end
+
+    end
+
+  end
+
   def uploadedfile_params
     params.require(:uploadedfile).permit(:fileName, :description, :audio_file)
   end

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get "user/upload_file/new" => "uploadedfile#new", as: "new_upload_file"
   post "user/upload_file" => "uploadedfile#create", as: "create_upload_file"
   get "user/show_file/:file_id" => "uploadedfile#show", as: "show_upload_file"
+  delete "user/delete_file/:file_id" => "uploadedfile#delete", as: "delete_upload_file"
 
   root 'home#info'
 
