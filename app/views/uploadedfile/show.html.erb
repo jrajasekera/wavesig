@@ -11,7 +11,9 @@
 
     <div class="btn-group" role="group" aria-label="Show btn group">
       <div id="play-pause-btn" class="player btn btn-primary">
-        <%= audio_tag rails_blob_url @audio_file %>
+        <audio onended="resetPlaybtn()">
+          <source src=<%= rails_blob_url @audio_file %>  type="audio/wav">
+        </audio>
         <div id="play-pause-text" >Play</div>
       </div>
       <!--  <i class="fas fa-cloud-download-alt fa-lg"></i>-->

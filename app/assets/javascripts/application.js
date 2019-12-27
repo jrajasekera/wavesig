@@ -36,4 +36,10 @@ $(document).ready(function() {
         }
 
     });
+
 });
+
+function resetPlaybtn() {
+    $("#play-pause-text").text("Play");
+}
+
