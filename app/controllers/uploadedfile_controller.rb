@@ -1,5 +1,5 @@
 class UploadedfileController < ApplicationController
-  before_action :verify_correct_user, only: [:show, :delete]
+  before_action :verify_correct_user, only: [:delete]
 
   def verify_correct_user
     @uploadedfile = Uploadedfile.find_by id: params[:file_id]
@@ -31,12 +31,22 @@ class UploadedfileController < ApplicationController
   end
 
   def show
-    @audio_file =  @uploadedfile.audio_file
+    @uploadedfile = Uploadedfile.find_by id: params[:file_id]
 
-    # redirect user if they are not the owner
-    if current_user.id != @uploadedfile.user_id
-      redirect_to user_dashboard_path(current_user.id)
+    if current_user.id == @uploadedfile.user_id
+      # owner of file
+      @audio_file =  @uploadedfile.audio_file
+    else
+      sharedfile = @uploadedfile.sharedfiles.find {|sharedfile| sharedfile.user_id == current_user.id}
+
+      if !sharedfile.nil?
+        @audio_file =  sharedfile.audio_file
+      else
+        flash[:alert] = 'You do not have access to that file.'
+        redirect_to user_dashboard_path(current_user.id)
+      end
     end
+
 
   end
 

@@ -1,5 +1,5 @@
 class SharedfileController < ApplicationController
-  before_action :verify_correct_user
+  before_action :verify_correct_user, except: [:show]
 
   def verify_correct_user
     @uploadedfile = Uploadedfile.find_by id: params[:file_id]
@@ -8,6 +8,11 @@ class SharedfileController < ApplicationController
       flash[:alert] = 'You do not have access to that file.'
       redirect_to user_dashboard_path(current_user.id)
     end
+  end
+
+  def show
+
+
   end
 
   def edit_share
