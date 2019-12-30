@@ -1,0 +1,33 @@
+<div id="new-share-container">
+  <a href=<%= show_upload_file_path %> class="btn btn-secondary btn-sm back-btn">
+  <div class="collapse-arrow" ><i class="arrow left"></i> Back to File</div>
+  </a>
+
+  <h2>Share File</h2>
+  <%= form_for :something, url: share_file_path(@uploadedfile.id) do |f| %>
+
+    <div class="field text-field">
+      <%= text_field_tag :share_email, "", :placeholder => 'Email', :class => 'text-input' %>
+    </div>
+
+    <div class="actions submit-btn">
+      <%= submit_tag "Add Shared User", :class => 'btn btn-primary btn-block' %>
+    </div>
+  <% end %>
+
+  <div>
+    <div class="breaker"></div>
+    <h2>Shared With</h2>
+
+    <% @shared_records.each do |shared_record| %>
+    <div class="field text-field row shared-user-container">
+      <input type="text" name="share_email" value=<%= shared_record.user.email %> class="col-10" disabled>
+      <a href=<%= remove_user_share_file_path(@uploadedfile.id, shared_record.user_id) %> type="button" class="btn btn-danger col-2">Remove</a>
+    </div>
+    <% end %>
+
+    <% if @shared_records.length == 0 %>
+        <p>File has not been shared with anyone.</p>
+    <% end %>
+  </div>
+</div>

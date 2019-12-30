@@ -51,12 +51,10 @@ class UploadedfileController < ApplicationController
       end
 
     end
-
   end
 
   def uploadedfile_params
     params.require(:uploadedfile).permit(:fileName, :description, :audio_file)
   end
-
 
 end

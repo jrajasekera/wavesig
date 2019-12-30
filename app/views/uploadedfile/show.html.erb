@@ -24,6 +24,11 @@
       <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete" do %>
         <%= submit_tag "Delete", class: "btn btn-danger", id: "delete-file-btn" %>
       <% end %>
+
+      <a id="share-btn" class="btn btn-success" href=<%= edit_share_file_path %> >
+        Share
+      </a>
+
       <div>
   </div>
 
