@@ -41,7 +41,7 @@
         <div class="card-body">
           <div class="preview-container">
             <div class="row">
-              <div class="col-sm-5">
+              <div class="col-sm-4">
                 <table class="preview-field">
                   <tr>
                     <th>Description</th>
@@ -51,13 +51,23 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <table class="preview-field">
                   <tr>
                     <th>Uploaded</th>
                   </tr>
                   <tr>
-                    <td><%= uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></td>
+                    <td><%= uploadedfile.updated_at.strftime("%m/%d/%Y") %></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-sm-2">
+                <table class="preview-field">
+                  <tr>
+                    <th>Size</th>
+                  </tr>
+                  <tr>
+                    <td><%= (uploadedfile.audio_file.byte_size * 0.000001).round(2).to_s + " MB" %></td>
                   </tr>
                 </table>
               </div>
@@ -100,7 +110,7 @@
 
           <div class="preview-container">
             <div class="row">
-              <div class="col-sm-5">
+              <div class="col-sm-4">
                 <table class="preview-field">
                   <tr>
                     <th>Description</th>
@@ -110,13 +120,23 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <table class="preview-field">
                   <tr>
                     <th>Uploaded</th>
                   </tr>
                   <tr>
-                    <td><%= sharedfile_associated_file.updated_at.strftime("%m/%d/%Y %I:%M %p") %></td>
+                    <td><%= sharedfile_associated_file.updated_at.strftime("%m/%d/%Y") %></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-sm-2">
+                <table class="preview-field">
+                  <tr>
+                    <th>Size</th>
+                  </tr>
+                  <tr>
+                    <td><%= (sharedfile_associated_file.audio_file.byte_size * 0.000001).round(2).to_s + " MB" %></td>
                   </tr>
                 </table>
               </div>
