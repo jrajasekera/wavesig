@@ -76,4 +76,18 @@ class UploadedfileController < ApplicationController
     params.require(:uploadedfile).permit(:fileName, :description, :audio_file)
   end
 
+  def find_origin
+    @user = current_user
+    @file = Uploadedfile.find params[:file_id]
+
+    pp "*******************************************"
+    snd = RubyAudio::Sound.open(StringIO.new(@file.audio_file.download))
+    pp "channels: " + snd.info.channels.to_s
+    pp "sample rate: " + snd.info.samplerate.to_s
+    pp "length: " + snd.info.length.to_s
+
+
+
+  end
+
 end

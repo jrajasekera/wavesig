@@ -4,12 +4,13 @@ Rails.application.routes.draw do
   get "/home/info" => "home#info", as: "home_info"
 
   get "/user/dashboard" => "user#dashboard", as: "user_dashboard"
-  get "/user/find_origin" => "user#find_origin", as: "find_origin"
+
 
   get "user/upload_file/new" => "uploadedfile#new", as: "new_upload_file"
   post "user/upload_file" => "uploadedfile#create", as: "create_upload_file"
   get "user/show_file/:file_id" => "uploadedfile#show", as: "show_upload_file"
   delete "user/delete_file/:file_id" => "uploadedfile#delete", as: "delete_upload_file"
+  get "/user/upload_file/:file_id/find_origin" => "uploadedfile#find_origin", as: "find_origin"
 
   get "user/sharedfile/edit/:file_id" => "sharedfile#edit_share", as: "edit_share_file"
   post "user/sharedfile/:file_id" => "sharedfile#share", as: "share_file"

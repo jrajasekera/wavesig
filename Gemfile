@@ -38,6 +38,10 @@ gem 'devise'
 
 # user mailcatcher to monitor email in dev
 gem 'mailcatcher'
+
+# audio processing gem
+gem 'ruby-audio', '~> 1.6'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
