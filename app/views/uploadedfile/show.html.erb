@@ -10,25 +10,36 @@
     <p><%= (@audio_file.byte_size * 0.000001).round(2).to_s + " MB" %></p>
     <p><%= @uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></p>
 
+
+    <div class="audio-player">
+      <audio controls>
+        <source src=<%= rails_blob_url @audio_file %>  type="audio/wav" preload="auto">
+        Sorry, your browser does not support the audio player.
+      </audio>
+    </div>
+
     <div class="btn-group" role="group" aria-label="Show btn group">
-      <div id="play-pause-btn" class="player btn btn-primary">
-        <audio onended="resetPlaybtn()">
-          <source src=<%= rails_blob_url @audio_file %>  type="audio/wav">
-        </audio>
-        <div id="play-pause-text" >Play</div>
-      </div>
-      <!--  <i class="fas fa-cloud-download-alt fa-lg"></i>-->
-      <div id="download-link-container" class="btn btn-info">
-        <a href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name">Download</a>
+
+      <div id="download-link-container" class="btn btn-info" data-toggle="tooltip" title="Download">
+        <a href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name"><%= fa_icon "download" %></a>
       </div>
 
       <% if @uploadedfile.user_id == current_user.id %>
-      <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete" do %>
-        <%= submit_tag "Delete", class: "btn btn-danger", id: "delete-file-btn" %>
-      <% end %>
 
-      <a id="share-btn" class="btn btn-success" href=<%= edit_share_file_path %> >
-        Share
+      <div data-toggle="tooltip" title="Delete">
+        <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete" do %>
+          <%= button_tag(class: "btn btn-danger", id: "delete-file-btn") do %>
+            <%= fa_icon "trash" %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <a class="btn btn-success" href=<%= edit_share_file_path(@uploadedfile.id) %> data-toggle="tooltip" title="Share">
+        <%= fa_icon "share-alt" %>
+      </a>
+
+      <a id="find-leaker-btn" class="btn btn-warning" href=<%= find_origin_form_path(@uploadedfile.id) %> data-toggle="tooltip" title="Find Leaker">
+        <%= fa_icon "search" %>
       </a>
       <% end %>
 

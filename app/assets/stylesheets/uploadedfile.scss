@@ -41,9 +41,15 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#play-pause-btn {
-  background-color: #2843cb!important;
-  color: white;
+.audio-player {
+  padding-bottom: 20px;
+}
+
+audio {
+  width: 70%;
+  box-shadow: 5px 5px 20px rgba(0,0, 0, 0.4);
+  border-radius: 90px;
+  transform: scale(1.05);
 }
 
 #download-link-container {
@@ -57,11 +63,12 @@
   margin-bottom: 15px;
 }
 
-#share-btn {
+#find-leaker-btn {
   border-top-right-radius: 0.25rem;
   border-top-left-radius: 0rem;
   border-bottom-left-radius: 0rem;
   border-bottom-right-radius: 0.25rem;
+  color: white;
 }
 
 #music-player-container {

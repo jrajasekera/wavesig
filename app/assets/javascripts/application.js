@@ -25,21 +25,3 @@ $(function() {
     }, 2000);
 });
 
-$(document).ready(function() {
-    $(".player").click(function() {
-        if($("#play-pause-text").text() == "Play") {
-            $(this).children('audio')[0].play();
-            $("#play-pause-text").text("Pause");
-        } else {
-            $(this).children('audio')[0].pause();
-            $("#play-pause-text").text("Play");
-        }
-
-    });
-
-});
-
-function resetPlaybtn() {
-    $("#play-pause-text").text("Play");
-}
-

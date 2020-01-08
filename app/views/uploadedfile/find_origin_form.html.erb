@@ -1,0 +1,19 @@
+<div id="find-origin-container">
+  <a href=<%= show_upload_file_path(@file.id) %> class="btn btn-secondary btn-sm back-btn">
+  <div class="collapse-arrow" ><i class="arrow left"></i> Back to File</div>
+  </a>
+
+  <h2>Upload Leaked File</h2>
+
+  <%= form_for :leaker_file, url: find_origin_path, html: { method: :post } do |f| %>
+
+    <div class="field browse-file-field">
+      <%= f.file_field :origin_audio_file %>
+    </div>
+
+    <div class="actions submit-btn">
+      <%= f.submit "Find Leaker", :class => 'btn btn-primary btn-block' %>
+    </div>
+  <% end %>
+
+</div>

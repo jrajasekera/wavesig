@@ -76,18 +76,42 @@ class UploadedfileController < ApplicationController
     params.require(:uploadedfile).permit(:fileName, :description, :audio_file)
   end
 
-  def find_origin
+  def leaker_file_params
+    params.require(:leaker_file).permit(:origin_audio_file)
+  end
+
+  def find_origin_form
     @user = current_user
     @file = Uploadedfile.find params[:file_id]
 
+  end
+
+  def find_origin
+    @user = current_user
+    @original_file = Uploadedfile.find params[:file_id]
+
+    origin_file = leaker_file_params[:origin_audio_file].tempfile.to_io
+
     pp "*******************************************"
-    snd = RubyAudio::Sound.open(StringIO.new(@file.audio_file.download))
+    pp origin_file
+
+    pp "*******************************************"
+    snd = RubyAudio::Sound.open(origin_file)
     pp "channels: " + snd.info.channels.to_s
     pp "sample rate: " + snd.info.samplerate.to_s
     pp "length: " + snd.info.length.to_s
 
+    # TODO find leak origin
 
+    #@file = Uploadedfile.find params[:file_id]
+    #pp "*******************************************"
+    #snd = RubyAudio::Sound.open(StringIO.new(@file.audio_file.download))
+    #pp "channels: " + snd.info.channels.to_s
+    #pp "sample rate: " + snd.info.samplerate.to_s
+    #pp "length: " + snd.info.length.to_s
 
   end
+
+
 
 end

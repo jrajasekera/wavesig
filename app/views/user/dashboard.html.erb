@@ -7,13 +7,13 @@
 
   <!-- START button bar-->
   <div id="audio-file-btn-group">
-    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-      <a href=<%= new_upload_file_path %> class="btn btn-secondary" role="button" >Add File</a>
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown" data-toggle="tooltip" title="Upload new file">
+      <a href=<%= new_upload_file_path %> class="btn btn-secondary" role="button" ><%= fa_icon "plus" %></a>
 
 
-      <div class="btn-group" role="group">
+      <div class="btn-group" role="group" data-toggle="tooltip" title="Delete">
         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Remove File
+          <%= fa_icon "trash" %>
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
           <% @uploadedfiles.each do |uploadedfile| %>
