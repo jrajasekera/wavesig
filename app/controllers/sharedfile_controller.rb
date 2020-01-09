@@ -28,7 +28,7 @@ class SharedfileController < ApplicationController
     else
       newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id
 
-      newShare.audio_file.attach io: StringIO.new(@uploadedfile.audio_file.download),
+      newShare.audio_file.attach io: StringIO.new(helpers.embed_watermark(@uploadedfile.audio_file.download)),
                                filename: @uploadedfile.audio_file.filename,
                                content_type: @uploadedfile.audio_file.content_type
 
@@ -44,7 +44,6 @@ class SharedfileController < ApplicationController
   end
 
   def remove_user
-    #@uploadedfile = Uploadedfile.find_by id: params[:file_id]
     shared_user = User.find params[:user_id]
 
     shared_file = Sharedfile.find_by(uploadedfile_id: @uploadedfile, user_id: params[:user_id])

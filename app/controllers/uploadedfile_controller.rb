@@ -1,5 +1,5 @@
 class UploadedfileController < ApplicationController
-  before_action :verify_correct_user, only: [:delete]
+  before_action :verify_correct_user, only: [:delete, :find_origin]
 
   def verify_correct_user
     @uploadedfile = Uploadedfile.find_by id: params[:file_id]
@@ -87,21 +87,11 @@ class UploadedfileController < ApplicationController
   end
 
   def find_origin
-    @user = current_user
-    @original_file = Uploadedfile.find params[:file_id]
+    @original_file = @uploadedfile
 
-    origin_file = leaker_file_params[:origin_audio_file].tempfile.to_io
+    leaker_file = leaker_file_params[:origin_audio_file].tempfile.to_io
 
-    pp "*******************************************"
-    pp origin_file
-
-    pp "*******************************************"
-    snd = RubyAudio::Sound.open(origin_file)
-    pp "channels: " + snd.info.channels.to_s
-    pp "sample rate: " + snd.info.samplerate.to_s
-    pp "length: " + snd.info.length.to_s
-
-    # TODO find leak origin
+    @leaker = helpers.find_leak_source(@original_file, leaker_file)
 
     #@file = Uploadedfile.find params[:file_id]
     #pp "*******************************************"
@@ -111,7 +101,5 @@ class UploadedfileController < ApplicationController
     #pp "length: " + snd.info.length.to_s
 
   end
-
-
 
 end

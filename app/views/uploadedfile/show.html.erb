@@ -21,7 +21,7 @@
     <div class="btn-group" role="group" aria-label="Show btn group">
 
       <div id="download-link-container" class="btn btn-info" data-toggle="tooltip" title="Download">
-        <a href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name"><%= fa_icon "download" %></a>
+        <a href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name"><%= fa_icon "download", class: "fa-2x" %></a>
       </div>
 
       <% if @uploadedfile.user_id == current_user.id %>
@@ -29,21 +29,21 @@
       <div data-toggle="tooltip" title="Delete">
         <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete" do %>
           <%= button_tag(class: "btn btn-danger", id: "delete-file-btn") do %>
-            <%= fa_icon "trash" %>
+            <%= fa_icon "trash", class: "fa-2x" %>
           <% end %>
         <% end %>
       </div>
 
       <a class="btn btn-success" href=<%= edit_share_file_path(@uploadedfile.id) %> data-toggle="tooltip" title="Share">
-        <%= fa_icon "share-alt" %>
+        <%= fa_icon "share-alt", class: "fa-2x" %>
       </a>
 
       <a id="find-leaker-btn" class="btn btn-warning" href=<%= find_origin_form_path(@uploadedfile.id) %> data-toggle="tooltip" title="Find Leaker">
-        <%= fa_icon "search" %>
+        <%= fa_icon "search", class: "fa-2x" %>
       </a>
       <% end %>
 
-      <div>
+      </div>
   </div>
 
 </div>
