@@ -1,5 +1,5 @@
 <div id="dashboard-container">
-  <h2 id="my-dashboard-title" ><b>My Dashboard</b></h2>
+  <h3 id="my-dashboard-title" ><b><%= @user.email.partition('@')[0] %>'s Dashboard</b></h3>
 
   <div class="breaker"></div>
 
@@ -17,7 +17,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
           <% @uploadedfiles.each do |uploadedfile| %>
-            <%= link_to uploadedfile.fileName, delete_upload_file_path(uploadedfile.id), method: "delete" , class: "dropdown-item" %>
+            <%= link_to uploadedfile.fileName, delete_upload_file_path(uploadedfile.id), method: "delete", data: {confirm: "File will not be recoverable after deletion."}, class: "dropdown-item" %>
           <% end %>
         </div>
       </div>

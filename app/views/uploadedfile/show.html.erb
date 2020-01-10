@@ -27,7 +27,7 @@
       <% if @uploadedfile.user_id == current_user.id %>
 
       <div data-toggle="tooltip" title="Delete">
-        <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete" do %>
+        <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete", data: {confirm: "File will not be recoverable after deletion."} do %>
           <%= button_tag(class: "btn btn-danger", id: "delete-file-btn") do %>
             <%= fa_icon "trash", class: "fa-2x" %>
           <% end %>
