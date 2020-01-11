@@ -42,6 +42,9 @@ gem 'mailcatcher'
 # audio processing gem
 gem 'ruby-audio', '~> 1.6'
 
+# toastr for toast messages
+gem 'toastr-rails'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

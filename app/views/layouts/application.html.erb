@@ -17,13 +17,22 @@
       <div id="main" class="clear-top">
 
         <!-- alerts -->
-        <% if notice %>
-          <p class="alert alert-success"><%= notice %></p>
-        <% end %>
-        <% if alert %>
-          <p class="alert alert-danger"><%= alert %></p>
-        <% end %>
+        <%# if notice %>
+<!--          <p class="alert alert-success"><%#= notice %></p>-->
+        <%# end %>
+        <%# if alert %>
+<!--          <p class="alert alert-danger"><%#= alert %></p>-->
+        <%# end %>
         <!-- alerts -->
+
+        <% unless flash.empty? %>
+          <script type="text/javascript">
+              <% flash.each do |f| %>
+              <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'success') %>
+              toastr['<%= type %>']('<%= f[1] %>');
+              <% end %>
+          </script>
+        <% end %>
 
         <!-- page content-->
         <%= yield %>

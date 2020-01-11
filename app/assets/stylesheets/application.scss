@@ -15,6 +15,7 @@
 //= require user
 //= require devise
 //= require uploadedfile
+//= require toastr
 
 @import "bootstrap";
 @import "font-awesome";
@@ -58,7 +59,6 @@ body{
 
 #wrap {
   min-height: 100%;
-
   flex: 1 0 auto;
 }
 
@@ -66,8 +66,39 @@ body{
   overflow:auto;
   width: 100%;
   color: white;
-
   text-align: center;
+}
+
+.toast {
+  max-width: initial !important;
+}
+
+.toast-success {
+  background-color: #51A351 !important;
+}
+
+.toast-error{
+  background-color: #BD362F !important;
+}
+
+.toast-info{
+  background-color: #2F96B4 !important;
+}
+
+.toast-warning{
+  background-color: #F89406 !important;
+}
+
+#toast-container {
+  width: 100%;
+  text-align: center;
+}
+
+#toast-container > div {
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 40px;
+  width: 80% !important;
 }
 
 .breaker{

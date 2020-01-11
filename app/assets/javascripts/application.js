@@ -18,10 +18,36 @@
 //= require popper
 //= require bootstrap
 
-// slide alerts away after 2 seconds
-$(function() {
-    setTimeout(function(){
-        $('.alert').slideUp(500);
-    }, 2000);
+//= require toastr
+
+
+$(document).ready(function() {
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "100",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
 });
+
+
+// // slide alerts away after 2 seconds
+// $(function() {
+//     setTimeout(function(){
+//         $('.alert').slideUp(500);
+//     }, 2000);
+// });
 
