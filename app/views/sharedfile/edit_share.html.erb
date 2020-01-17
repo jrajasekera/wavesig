@@ -21,8 +21,8 @@
 
     <% @shared_records.each do |shared_record| %>
     <div class="field text-field row shared-user-container">
-      <input type="text" name="share_email" value=<%= shared_record.user.email %> class="col-10" disabled>
-      <a href=<%= remove_user_share_file_path(@uploadedfile.id, shared_record.user_id) %> type="button" class="btn btn-danger col-2">Remove</a>
+      <input type="text" name="share_email" value=<%= shared_record.user.email %> class="col-9" disabled>
+      <a href=<%= remove_user_share_file_path(@uploadedfile.id, shared_record.user_id) %> type="button" class="btn btn-danger col-3"><%= fa_icon "trash", class: "fa-2x" %></a>
     </div>
     <% end %>
 
