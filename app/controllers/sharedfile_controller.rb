@@ -28,7 +28,8 @@ class SharedfileController < ApplicationController
     else
       newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id
 
-      newShare.audio_file.attach io: StringIO.new(helpers.embed_watermark(@uploadedfile)),
+      #newShare.audio_file.attach io: StringIO.new(helpers.embed_watermark(@uploadedfile)),
+      newShare.audio_file.attach io: File.open(helpers.embed_watermark(@uploadedfile)),
                                filename: @uploadedfile.audio_file.filename,
                                content_type: @uploadedfile.audio_file.content_type
 
