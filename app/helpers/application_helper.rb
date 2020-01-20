@@ -117,28 +117,42 @@ module ApplicationHelper
 
 
   def embed_1(buf,channel,hashAOAA, a, b, thd1)
-    d = 0.05
+    d = 0.05 # was 0.05
     delta = (thd1 - (a - b)) / 3
     w_up = 1 + (delta / hashAOAA["eMax"][1])
     w_down = 1 - (delta / hashAOAA["eMid"][1])
-    w_delta = 0.05
+    w_delta = 0.001 # was 0.05
 
     count = 0
-    while !(a - b >= thd1)
+    buf_clone = nil
+    while !((a - b) - thd1 < 0.005)
       count += 1
       buf_clone = buf.map(&:clone)
 
       # scale up eMax
-      scaleSection(buf_clone, channel, hashAOAA["eMax"][2][0], hashAOAA["eMax"][2][1], w_up)
+      scaleUpSection(buf_clone, channel, hashAOAA["eMax"][2][0], hashAOAA["eMax"][2][1], w_up)
 
       # scale down eMid
-      scaleSection(buf_clone, channel, hashAOAA["eMid"][2][0], hashAOAA["eMid"][2][1], w_down)
+      scaleDownSection(buf_clone, channel, hashAOAA["eMid"][2][0], hashAOAA["eMid"][2][1], w_down)
 
       # reevaluate A & B
       gosAOAAs = calcGOSAOAAs(buf_clone, channel)
       hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
       a,b = calcA_B(hashAOAA)
       thd1 = calcThd1(hashAOAA, d)
+
+      pp "count: " + count.to_s
+      pp "w_up: " + w_up.to_s
+      pp "w_down: " + w_down.to_s
+      satisfiesCondition = (a - b - thd1) >= 0.0
+      pp "A - B >= Thd1 | " + satisfiesCondition.to_s
+      pp (a - b - thd1).to_s + " >= 0 ?"
+
+      pp "***************************"
+
+      if count > 100
+        raise "error: count > 1000"
+      end
 
       # increment w
       w_up += w_delta
@@ -148,17 +162,102 @@ module ApplicationHelper
 
     pp "count: " + count.to_s
 
-    # copy back to OG buffer
-    buf_clone.each_with_index do |item, index|
-      buf[index] = item
+    if buf_clone != nil
+      # copy back to OG buffer
+      buf_clone.each_with_index do |item, index|
+        buf[index] = item
+      end
     end
 
   end
 
-  def scaleSection(buf, channel, startIndex, endIndex, w)
-    (startIndex..endIndex).each do |x|
-      buf[x][channel] = w * buf[x][channel]
+  def scaleUpSection(buf, channel, startIndex, endIndex, w)
+    progressFrames = (L/3 * 0.05).round
+    #progressFrames = 1
+    w_0 = 1
+    w_delta = (w - w_0) / progressFrames
+
+    (startIndex..(startIndex + progressFrames)).each do |x|
+      #pp "w_up: " + w.to_s + ", w_0: " + w_0.to_s
+      buf[x][channel] = w_0 * buf[x][channel]
+
+      if w_0 < w
+        w_0 += w_delta
+      else
+        w_0 = w
+      end
     end
+
+    w_0 = w
+
+    ((startIndex + progressFrames)..(endIndex - progressFrames)).each do |x|
+      #pp "w_0: " + w_0.to_s
+      buf[x][channel] = w_0 * buf[x][channel]
+    end
+
+    ((endIndex - progressFrames)..endIndex).each do |x|
+      #pp "w_up: " + w.to_s + ", w_0: " + w_0.to_s
+      buf[x][channel] = w_0 * buf[x][channel]
+
+      if w_0 > 1
+        w_0 -= w_delta
+      else
+        w_0 = 1
+      end
+    end
+
+   #(startIndex..endIndex).each do |x|
+   #   buf[x][channel] = w * buf[x][channel]
+   # end
+
+  end
+
+  def scaleDownSection(buf, channel, startIndex, endIndex, w)
+    progressFrames = (L/3 * 0.05).round
+    #progressFrames = 1
+    w_0 = 1
+    w_delta = (w_0 - w) / progressFrames
+
+    #pp "w_delta: " + w_delta.to_s
+    #pp "w: " + w.to_s + " in scale down func"
+
+    #if w < 0.0
+    #  raise "error: w < 0 (scale down)"
+    #end
+
+    (startIndex..(startIndex + progressFrames)).each do |x|
+      #pp "w_down: " + w.to_s + ", w_0: " + w_0.to_s
+      buf[x][channel] = w_0 * buf[x][channel]
+
+      if w_0 > w
+        w_0 -= w_delta
+      else
+        w_0 = w
+      end
+    end
+
+    w_0 = w
+
+    ((startIndex + progressFrames)..(endIndex - progressFrames)).each do |x|
+      #pp "w_0: " + w_0.to_s
+      buf[x][channel] = w_0 * buf[x][channel]
+    end
+
+    ((endIndex - progressFrames)..endIndex).each do |x|
+      #pp "w_down: " + w.to_s + ", w_0: " + w_0.to_s
+      buf[x][channel] = w_0 * buf[x][channel]
+
+      if w_0 < 1
+        w_0 += w_delta
+      else
+        w_0 = 1
+      end
+    end
+
+    #(startIndex..endIndex).each do |x|
+    #  buf[x][channel] = w * buf[x][channel]
+    #end
+
   end
 
   # calculate A & B values from hashAOAA
