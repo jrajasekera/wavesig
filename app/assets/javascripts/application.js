@@ -30,9 +30,9 @@ $(document).ready(function() {
         "positionClass": "toast-top-center",
         "preventDuplicates": false,
         "onclick": null,
-        "showDuration": "100",
+        "showDuration": "300",
         "hideDuration": "1000",
-        "timeOut": "3000",
+        "timeOut": "5000",
         "extendedTimeOut": "1000",
         "showEasing": "swing",
         "hideEasing": "linear",
@@ -43,8 +43,6 @@ $(document).ready(function() {
 });
 
 function invertArrow(card_id) {
-    console.log("CLICKED");
-    console.log(card_id);
     let arrow = $("#" + card_id + " > h2 > button > div.collapse-arrow > i")
     if (arrow.hasClass("down")) {
         arrow.removeClass("down").addClass("up");

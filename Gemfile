@@ -45,6 +45,9 @@ gem 'ruby-audio', '~> 1.6'
 # toastr for toast messages
 gem 'toastr-rails'
 
+# debugger
+gem 'byebug'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

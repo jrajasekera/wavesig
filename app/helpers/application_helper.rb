@@ -57,7 +57,6 @@ module ApplicationHelper
         puts "---------GOS " + gosIndex.to_s + "----------"
 
         if buf.real_size == L
-          puts buf[0][0].to_s + ", " + buf[0][1].to_s
 
           channel = 0
           embed_bit = 1
@@ -91,10 +90,10 @@ module ApplicationHelper
             if satisfiesCondition
               pp "Condition Satisfied, no operation needed."
             else
-              pp "Scaling amplitudes"
-              pp "OG     -> " + buf[3].to_s
+              pp "Scaling amplitudes!"
+              #pp "OG     -> " + buf[3].to_s
               embed_1(buf,channel,hashAOAA, a, b, thd1)
-              pp "scaled -> " + buf[3].to_s
+              #pp "scaled -> " + buf[3].to_s
             end
 
           else
@@ -121,11 +120,14 @@ module ApplicationHelper
     delta = (thd1 - (a - b)) / 3
     w_up = 1 + (delta / hashAOAA["eMax"][1])
     w_down = 1 - (delta / hashAOAA["eMid"][1])
-    w_delta = 0.001 # was 0.05
+    w_delta = 0.01 # was 0.05, 0.0001
+
+    #tmp = 1000000
 
     count = 0
     buf_clone = nil
-    while !((a - b) - thd1 < 0.005)
+    while !(((a - b).abs - thd1).abs < 0.005)
+    #while !(a - b - thd1 >= -0.005)
       count += 1
       buf_clone = buf.map(&:clone)
 
@@ -141,17 +143,25 @@ module ApplicationHelper
       a,b = calcA_B(hashAOAA)
       thd1 = calcThd1(hashAOAA, d)
 
-      pp "count: " + count.to_s
-      pp "w_up: " + w_up.to_s
-      pp "w_down: " + w_down.to_s
-      satisfiesCondition = (a - b - thd1) >= 0.0
-      pp "A - B >= Thd1 | " + satisfiesCondition.to_s
-      pp (a - b - thd1).to_s + " >= 0 ?"
+      #pp "***************************"
 
-      pp "***************************"
+      #pp "count: " + count.to_s
+      #pp "w_up: " + w_up.to_s
+      #pp "w_down: " + w_down.to_s
+      #pp ((a - b).abs - thd1).abs.to_s + " < 0.005"
 
-      if count > 100
-        raise "error: count > 1000"
+      #pp "***************************"
+
+      #if (((a - b).abs - thd1).abs - tmp).abs < 0.000000001
+      #  byebug
+      #end
+      #tmp = ((a - b).abs - thd1).abs
+
+
+      if count > 20000
+        raise "error: count > 20000"
+      #elsif count > 5000
+      #  byebug
       end
 
       # increment w
@@ -172,12 +182,12 @@ module ApplicationHelper
   end
 
   def scaleUpSection(buf, channel, startIndex, endIndex, w)
-    progressFrames = (L/3 * 0.05).round
-    #progressFrames = 1
+    #progressFrames = (L/3 * 0.05).round
+    progressFrames = 40
     w_0 = 1
     w_delta = (w - w_0) / progressFrames
 
-    (startIndex..(startIndex + progressFrames)).each do |x|
+    (startIndex..(startIndex + progressFrames - 1)).each do |x|
       #pp "w_up: " + w.to_s + ", w_0: " + w_0.to_s
       buf[x][channel] = w_0 * buf[x][channel]
 
@@ -195,7 +205,7 @@ module ApplicationHelper
       buf[x][channel] = w_0 * buf[x][channel]
     end
 
-    ((endIndex - progressFrames)..endIndex).each do |x|
+    ((endIndex - progressFrames + 1)..endIndex).each do |x|
       #pp "w_up: " + w.to_s + ", w_0: " + w_0.to_s
       buf[x][channel] = w_0 * buf[x][channel]
 
@@ -213,19 +223,12 @@ module ApplicationHelper
   end
 
   def scaleDownSection(buf, channel, startIndex, endIndex, w)
-    progressFrames = (L/3 * 0.05).round
-    #progressFrames = 1
+    #progressFrames = (L/3 * 0.05).round
+    progressFrames = 40
     w_0 = 1
     w_delta = (w_0 - w) / progressFrames
 
-    #pp "w_delta: " + w_delta.to_s
-    #pp "w: " + w.to_s + " in scale down func"
-
-    #if w < 0.0
-    #  raise "error: w < 0 (scale down)"
-    #end
-
-    (startIndex..(startIndex + progressFrames)).each do |x|
+    (startIndex..(startIndex + progressFrames - 1)).each do |x|
       #pp "w_down: " + w.to_s + ", w_0: " + w_0.to_s
       buf[x][channel] = w_0 * buf[x][channel]
 
@@ -243,7 +246,7 @@ module ApplicationHelper
       buf[x][channel] = w_0 * buf[x][channel]
     end
 
-    ((endIndex - progressFrames)..endIndex).each do |x|
+    ((endIndex - progressFrames + 1)..endIndex).each do |x|
       #pp "w_down: " + w.to_s + ", w_0: " + w_0.to_s
       buf[x][channel] = w_0 * buf[x][channel]
 
@@ -257,6 +260,7 @@ module ApplicationHelper
     #(startIndex..endIndex).each do |x|
     #  buf[x][channel] = w * buf[x][channel]
     #end
+
 
   end
 
@@ -311,8 +315,8 @@ module ApplicationHelper
   # calculates the AOAAs for a GOS
   def calcGOSAOAAs(buf, channel)
     e1 = calcSectionAOAA(buf, channel, E1_INDICIES[0], E1_INDICIES[1])
-    e2 = calcSectionAOAA(buf, channel, E2_INDICIES[0], E2_INDICIES[0])
-    e3 = calcSectionAOAA(buf, channel, E3_INDICIES[0], E3_INDICIES[0])
+    e2 = calcSectionAOAA(buf, channel, E2_INDICIES[0], E2_INDICIES[1])
+    e3 = calcSectionAOAA(buf, channel, E3_INDICIES[0], E3_INDICIES[1])
     [e1, e2, e3]
   end
 
