@@ -59,7 +59,7 @@ module ApplicationHelper
         if buf.real_size == L
 
           channel = 0
-          embed_bit = 1
+          embed_bit = 0
 
           # calculate AOAAs
           gosAOAAs = calcGOSAOAAs(buf, channel)
@@ -67,9 +67,9 @@ module ApplicationHelper
           # sort AOAAs
           hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
 
-          pp "eMin: " + hashAOAA["eMin"].to_s
-          pp "eMid: " + hashAOAA["eMid"].to_s
-          pp "eMax: " + hashAOAA["eMax"].to_s
+          #pp "eMin: " + hashAOAA["eMin"].to_s
+          #pp "eMid: " + hashAOAA["eMid"].to_s
+          #pp "eMax: " + hashAOAA["eMax"].to_s
 
           a,b = calcA_B(hashAOAA)
 
@@ -84,25 +84,44 @@ module ApplicationHelper
           if embed_bit == 1
             pp "Embedding 1 bit"
             satisfiesCondition = (a - b) >= thd1
-            pp "A - B >= Thd1 | " + satisfiesCondition.to_s
-            pp (a - b).to_s + " >=? " + thd1.to_s
+            #pp "A - B >= Thd1 | " + satisfiesCondition.to_s
+            #pp (a - b).to_s + " >=? " + thd1.to_s
 
             if satisfiesCondition
               pp "Condition Satisfied, no operation needed."
             else
               pp "Scaling amplitudes!"
-              #pp "OG     -> " + buf[3].to_s
               embed_1(buf,channel,hashAOAA, a, b, thd1)
-              #pp "scaled -> " + buf[3].to_s
             end
 
           else
-            # TODO embed 0
+            pp "Embedding 0 bit"
+            satisfiesCondition = (b - a) >= thd1
+
+            if satisfiesCondition
+              pp "Condition Satisfied, no operation needed."
+            else
+              pp "Scaling amplitudes!"
+              embed_0(buf,channel,hashAOAA, a, b, thd1)
+            end
+
+          end
+
+
+          # TEST changed bit
+          gosAOAAs = calcGOSAOAAs(buf, channel)
+          hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
+          a,b = calcA_B(hashAOAA)
+          if a >= b
+            pp "New GOS Value: 1"
+          else
+            pp "New GOS Value: 0"
           end
 
         else
           pp "GOS too small to embed watermark"
         end
+
         out.write(buf)
         puts "----------------------"
         gosIndex += 1
@@ -110,24 +129,78 @@ module ApplicationHelper
       out.close if out
     end
 
-    #uploadedfile.audio_file.download
     out_file_path
   end
 
+  def embed_0(buf,channel,hashAOAA, a, b, thd1)
+    d = 0.05
+    delta = (thd1 - (b - a)) / 3
+    w_up = 1 + (delta / hashAOAA["eMid"][1])
+    w_down = 1 - (delta / hashAOAA["eMin"][1])
+    w_delta = 0.01
+
+    count = 0
+    buf_clone = nil
+    while !((b - a) >= thd1)
+      count += 1
+      buf_clone = buf.map(&:clone)
+
+      # scale up eMax
+      scaleUpSection(buf_clone, channel, hashAOAA["eMid"][2][0], hashAOAA["eMid"][2][1], w_up)
+
+      # scale down eMid
+      scaleDownSection(buf_clone, channel, hashAOAA["eMin"][2][0], hashAOAA["eMin"][2][1], w_down)
+
+      # reevaluate A & B
+      gosAOAAs = calcGOSAOAAs(buf_clone, channel)
+      hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
+      a,b = calcA_B(hashAOAA)
+      thd1 = calcThd1(hashAOAA, d)
+
+      # pp "***************************"
+      #
+      # pp "count: " + count.to_s
+      # pp "w_up: " + w_up.to_s
+      # pp "w_down: " + w_down.to_s
+      # pp ((b - a) - thd1).to_s + " >= 0 ?"
+      #
+      # pp "***************************"
+
+      #if (((a - b).abs - thd1).abs - tmp).abs < 0.000000001
+      #  byebug
+      #end
+      #tmp = ((a - b).abs - thd1).abs
+
+
+      if count > 20000
+        raise "error: count > 20000"
+      end
+
+      # increment w
+      w_up += w_delta
+      w_down -= w_delta
+    end
+
+    pp "count: " + count.to_s
+
+    if buf_clone != nil
+      # copy back to OG buffer
+      buf_clone.each_with_index do |item, index|
+        buf[index] = item
+      end
+    end
+  end
 
   def embed_1(buf,channel,hashAOAA, a, b, thd1)
-    d = 0.05 # was 0.05
+    d = 0.05
     delta = (thd1 - (a - b)) / 3
     w_up = 1 + (delta / hashAOAA["eMax"][1])
     w_down = 1 - (delta / hashAOAA["eMid"][1])
     w_delta = 0.01 # was 0.05, 0.0001
 
-    #tmp = 1000000
-
     count = 0
     buf_clone = nil
-    while !(((a - b).abs - thd1).abs < 0.005)
-    #while !(a - b - thd1 >= -0.005)
+    while !((a - b) >= thd1)
       count += 1
       buf_clone = buf.map(&:clone)
 
@@ -160,14 +233,11 @@ module ApplicationHelper
 
       if count > 20000
         raise "error: count > 20000"
-      #elsif count > 5000
-      #  byebug
       end
 
       # increment w
       w_up += w_delta
       w_down -= w_delta
-
     end
 
     pp "count: " + count.to_s
@@ -178,7 +248,6 @@ module ApplicationHelper
         buf[index] = item
       end
     end
-
   end
 
   def scaleUpSection(buf, channel, startIndex, endIndex, w)
@@ -219,7 +288,6 @@ module ApplicationHelper
    #(startIndex..endIndex).each do |x|
    #   buf[x][channel] = w * buf[x][channel]
    # end
-
   end
 
   def scaleDownSection(buf, channel, startIndex, endIndex, w)
@@ -260,7 +328,6 @@ module ApplicationHelper
     #(startIndex..endIndex).each do |x|
     #  buf[x][channel] = w * buf[x][channel]
     #end
-
 
   end
 

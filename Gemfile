@@ -48,6 +48,12 @@ gem 'toastr-rails'
 # debugger
 gem 'byebug'
 
+#narray to be used fot FFT
+# gem 'narray', '~> 0.6.1.2'
+
+# FFT gem
+# gem 'ruby-fftw3'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
