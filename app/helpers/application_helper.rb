@@ -56,6 +56,9 @@ module ApplicationHelper
       while file.read(buf) != 0
         puts "---------GOS " + gosIndex.to_s + "----------"
 
+        # clone og buffer for spectrum analysis
+        og_buf = buf.map(&:clone)
+        d = 0.05
         if buf.real_size == L
 
           channel = 0
@@ -79,7 +82,7 @@ module ApplicationHelper
             pp "Initial GOS Value: 0"
           end
 
-          thd1 = calcThd1(hashAOAA, 0.05)
+          thd1 = calcThd1(hashAOAA, d)
 
           if embed_bit == 1
             pp "Embedding 1 bit"
@@ -91,9 +94,8 @@ module ApplicationHelper
               pp "Condition Satisfied, no operation needed."
             else
               pp "Scaling amplitudes!"
-              embed_1(buf,channel,hashAOAA, a, b, thd1)
+              embed_1(buf,channel,hashAOAA, a, b, thd1, d)
             end
-
           else
             pp "Embedding 0 bit"
             satisfiesCondition = (b - a) >= thd1
@@ -102,11 +104,12 @@ module ApplicationHelper
               pp "Condition Satisfied, no operation needed."
             else
               pp "Scaling amplitudes!"
-              embed_0(buf,channel,hashAOAA, a, b, thd1)
+              embed_0(buf,channel,hashAOAA, a, b, thd1, d)
             end
-
           end
 
+          # analyze spectrum
+          analyze_spectrum(buf, og_buf, channel)
 
           # TEST changed bit
           gosAOAAs = calcGOSAOAAs(buf, channel)
@@ -129,11 +132,76 @@ module ApplicationHelper
       out.close if out
     end
 
+    #TEST
+    # pp "FFT Test"
+    # fft([1,1,1,1,0,0,0,0]).each{|c| puts "%9.6f %+9.6fi" % c.rect}
+    # ft = fft([1,1,1,1,0,0,0,0])
+    # pp ft
+
+
+
+    # n = 128
+    # data = Vector::Complex[n]
+    #
+    # data[0] = 1.0
+    # for i in 1..10 do
+    #   data[i] = 1.0
+    #   data[n-i] = 1.0
+    # end
+    #
+    # #for i in 0...n do
+    # #  printf("%d %e %e\n", i, data[i].re, data[i].im)
+    # #end
+    #
+    # # You can choose whichever you like
+    # #ffted = data.radix2_forward()
+    # ffted = data.radix2_transform(FFT::FORWARD)
+    # ffted /= Math::sqrt(n)
+    # for i in 0...n do
+    #   printf("%d %e %e\n", i, ffted[i].re, ffted[i].im)
+    # end
+
     out_file_path
   end
 
-  def embed_0(buf,channel,hashAOAA, a, b, thd1)
-    d = 0.05
+  def analyze_spectrum(buf, og_buf, channel)
+
+    pp "Spectrum Analysis"
+    # compute r (watermark signal)
+    r = Array.new
+    (0..(L-1)).each do |x|
+      r.push(buf[x][channel] - og_buf[x][channel])
+      # pp buf[x][channel].to_s + " - " + og_buf[x][channel].to_s + " = " + r[x].to_s
+    end
+
+    4.times do
+      r.push(0.0)
+    end
+
+    #fft
+    r_spec = fft(r)
+
+    # pp "R = "
+    # pp r_spec
+
+    r_hat = Array.new
+    (0..(L-1 + 4)).each do |x|
+      r_hat[x] = 20 * Math.log(x + 1s)
+    end
+    pp r_hat
+
+  end
+
+  def fft(vec)
+    return vec if vec.size <= 1
+    evens_odds = vec.partition.with_index{|_,i| i.even?}
+    evens, odds = evens_odds.map{|even_odd| fft(even_odd)*2}
+    evens.zip(odds).map.with_index do |(even, odd),i|
+      even + odd * Math::E ** Complex(0, -2 * Math::PI * i / vec.size)
+    end
+  end
+
+  def embed_0(buf,channel,hashAOAA, a, b, thd1, d)
     delta = (thd1 - (b - a)) / 3
     w_up = 1 + (delta / hashAOAA["eMid"][1])
     w_down = 1 - (delta / hashAOAA["eMin"][1])
@@ -191,8 +259,7 @@ module ApplicationHelper
     end
   end
 
-  def embed_1(buf,channel,hashAOAA, a, b, thd1)
-    d = 0.05
+  def embed_1(buf,channel,hashAOAA, a, b, thd1, d)
     delta = (thd1 - (a - b)) / 3
     w_up = 1 + (delta / hashAOAA["eMax"][1])
     w_down = 1 - (delta / hashAOAA["eMid"][1])

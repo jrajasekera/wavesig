@@ -45,14 +45,16 @@ gem 'ruby-audio', '~> 1.6'
 # toastr for toast messages
 gem 'toastr-rails'
 
-# debugger
-gem 'byebug'
+# # debugger
+# gem 'byebug'
 
-#narray to be used fot FFT
+# narray to be used fot FFT
 # gem 'narray', '~> 0.6.1.2'
-
-# FFT gem
+#
+# # FFT gem
 # gem 'ruby-fftw3'
+
+# gem 'gsl'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
