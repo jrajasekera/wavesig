@@ -1,10 +1,12 @@
+# require 'gsl'
+# include GSL
 module ApplicationHelper
   L = 1020
   E1_INDICIES = [0, (L/3 - 1)]
   E2_INDICIES = [(L/3), (2*L/3 - 1)]
   E3_INDICIES = [(2*L/3), (L - 1)]
 
-      def find_leak_source(original_file, leaker_file)
+  def find_leak_source(original_file, leaker_file)
 
     pp "*******************************************"
     snd = RubyAudio::Sound.open(leaker_file)
@@ -51,18 +53,23 @@ module ApplicationHelper
     RubyAudio::Sound.open(og_file_path) do |file|
       out = RubyAudio::Sound.open(out_file_path, 'w', file.info.clone) if out.nil?
 
-
+      tmp_audible_watermark_count = 0
       gosIndex = 0
       while file.read(buf) != 0
         puts "---------GOS " + gosIndex.to_s + "----------"
 
         # clone og buffer for spectrum analysis
         og_buf = buf.map(&:clone)
-        d = 0.05
+        d = 0.00 # 0.05
         if buf.real_size == L
 
-          channel = 0
           embed_bit = 0
+          if gosIndex % 2 == 0
+            embed_bit = 1
+          end
+
+          channel = 0
+          progressFrames = 160
 
           # calculate AOAAs
           gosAOAAs = calcGOSAOAAs(buf, channel)
@@ -94,7 +101,12 @@ module ApplicationHelper
               pp "Condition Satisfied, no operation needed."
             else
               pp "Scaling amplitudes!"
-              embed_1(buf,channel,hashAOAA, a, b, thd1, d)
+              embed_1(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
+              # analyze spectrum
+              if analyze_spectrum(buf, og_buf, channel, sampleRate)
+                tmp_audible_watermark_count += 1
+              end
+
             end
           else
             pp "Embedding 0 bit"
@@ -104,12 +116,13 @@ module ApplicationHelper
               pp "Condition Satisfied, no operation needed."
             else
               pp "Scaling amplitudes!"
-              embed_0(buf,channel,hashAOAA, a, b, thd1, d)
+              embed_0(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
+              # analyze spectrum
+              if analyze_spectrum(buf, og_buf, channel, sampleRate)
+                tmp_audible_watermark_count += 1
+              end
             end
           end
-
-          # analyze spectrum
-          analyze_spectrum(buf, og_buf, channel)
 
           # TEST changed bit
           gosAOAAs = calcGOSAOAAs(buf, channel)
@@ -120,7 +133,6 @@ module ApplicationHelper
           else
             pp "New GOS Value: 0"
           end
-
         else
           pp "GOS too small to embed watermark"
         end
@@ -129,42 +141,25 @@ module ApplicationHelper
         puts "----------------------"
         gosIndex += 1
       end
+      pp "audible_watermark_count: " + tmp_audible_watermark_count.to_s
       out.close if out
     end
 
-    #TEST
-    # pp "FFT Test"
-    # fft([1,1,1,1,0,0,0,0]).each{|c| puts "%9.6f %+9.6fi" % c.rect}
-    # ft = fft([1,1,1,1,0,0,0,0])
-    # pp ft
-
-
-
-    # n = 128
-    # data = Vector::Complex[n]
-    #
-    # data[0] = 1.0
-    # for i in 1..10 do
-    #   data[i] = 1.0
-    #   data[n-i] = 1.0
-    # end
-    #
-    # #for i in 0...n do
-    # #  printf("%d %e %e\n", i, data[i].re, data[i].im)
-    # #end
-    #
-    # # You can choose whichever you like
-    # #ffted = data.radix2_forward()
-    # ffted = data.radix2_transform(FFT::FORWARD)
-    # ffted /= Math::sqrt(n)
-    # for i in 0...n do
-    #   printf("%d %e %e\n", i, ffted[i].re, ffted[i].im)
-    # end
 
     out_file_path
   end
 
-  def analyze_spectrum(buf, og_buf, channel)
+  # takes frequency in khz and returns threshold in dB
+  def SPL_Thresh(freq)
+    a = 3.6 * (freq ** -0.8)
+    b = 6.5 * (Math::E ** (-0.6 * ((freq - 3.3) ** 2) ))
+    c = 0.001 * (freq ** 4)
+
+    a - b + c
+  end
+
+  def analyze_spectrum(buf, og_buf, channel, sampleRate)
+    audible_watermark = false
 
     pp "Spectrum Analysis"
     # compute r (watermark signal)
@@ -181,15 +176,46 @@ module ApplicationHelper
     #fft
     r_spec = fft(r)
 
-    # pp "R = "
-    # pp r_spec
+    # pp "R_spec size = "
+    # pp r_spec.size.to_s
+
+    frames = 1024.0
+    audible_frame_count = 0
+    over_thresh_count = 0
 
     r_hat = Array.new
-    (0..(L-1 + 4)).each do |x|
-      r_hat[x] = 20 * Math.log(x + 1s)
-    end
-    pp r_hat
+    x_val = Array.new
+    (0..((L-1 + 4))/2).each do |x|
+      # r_hat[x] = (20 * Math.log(Math.sqrt((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)))).abs
+      # r_hat[x] =  (((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)).abs)
 
+
+      r_hat[x] = 5 * Math.log(Math.sqrt((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)))
+      # r_hat[x] = (10 * Math.log(r_hat[x]))
+      x_val[x] = (x * sampleRate / 2) / (frames / 2) / 1000
+
+      if 0.02 <= x_val[x] && x_val[x] <= 20
+        thresh = SPL_Thresh(x_val[x])
+        audible_frame_count += 1
+        # pp x_val[x].to_s + "," + r_hat[x].to_s + "," + thresh.to_s
+
+
+        if thresh <= r_hat[x]
+          over_thresh_count += 1
+        end
+      end
+
+    end
+
+    under_thresh_per = ((audible_frame_count - over_thresh_count) / audible_frame_count) * 100
+    pp "Under Thresh percent: " + under_thresh_per.to_s
+
+    if under_thresh_per < 85
+      pp "AUDIBLE WATERMARK@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+      audible_watermark = true
+    end
+
+    audible_watermark
   end
 
   def fft(vec)
@@ -201,7 +227,7 @@ module ApplicationHelper
     end
   end
 
-  def embed_0(buf,channel,hashAOAA, a, b, thd1, d)
+  def embed_0(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
     delta = (thd1 - (b - a)) / 3
     w_up = 1 + (delta / hashAOAA["eMid"][1])
     w_down = 1 - (delta / hashAOAA["eMin"][1])
@@ -214,10 +240,10 @@ module ApplicationHelper
       buf_clone = buf.map(&:clone)
 
       # scale up eMax
-      scaleUpSection(buf_clone, channel, hashAOAA["eMid"][2][0], hashAOAA["eMid"][2][1], w_up)
+      scaleUpSection(buf_clone, channel, hashAOAA["eMid"][2][0], hashAOAA["eMid"][2][1], w_up, progressFrames)
 
       # scale down eMid
-      scaleDownSection(buf_clone, channel, hashAOAA["eMin"][2][0], hashAOAA["eMin"][2][1], w_down)
+      scaleDownSection(buf_clone, channel, hashAOAA["eMin"][2][0], hashAOAA["eMin"][2][1], w_down, progressFrames)
 
       # reevaluate A & B
       gosAOAAs = calcGOSAOAAs(buf_clone, channel)
@@ -259,7 +285,7 @@ module ApplicationHelper
     end
   end
 
-  def embed_1(buf,channel,hashAOAA, a, b, thd1, d)
+  def embed_1(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
     delta = (thd1 - (a - b)) / 3
     w_up = 1 + (delta / hashAOAA["eMax"][1])
     w_down = 1 - (delta / hashAOAA["eMid"][1])
@@ -272,10 +298,10 @@ module ApplicationHelper
       buf_clone = buf.map(&:clone)
 
       # scale up eMax
-      scaleUpSection(buf_clone, channel, hashAOAA["eMax"][2][0], hashAOAA["eMax"][2][1], w_up)
+      scaleUpSection(buf_clone, channel, hashAOAA["eMax"][2][0], hashAOAA["eMax"][2][1], w_up, progressFrames)
 
       # scale down eMid
-      scaleDownSection(buf_clone, channel, hashAOAA["eMid"][2][0], hashAOAA["eMid"][2][1], w_down)
+      scaleDownSection(buf_clone, channel, hashAOAA["eMid"][2][0], hashAOAA["eMid"][2][1], w_down, progressFrames)
 
       # reevaluate A & B
       gosAOAAs = calcGOSAOAAs(buf_clone, channel)
@@ -317,9 +343,8 @@ module ApplicationHelper
     end
   end
 
-  def scaleUpSection(buf, channel, startIndex, endIndex, w)
+  def scaleUpSection(buf, channel, startIndex, endIndex, w, progressFrames)
     #progressFrames = (L/3 * 0.05).round
-    progressFrames = 40
     w_0 = 1
     w_delta = (w - w_0) / progressFrames
 
@@ -357,9 +382,8 @@ module ApplicationHelper
    # end
   end
 
-  def scaleDownSection(buf, channel, startIndex, endIndex, w)
+  def scaleDownSection(buf, channel, startIndex, endIndex, w, progressFrames)
     #progressFrames = (L/3 * 0.05).round
-    progressFrames = 40
     w_0 = 1
     w_delta = (w_0 - w) / progressFrames
 
