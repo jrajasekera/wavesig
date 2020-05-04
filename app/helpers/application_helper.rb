@@ -8,13 +8,15 @@ module ApplicationHelper
 
   def find_leak_source(original_file, leaker_file)
 
-    pp "*******************************************"
+    # open leaker file
     snd = RubyAudio::Sound.open(leaker_file)
     pp "channels: " + snd.info.channels.to_s
     pp "sample rate: " + snd.info.samplerate.to_s
     pp "length: " + snd.info.length.to_s
 
     # TODO find leak origin
+
+
 
     "John Doe"
   end
@@ -58,9 +60,12 @@ module ApplicationHelper
       while file.read(buf) != 0
         puts "---------GOS " + gosIndex.to_s + "----------"
 
+        # byebug
+
         # clone og buffer for spectrum analysis
-        og_buf = buf.map(&:clone)
-        d = 0.00 # 0.05
+        #og_buf = buf.map(&:clone)
+        og_buf = copy_buf(buf)
+        d_init = 0.0 # 0.05
         if buf.real_size == L
 
           embed_bit = 0
@@ -69,59 +74,87 @@ module ApplicationHelper
           end
 
           channel = 0
-          progressFrames = 160
+          progressFrames = 150 #160
 
-          # calculate AOAAs
-          gosAOAAs = calcGOSAOAAs(buf, channel)
+          d = d_init
+          watermark_audible = true
+          while watermark_audible && (d >= 0.0)
+            #buf = og_buf.map(&:clone)
+            buf = copy_buf(og_buf)
 
-          # sort AOAAs
-          hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
+            # calculate AOAAs
+            gosAOAAs = calcGOSAOAAs(buf, channel)
 
-          #pp "eMin: " + hashAOAA["eMin"].to_s
-          #pp "eMid: " + hashAOAA["eMid"].to_s
-          #pp "eMax: " + hashAOAA["eMax"].to_s
+            # sort AOAAs
+            hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
 
-          a,b = calcA_B(hashAOAA)
+            #pp "eMin: " + hashAOAA["eMin"].to_s
+            #pp "eMid: " + hashAOAA["eMid"].to_s
+            #pp "eMax: " + hashAOAA["eMax"].to_s
 
-          if a >= b
-            pp "Initial GOS Value: 1"
-          else
-            pp "Initial GOS Value: 0"
-          end
+            a,b = calcA_B(hashAOAA)
 
-          thd1 = calcThd1(hashAOAA, d)
-
-          if embed_bit == 1
-            pp "Embedding 1 bit"
-            satisfiesCondition = (a - b) >= thd1
-            #pp "A - B >= Thd1 | " + satisfiesCondition.to_s
-            #pp (a - b).to_s + " >=? " + thd1.to_s
-
-            if satisfiesCondition
-              pp "Condition Satisfied, no operation needed."
+            if a >= b
+              pp "Initial GOS Value: 1"
             else
-              pp "Scaling amplitudes!"
-              embed_1(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
-              # analyze spectrum
-              if analyze_spectrum(buf, og_buf, channel, sampleRate)
-                tmp_audible_watermark_count += 1
-              end
-
+              pp "Initial GOS Value: 0"
             end
-          else
-            pp "Embedding 0 bit"
-            satisfiesCondition = (b - a) >= thd1
 
-            if satisfiesCondition
-              pp "Condition Satisfied, no operation needed."
+            thd1 = calcThd1(hashAOAA, d)
+
+            if embed_bit == 1
+              pp "Embedding 1 bit"
+              satisfiesCondition = (a - b) >= thd1
+              #pp "A - B >= Thd1 | " + satisfiesCondition.to_s
+              #pp (a - b).to_s + " >=? " + thd1.to_s
+
+              if satisfiesCondition
+                pp "Condition Satisfied, no operation needed."
+                watermark_audible = false
+              else
+                pp "Scaling amplitudes with d = " + d.to_s
+                embed_1(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
+
+                # # analyze spectrum
+                # watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
+                # if watermark_audible
+                #   tmp_audible_watermark_count += 1
+                #   d -= 0.01
+                # end
+
+              end
             else
-              pp "Scaling amplitudes!"
-              embed_0(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
-              # analyze spectrum
-              if analyze_spectrum(buf, og_buf, channel, sampleRate)
-                tmp_audible_watermark_count += 1
+              pp "Embedding 0 bit"
+              satisfiesCondition = (b - a) >= thd1
+
+              if satisfiesCondition
+                pp "Condition Satisfied, no operation needed."
+                watermark_audible = false
+              else
+                pp "Scaling amplitudes with d = " + d.to_s
+                embed_0(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
+                # # analyze spectrum
+                # watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
+                # if watermark_audible
+                #   tmp_audible_watermark_count += 1
+                #   d -= 0.01
+                # end
               end
             end
+
+            # analyze spectrum
+            watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
+            if watermark_audible
+              d -= 0.01
+
+              if d < 0.0
+                tmp_audible_watermark_count += 1
+                pp "GOS mark AUDIBLE********************"
+              end
+            else
+              pp "GOS mark INAUDIBLE"
+            end
+
           end
 
           # TEST changed bit
@@ -142,11 +175,27 @@ module ApplicationHelper
         gosIndex += 1
       end
       pp "audible_watermark_count: " + tmp_audible_watermark_count.to_s
+      pp "audible GOS percentage: " + (tmp_audible_watermark_count/gosIndex).to_s
       out.close if out
     end
 
 
     out_file_path
+  end
+
+  def copy_buf(original)
+    copy = original.dup
+
+    (0...original.real_size).each do |frame|
+      frameCpy = []
+      original[frame].each do |value|
+        frameCpy.append(value.dup)
+      end
+
+      copy[frame] = frameCpy #original[frame].clone
+    end
+
+    copy
   end
 
   # takes frequency in khz and returns threshold in dB
@@ -190,7 +239,7 @@ module ApplicationHelper
       # r_hat[x] =  (((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)).abs)
 
 
-      r_hat[x] = 5 * Math.log(Math.sqrt((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)))
+      r_hat[x] = 10 * Math.log(Math.sqrt((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)))
       # r_hat[x] = (10 * Math.log(r_hat[x]))
       x_val[x] = (x * sampleRate / 2) / (frames / 2) / 1000
 
@@ -237,6 +286,7 @@ module ApplicationHelper
     buf_clone = nil
     while !((b - a) >= thd1)
       count += 1
+      # buf_clone = copy_buf(buf)
       buf_clone = buf.map(&:clone)
 
       # scale up eMax
@@ -296,6 +346,7 @@ module ApplicationHelper
     while !((a - b) >= thd1)
       count += 1
       buf_clone = buf.map(&:clone)
+      # buf_clone = copy_buf(buf)
 
       # scale up eMax
       scaleUpSection(buf_clone, channel, hashAOAA["eMax"][2][0], hashAOAA["eMax"][2][1], w_up, progressFrames)
