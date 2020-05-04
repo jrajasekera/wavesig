@@ -5,23 +5,82 @@ module ApplicationHelper
   E1_INDICIES = [0, (L/3 - 1)]
   E2_INDICIES = [(L/3), (2*L/3 - 1)]
   E3_INDICIES = [(2*L/3), (L - 1)]
+  SYNC_CODES = %w[11110101001111100110 10111111111111111011 01100001110001011000 01111100100000000010 10001111100000111110 10001000101010011101 11000011011100011011 10000101010011110100 00011110010011011010 00101001100100000101 01100010010010100100 00010111011101101000 11101111011010000001 01001000011101110111 11110010101110110000 11111000010101001101 11101100111101100000 11011000111110000011 00000001001010110011 00100100110011101011 10010000000101000010 01101011001111001100 11010011111001000100 01011011000001110001 01010001100101101111]
 
   def find_leak_source(original_file, leaker_file)
 
     # open leaker file
-    snd = RubyAudio::Sound.open(leaker_file)
-    pp "channels: " + snd.info.channels.to_s
-    pp "sample rate: " + snd.info.samplerate.to_s
-    pp "length: " + snd.info.length.to_s
+    lkr_file = RubyAudio::Sound.open(leaker_file)
 
-    # TODO find leak origin
+    # get file info
+    channelCount = lkr_file.info.channels
+    sampleRate = lkr_file.info.samplerate
+    frames = lkr_file.info.frames
+    sections = lkr_file.info.sections
+    lengthS = lkr_file.info.length
 
+    pp "******************OG File*************************"
+    pp "channels: " + channelCount.to_s
+    pp "sample rate: " + sampleRate.to_s
+    pp "frames: " + frames.to_s
+    pp "sections: " + sections.to_s
+    pp "length: " + lengthS.to_s
 
+    encodedBits = ""
+    encodedBitBuilder = StringIO.new
+
+    buf = RubyAudio::Buffer.new("float", L, channelCount)
+    while lkr_file.read(buf) != 0
+      if buf.real_size == L
+
+        channel = 0
+
+        # calculate AOAAs
+        gosAOAAs = calcGOSAOAAs(buf, channel)
+        # sort AOAAs
+        hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
+        a,b = calcA_B(hashAOAA)
+
+        if a >= b
+          encodedBitBuilder << '1'
+        else
+          encodedBitBuilder << '0'
+        end
+      end
+    end
+
+    encodedBits = encodedBitBuilder.string
+    pp "Encoded bits: " + encodedBits
+
+    watermark = extract_watermark_from_bits(encodedBits)
+
+    pp "watermark = " + watermark
 
     "John Doe"
   end
 
+  def extract_watermark_from_bits(encodedBits)
+    syncCodeLength = 20
+    watermarkLength = 40
 
+    watermarkCandidates = []
+
+    index = 0
+    while index < (encodedBits.length - (syncCodeLength + watermarkLength))
+      if SYNC_CODES.include? encodedBits[index,syncCodeLength]
+        watermarkCandidates.append(encodedBits[index + syncCodeLength,watermarkLength])
+        index += syncCodeLength + watermarkLength
+      else
+        index += 1
+      end
+    end
+
+    most_common_value(watermarkCandidates)
+  end
+
+  def most_common_value(a)
+    a.group_by(&:itself).values.max_by(&:size).first
+  end
 
   def embed_watermark(uploadedfile)
 
@@ -57,6 +116,10 @@ module ApplicationHelper
 
       tmp_audible_watermark_count = 0
       gosIndex = 0
+
+      watermark = generate_watermark
+      codeIndex = 0
+      codeBlock = generate_block(watermark)
       while file.read(buf) != 0
         puts "---------GOS " + gosIndex.to_s + "----------"
 
@@ -68,13 +131,24 @@ module ApplicationHelper
         d_init = 0.0 # 0.05
         if buf.real_size == L
 
-          embed_bit = 0
-          if gosIndex % 2 == 0
-            embed_bit = 1
+          embed_bit = nil
+
+          if codeIndex == codeBlock.length
+            codeBlock = generate_block(watermark)
+            codeIndex = 0
+            embed_bit = codeBlock[codeIndex].to_i
+          else
+            embed_bit = codeBlock[codeIndex].to_i
+            codeIndex += 1
           end
 
+
+          # if gosIndex % 2 == 0
+          #   embed_bit = 1
+          # end
+
           channel = 0
-          progressFrames = 150 #160
+          progressFrames = 40 #160
 
           d = d_init
           watermark_audible = true
@@ -181,6 +255,17 @@ module ApplicationHelper
 
 
     out_file_path
+  end
+
+  def generate_watermark
+    # SecureRandom.random_bytes(40)
+    # "10101010101010101010"
+    "1111111111111111111111111111111111111111"
+  end
+
+  def generate_block(watermark)
+    syncCode = SYNC_CODES.sample
+    syncCode + watermark
   end
 
   def copy_buf(original)
