@@ -93,12 +93,11 @@ class UploadedfileController < ApplicationController
 
     @leaker = helpers.find_leak_source(@original_file, leaker_file)
 
-    #@file = Uploadedfile.find params[:file_id]
-    #pp "*******************************************"
-    #snd = RubyAudio::Sound.open(StringIO.new(@file.audio_file.download))
-    #pp "channels: " + snd.info.channels.to_s
-    #pp "sample rate: " + snd.info.samplerate.to_s
-    #pp "length: " + snd.info.length.to_s
+    if @leaker == nil
+      @leaker_email = "Unknown"
+    else
+      @leaker_email = @leaker.email
+    end
 
   end
 

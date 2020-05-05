@@ -5,6 +5,8 @@ module ApplicationHelper
   E1_INDICIES = [0, (L/3 - 1)]
   E2_INDICIES = [(L/3), (2*L/3 - 1)]
   E3_INDICIES = [(2*L/3), (L - 1)]
+  SYNC_CODE_LENGTH = 20
+  WATERMARK_LENGTH = 40
   SYNC_CODES = %w[11110101001111100110 10111111111111111011 01100001110001011000 01111100100000000010 10001111100000111110 10001000101010011101 11000011011100011011 10000101010011110100 00011110010011011010 00101001100100000101 01100010010010100100 00010111011101101000 11101111011010000001 01001000011101110111 11110010101110110000 11111000010101001101 11101100111101100000 11011000111110000011 00000001001010110011 00100100110011101011 10010000000101000010 01101011001111001100 11010011111001000100 01011011000001110001 01010001100101101111]
 
   def find_leak_source(original_file, leaker_file)
@@ -54,35 +56,44 @@ module ApplicationHelper
 
     watermark = extract_watermark_from_bits(encodedBits)
 
-    pp "watermark = " + watermark
+    if watermark.nil?
+      sharedUser = nil
+      pp "watermark = N/A"
+    else
+      pp "watermark = " + watermark
+      sharedUserId = (Sharedfile.find_by watermark: watermark).user_id
+      sharedUser = User.find_by id: sharedUserId
+    end
 
-    "John Doe"
+    sharedUser
   end
 
   def extract_watermark_from_bits(encodedBits)
-    syncCodeLength = 20
-    watermarkLength = 40
-
     watermarkCandidates = []
 
     index = 0
-    while index < (encodedBits.length - (syncCodeLength + watermarkLength))
-      if SYNC_CODES.include? encodedBits[index,syncCodeLength]
-        watermarkCandidates.append(encodedBits[index + syncCodeLength,watermarkLength])
-        index += syncCodeLength + watermarkLength
+    while index < (encodedBits.length - (SYNC_CODE_LENGTH + WATERMARK_LENGTH))
+      if SYNC_CODES.include? encodedBits[index,SYNC_CODE_LENGTH]
+        watermarkCandidates.append(encodedBits[index + SYNC_CODE_LENGTH,WATERMARK_LENGTH])
+        index += SYNC_CODE_LENGTH + WATERMARK_LENGTH
       else
         index += 1
       end
     end
 
-    most_common_value(watermarkCandidates)
+    watermark = nil
+    if watermarkCandidates.length > 0
+      watermark = most_common_value(watermarkCandidates)
+    end
+
+    watermark
   end
 
   def most_common_value(a)
     a.group_by(&:itself).values.max_by(&:size).first
   end
 
-  def embed_watermark(uploadedfile)
+  def embed_watermark(uploadedfile, watermark)
 
     # Download the uploadedfile tmp dir
     og_file_path = "#{Dir.tmpdir}/#{uploadedfile.fileName}"
@@ -117,7 +128,6 @@ module ApplicationHelper
       tmp_audible_watermark_count = 0
       gosIndex = 0
 
-      watermark = generate_watermark
       codeIndex = 0
       codeBlock = generate_block(watermark)
       while file.read(buf) != 0
@@ -258,9 +268,31 @@ module ApplicationHelper
   end
 
   def generate_watermark
-    # SecureRandom.random_bytes(40)
-    # "10101010101010101010"
-    "1111111111111111111111111111111111111111"
+    watermark = ""
+    unique_watermark = false
+    while !unique_watermark
+      watermark_builder = StringIO.new
+      WATERMARK_LENGTH.times do
+        watermark_builder << generate_binary_bit
+      end
+      watermark = watermark_builder.string
+
+      if (Sharedfile.find_by watermark: watermark) == nil
+        unique_watermark = true
+      end
+    end
+
+    watermark
+  end
+
+  def generate_binary_bit
+    bit = ""
+    if [true, false].sample
+      bit = "1"
+    else
+      bit = "0"
+    end
+    bit
   end
 
   def generate_block(watermark)

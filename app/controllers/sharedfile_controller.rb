@@ -26,10 +26,11 @@ class SharedfileController < ApplicationController
     if @shared_user.nil?
       flash[:alert] = @shared_user_email_param + ' is not a current user.'
     else
-      newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id
+      watermark = helpers.generate_watermark
+      newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id, :watermark => watermark
 
       #newShare.audio_file.attach io: StringIO.new(helpers.embed_watermark(@uploadedfile)),
-      newShare.audio_file.attach io: File.open(helpers.embed_watermark(@uploadedfile)),
+      newShare.audio_file.attach io: File.open(helpers.embed_watermark(@uploadedfile, watermark)),
                                filename: @uploadedfile.audio_file.filename,
                                content_type: @uploadedfile.audio_file.content_type
 
