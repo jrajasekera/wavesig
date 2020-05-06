@@ -61,8 +61,12 @@ module ApplicationHelper
       pp "watermark = N/A"
     else
       pp "watermark = " + watermark
-      sharedUserId = (Sharedfile.find_by watermark: watermark).user_id
-      sharedUser = User.find_by id: sharedUserId
+      sharedfile = Sharedfile.find_by watermark: watermark, uploadedfile_id: original_file.id
+      if sharedfile.nil?
+        sharedUser = nil
+      else
+        sharedUser = User.find_by id: sharedfile.user_id
+      end
     end
 
     sharedUser

@@ -88,7 +88,6 @@ class UploadedfileController < ApplicationController
 
   def find_origin
     @original_file = @uploadedfile
-
     leaker_file = leaker_file_params[:origin_audio_file].tempfile.to_io
 
     @leaker = helpers.find_leak_source(@original_file, leaker_file)

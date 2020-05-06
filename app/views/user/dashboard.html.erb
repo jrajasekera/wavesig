@@ -94,7 +94,7 @@
   </div>
 
 
-  <h5 id="audio-shared-accordion-title" ><b>Files Shared With Me</b></h5>
+  <h5 id="audio-shared-accordion-title" ><b>Shared With Me</b></h5>
   <div class="accordion" id="audio-shared-accordion">
     <% @sharedfiles.each do |sharedfile| %>
       <% sharedfile_associated_file = sharedfile.uploadedfile %>
@@ -113,7 +113,7 @@
 
           <div class="preview-container">
             <div class="row">
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <table class="preview-field">
                   <tr>
                     <th>Description</th>
@@ -124,6 +124,16 @@
                 </table>
               </div>
               <div class="col-sm-3">
+                <table class="preview-field">
+                  <tr>
+                    <th>Shared By</th>
+                  </tr>
+                  <tr>
+                    <td><%= sharedfile_associated_file.user.email %></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-sm-2">
                 <table class="preview-field">
                   <tr>
                     <th>Uploaded</th>
@@ -143,7 +153,7 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-sm-3 view-file-btn-container">
+              <div class="col-sm-2 view-file-btn-container">
                 <a href=<%= show_upload_file_path(sharedfile.uploadedfile.id) %> class="btn btn-secondary btn-sm forward-btn">
                 <div class="collapse-arrow" >View File <i class="arrow right"></i></div>
                 </a>

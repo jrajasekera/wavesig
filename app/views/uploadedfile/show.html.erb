@@ -7,6 +7,9 @@
     <h5><%= fa_icon "music", class: "fa-lg" %>    <b><%= @uploadedfile.fileName %></b></h5>
     <p><%= fa_icon "file" %>    <%= @audio_file.filename %></p>
     <p><%= fa_icon "info-circle" %>    <%= @uploadedfile.description %></p>
+    <% if current_user.id != @uploadedfile.user_id %>
+    <p><%= fa_icon "user-circle" %>    <%= @uploadedfile.user.email %></p>
+    <% end %>
     <p><%= fa_icon "save" %>    <%= (@audio_file.byte_size * 0.000001).round(2).to_s + " MB" %></p>
     <p><%= fa_icon "calendar" %>    <%= @uploadedfile.updated_at.strftime("%m/%d/%Y %I:%M %p") %></p>
 
