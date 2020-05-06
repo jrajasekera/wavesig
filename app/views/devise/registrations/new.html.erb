@@ -5,6 +5,14 @@
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="field text-field">
+      <%= f.text_field :fname, autofocus: true, autocomplete: "name", :placeholder => 'First Name', :class => 'text-input' %>
+    </div>
+
+    <div class="field text-field">
+      <%= f.text_field :lname, autofocus: true, autocomplete: "name", :placeholder => 'Last Name', :class => 'text-input' %>
+    </div>
+
+    <div class="field text-field">
       <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => 'Email', :class => 'text-input' %>
     </div>
 

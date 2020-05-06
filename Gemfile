@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'devise'
 
 # user mailcatcher to monitor email in dev
-gem 'mailcatcher'
+#gem 'mailcatcher'
 
 # audio processing gem
 gem 'ruby-audio', '~> 1.6'
