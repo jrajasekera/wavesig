@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
-  before_action :authenticate_user!, :configure_permitted_parameters, if: :devise_controller?
+  protect_from_forgery with: :exception, prepend: true
+  before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   # devise redirect after login
   def after_sign_in_path_for(resource)
