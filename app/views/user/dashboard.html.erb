@@ -98,13 +98,14 @@
   <div class="accordion" id="audio-shared-accordion">
     <% @sharedfiles.each do |sharedfile| %>
       <% sharedfile_associated_file = sharedfile.uploadedfile %>
+      <% user = sharedfile_associated_file.user %>
     <!-- start single file template-->
     <div class="card">
       <div class="card-header" id=<%= "card-header" + sharedfile.id.to_s %>>
         <h2 class="mb-0">
           <button class="btn" type="button" data-toggle="collapse" data-target=<%= "#collapse" + sharedfile.id.to_s %> onClick="invertArrow('<%= "card-header" + sharedfile.id.to_s %>')" aria-expanded="false" aria-controls=<%= "collapse" + sharedfile.id.to_s %>>
-            <div class="audio-file-name" ><%= sharedfile_associated_file.fileName %></div>
-            <div class="collapse-arrow" ><i class="arrow down"></i></div>
+              <div class="audio-file-name" ><%= sharedfile_associated_file.fileName %></div>
+              <div class="collapse-arrow" ><i class="arrow down"></i></div>
           </button>
         </h2>
       </div>
@@ -129,7 +130,7 @@
                     <th>Shared By</th>
                   </tr>
                   <tr>
-                    <% user = sharedfile_associated_file.user %>
+
                     <td><%= user.fname + " " + user.lname %></td>
                   </tr>
                 </table>

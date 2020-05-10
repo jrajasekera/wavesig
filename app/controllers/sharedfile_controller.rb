@@ -25,6 +25,8 @@ class SharedfileController < ApplicationController
 
     if @shared_user.nil?
       flash[:alert] = @shared_user_email_param + ' is not a current user.'
+    elsif @shared_user == current_user
+      flash[:alert] = @shared_user_email_param + ' you cannot share a file with yourself.'
     else
       watermark = helpers.generate_watermark
       newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id, :watermark => watermark
