@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   get "/home/info" => "home#info", as: "home_info"
 
   get "/user/dashboard" => "user#dashboard", as: "user_dashboard"
-
+  get "/user/friends" => "user#friends", as: "friends"
+  post "/user/friends/addfriend" => "user#add_friend", as: "add_friend"
+  get "/user/friends/acceptfriend/:request_issuer" => "user#accept_friend_request", as: "accept_friend"
+  get "user/friends/removefriend/:friend" => "user#remove_friend", as: "remove_friend"
 
   get "user/upload_file/new" => "uploadedfile#new", as: "new_upload_file"
   post "user/upload_file" => "uploadedfile#create", as: "create_upload_file"

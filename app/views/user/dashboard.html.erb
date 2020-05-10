@@ -1,5 +1,5 @@
 <div id="dashboard-container">
-  <h3 id="my-dashboard-title" ><b><%= @user.email.partition('@')[0] %>'s Dashboard</b></h3>
+  <h3 id="my-dashboard-title" ><b><%= @user.fname %>'s Dashboard</b></h3>
 
   <div class="breaker"></div>
 
@@ -129,7 +129,8 @@
                     <th>Shared By</th>
                   </tr>
                   <tr>
-                    <td><%= sharedfile_associated_file.user.email %></td>
+                    <% user = sharedfile_associated_file.user %>
+                    <td><%= user.fname + " " + user.lname %></td>
                   </tr>
                 </table>
               </div>

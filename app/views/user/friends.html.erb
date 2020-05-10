@@ -1,0 +1,70 @@
+<div id="friends-container">
+  <a href=<%= user_dashboard_path %> class="btn btn-secondary btn-sm back-btn">
+    <div class="collapse-arrow" ><i class="arrow left"></i> Back to Dashboard</div>
+  </a>
+
+  <h2>Add Friends</h2>
+  <%= form_for :something, url: add_friend_path do |f| %>
+
+    <div class="field text-field">
+      <%= text_field_tag :friend_email, "", :placeholder => 'Email', :class => 'text-input' %>
+    </div>
+
+    <div class="actions submit-btn">
+      <%= submit_tag "Add Friend", :class => 'btn btn-primary btn-block' %>
+    </div>
+  <% end %>
+
+  <div>
+    <div class="breaker"></div>
+    <h2>Pending Friend Requests</h2>
+
+    <% @sentRequests.each do |request| %>
+          <div class="field text-field row shared-user-container">
+            <% userInfo = "#{request.fname} #{request.lname} (#{request.email})" %>
+            <input type="text" name="share_email" value='<%= userInfo %>' class="col-9" disabled>
+            <a href=<%= remove_friend_path(request) %> type="button" class="btn btn-danger col-3"><%= fa_icon "minus", class: "fa-2x" %></a>
+          </div>
+    <% end %>
+
+    <% if @sentRequests.length == 0 %>
+          <p>You have not sent any friend requests.</p>
+    <% end %>
+  </div>
+
+  <div>
+    <div class="breaker"></div>
+    <h2>Received Friend Requests</h2>
+
+    <% @receivedRequests.each do |request| %>
+          <div class="field text-field row shared-user-container">
+            <% userInfo = "#{request.fname} #{request.lname} (#{request.email})" %>
+            <input type="text" name="share_email" value='<%= userInfo %>' class="col-9" disabled>
+            <a href=<%= accept_friend_path(request) %> type="button" class="btn btn-danger col-3"><%= fa_icon "plus", class: "fa-2x" %></a>
+          </div>
+    <% end %>
+
+    <% if @receivedRequests.length == 0 %>
+          <p>You have not received added any friend requests.</p>
+    <% end %>
+  </div>
+
+  <div>
+    <div class="breaker"></div>
+    <h2>Friends</h2>
+
+    <% @friends.each do |friend| %>
+      <div class="field text-field row shared-user-container">
+        <% userInfo = "#{friend.fname} #{friend.lname} (#{friend.email})" %>
+        <input type="text" name="share_email" value='<%= userInfo %>' class="col-9" disabled>
+        <a href=<%= remove_friend_path(friend) %> type="button" class="btn btn-danger col-3"><%= fa_icon "user-times", class: "fa-2x" %></a>
+      </div>
+    <% end %>
+
+    <% if @friends.length == 0 %>
+      <p>You have not added any friends</p>
+    <% end %>
+  </div>
+
+</div>
+
