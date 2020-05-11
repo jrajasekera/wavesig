@@ -51,6 +51,8 @@ gem 'toastr-rails'
 # friend gem
 gem 'amistad'
 
+gem 'bootstrap-multiselect-rails'
+
 # narray to be used fot FFT
 # gem 'narray', '~> 0.6.1.2'
 #

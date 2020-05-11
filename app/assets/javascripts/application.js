@@ -18,7 +18,7 @@
 //= require popper
 //= require bootstrap
 //= require toastr
-
+//= require bootstrap-multiselect
 
 $(document).ready(function() {
 
@@ -39,6 +39,8 @@ $(document).ready(function() {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
+    $('.multiselect').multiselect();
 
 });
 
