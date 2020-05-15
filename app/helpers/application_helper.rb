@@ -97,6 +97,51 @@ module ApplicationHelper
     a.group_by(&:itself).values.max_by(&:size).first
   end
 
+  def audio_file_to_graph_data(uploadedfile)
+    og_file_path = "#{Dir.tmpdir}/#{[*('a'..'z'),*('0'..'9')].shuffle[0,8].join}"
+    File.open(og_file_path, 'wb') do |file|
+      file.write(uploadedfile.audio_file.download)
+    end
+
+    # open tmp file
+    og_file = RubyAudio::Sound.open(og_file_path)
+
+    # get file info
+    channelCount = og_file.info.channels
+    sampleRate = og_file.info.samplerate
+    frames = og_file.info.frames
+    sections = og_file.info.sections
+    lengthS = og_file.info.length
+    duration = frames.to_f / sampleRate.to_f
+    frameDuration = duration / frames.to_f
+
+    pp "frames: " + frames.to_s
+    pp "sampleRate: " + sampleRate.to_s
+    pp "duration: " + duration.to_s
+    pp "frameDuration: " + frameDuration.to_s
+
+    channel = 0
+    data = Array.new
+    buf = RubyAudio::Buffer.new("float", frames, channelCount)
+    RubyAudio::Sound.open(og_file_path) do |file|
+      while file.read(buf) != 0
+
+        (0...frames).each do |x|
+          data.append([x * frameDuration, buf[x][channel]])
+
+          if buf[x][channel] >= 0.8
+            pp "@ s=" + (x * frameDuration).to_s + " -> " + buf[x][channel].to_s
+          end
+        end
+
+      end
+    end
+
+    File.delete(og_file_path)
+
+    data
+  end
+
   def embed_watermark(uploadedfile, watermark)
 
     # Download the uploadedfile tmp dir
@@ -267,6 +312,8 @@ module ApplicationHelper
       out.close if out
     end
 
+    # delete tmp OG file
+    File.delete(og_file_path)
 
     out_file_path
   end

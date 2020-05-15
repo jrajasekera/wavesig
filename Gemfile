@@ -53,6 +53,8 @@ gem 'amistad'
 
 gem 'bootstrap-multiselect-rails'
 
+gem "chartkick"
+
 # narray to be used fot FFT
 # gem 'narray', '~> 0.6.1.2'
 #

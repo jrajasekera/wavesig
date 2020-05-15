@@ -34,9 +34,11 @@ class SharedfileController < ApplicationController
         watermark = helpers.generate_watermark
         newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id, :watermark => watermark
 
-        newShare.audio_file.attach io: File.open(helpers.embed_watermark(@uploadedfile, watermark)),
+        watermarkedFilePath = helpers.embed_watermark(@uploadedfile, watermark)
+        newShare.audio_file.attach io: File.open(watermarkedFilePath),
                                    filename: @uploadedfile.audio_file.filename,
                                    content_type: @uploadedfile.audio_file.content_type
+        File.delete(watermarkedFilePath)
 
         if newShare.save
           flash[:notice] = 'Shared file with ' + @shared_user.email + '!'

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post "user/upload_file" => "uploadedfile#create", as: "create_upload_file"
   get "user/show_file/:file_id" => "uploadedfile#show", as: "show_upload_file"
   delete "user/delete_file/:file_id" => "uploadedfile#delete", as: "delete_upload_file"
+  get "user/graph_file/:file_id" => "uploadedfile#graph", as: "graph_file"
 
   post "/user/upload_file/:file_id/find_origin" => "uploadedfile#find_origin", as: "find_origin"
   get "/user/upload_file/:file_id/find_origin/upload" => "uploadedfile#find_origin_form", as: "find_origin_form"

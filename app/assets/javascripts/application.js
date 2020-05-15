@@ -19,6 +19,8 @@
 //= require bootstrap
 //= require toastr
 //= require bootstrap-multiselect
+//= require chartkick
+//= require Chart.bundle
 
 $(document).ready(function() {
 

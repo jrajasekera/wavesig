@@ -47,6 +47,34 @@ class UploadedfileController < ApplicationController
       end
     end
 
+  end
+
+  def graph
+    @uploadedfile = Uploadedfile.find_by id: params[:file_id]
+
+    if current_user.id == @uploadedfile.user_id
+      # owner of file
+      @audio_file =  @uploadedfile.audio_file
+      @data = helpers.audio_file_to_graph_data(@uploadedfile)
+
+    else
+      sharedfile = @uploadedfile.sharedfiles.find {|sharedfile| sharedfile.user_id == current_user.id}
+
+      if !sharedfile.nil?
+        @audio_file =  sharedfile.audio_file
+        @data = helpers.audio_file_to_graph_data(sharedfile)
+      else
+        flash[:alert] = 'You do not have access to that file.'
+        redirect_to user_dashboard_path(current_user.id)
+      end
+    end
+
+    # @data = Array.new
+    # 10.times do |x|
+    #   @data.append([x,x])
+    # end
+
+
 
   end
 

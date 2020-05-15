@@ -9,6 +9,17 @@
   //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+#graph-file-container {
+  width: 90%;
+  display: inline-block;
+  text-align: left;
+  margin-top: 50px;
+  background-color: #343a40!important;
+  padding: 30px 30px 40px;
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 #find-origin-container {
   width: 90%;
   display: inline-block;
@@ -78,3 +89,13 @@ audio {
   margin-top: 10px;
 }
 
+#graph-page-container {
+  text-align: center;
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+#graph-container {
+  background-color: whitesmoke;
+  margin-top: 10px;
+}

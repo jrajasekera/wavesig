@@ -1,0 +1,13 @@
+<div id="graph-file-container">
+  <a href=<%= user_dashboard_path %> class="btn btn-secondary btn-sm back-btn">
+    <div class="collapse-arrow" ><i class="arrow left"></i> Back to Dashboard</div>
+  </a>
+
+  <div id="graph-page-container">
+    <h2>Audio Graph</h2>
+    <div id="graph-container">
+      <%= line_chart @data, xtitle: "Time(S)", ytitle: "Normalized Amplitude", colors: ["#b00", "#666"], download: true %>
+    </div>
+  </div>
+
+</div>
