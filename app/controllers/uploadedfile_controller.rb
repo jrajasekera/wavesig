@@ -69,13 +69,6 @@ class UploadedfileController < ApplicationController
       end
     end
 
-    # @data = Array.new
-    # 10.times do |x|
-    #   @data.append([x,x])
-    # end
-
-
-
   end
 
   def delete
