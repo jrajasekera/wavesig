@@ -94,7 +94,9 @@ module ApplicationHelper
   end
 
   def most_common_value(a)
-    a.group_by(&:itself).values.max_by(&:size).first
+
+    b = a.group_by(&:itself).values.max_by(&:size)
+    b.first
   end
 
   def audio_file_to_graph_data(uploadedfile)
@@ -127,9 +129,9 @@ module ApplicationHelper
       while file.read(buf) != 0
 
         (0...frames).each do |x|
-          # data.append([x * frameDuration, buf[x][channel]])
+          data.append([x * frameDuration, buf[x][channel]])
 
-          if buf[x][channel] >= 0.95
+          if buf[x][channel] > 1.0
             pp "@ s=" + (x * frameDuration).to_s + " -> " + buf[x][channel].to_s
           end
         end
@@ -209,7 +211,7 @@ module ApplicationHelper
           end
 
 
-          progressFrames = 50 #160
+          progressFrames = 50
 
           d = d_init
           watermark_audible = true
@@ -316,7 +318,6 @@ module ApplicationHelper
 
         # out.write(buf)
         # write to tmp out file
-        # byebug
         gosLine = (buf.map { |frame| frame[channel] }).join(' ') + "\n"
         out.write(gosLine)
 
@@ -333,20 +334,29 @@ module ApplicationHelper
       # rescale if needed
       ogFile = RubyAudio::Sound.open(og_file_path)
       if minVal < -1.0 || 1.0 < maxVal
-        pp "Rescaling Values"
+        pp "Rescaling Values and copying to file"
         out = nil
         out_file_scaled_path = out_file_path + "_scaled"
         out = RubyAudio::Sound.open(out_file_scaled_path, 'w', ogFile.info.clone) if out.nil?
 
-        # byebug
         File.foreach(out_file_path) do |line|
-
-
           gosLine = line.split(" ")
           ogFile.read(buf)
           (0...gosLine.length).each do |x|
             frameVal = gosLine[x].to_f
-            scaledVal = (2 * (frameVal - minVal) / (maxVal - minVal)) - 1
+
+            # scaledVal = (2 * (frameVal - minVal) / (maxVal - minVal)) - 1
+
+            if frameVal > 0.0
+              scaledVal = frameVal / maxVal
+            elsif frameVal < 0.0
+              scaledVal = ((frameVal - minVal) / (0.0 - minVal)) - 1
+            else
+              scaledVal = frameVal
+            end
+
+
+            # byebug
 
             if channel == 0
               buf[x] = [scaledVal,buf[x][1]]
@@ -354,14 +364,34 @@ module ApplicationHelper
               buf[x] = [buf[x][0], scaledVal]
             end
           end
-
           out.write(buf)
-
-
         end
         out.close if out
         File.delete(out_file_path)
         result_file_path = out_file_scaled_path
+      else
+        pp "Copying to file"
+        out = nil
+        out_file_unscaled_path = out_file_path + "_nonscaled"
+        out = RubyAudio::Sound.open(out_file_unscaled_path, 'w', ogFile.info.clone) if out.nil?
+
+        File.foreach(out_file_path) do |line|
+          gosLine = line.split(" ")
+          ogFile.read(buf)
+          (0...gosLine.length).each do |x|
+            frameVal = gosLine[x].to_f
+
+            if channel == 0
+              buf[x] = [frameVal,buf[x][1]]
+            else
+              buf[x] = [buf[x][0], frameVal]
+            end
+          end
+          out.write(buf)
+        end
+        out.close if out
+        File.delete(out_file_path)
+        result_file_path = out_file_unscaled_path
       end
 
       ogFile.close if ogFile
@@ -463,7 +493,7 @@ module ApplicationHelper
       # r_hat[x] =  (((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)).abs)
 
 
-      r_hat[x] = 10 * Math.log(Math.sqrt((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)))
+      r_hat[x] = 20 * Math.log(Math.sqrt((r_spec[x].real ** 2) + (r_spec[x].imaginary ** 2)))
       # r_hat[x] = (10 * Math.log(r_hat[x]))
       x_val[x] = (x * sampleRate / 2) / (frames / 2) / 1000
 
