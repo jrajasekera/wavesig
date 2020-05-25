@@ -94,9 +94,12 @@ module ApplicationHelper
   end
 
   def most_common_value(a)
+    val, count = a.group_by(&:itself).values.map { |x| [x.first , x.length] }.max { |a, b| a[1] <=> b[1] }
 
-    b = a.group_by(&:itself).values.max_by(&:size)
-    b.first
+    pp "Most Common Value: " + val.to_s + " with count: " + count.to_s
+    # b = a.group_by(&:itself).values.max_by(&:size)
+    # b.first
+    val
   end
 
   def audio_file_to_graph_data(uploadedfile)
@@ -339,24 +342,20 @@ module ApplicationHelper
         out_file_scaled_path = out_file_path + "_scaled"
         out = RubyAudio::Sound.open(out_file_scaled_path, 'w', ogFile.info.clone) if out.nil?
 
+        # calculate scaling factor
+        scalingFactor = 1.0
+        if maxVal > minVal.abs
+          scalingFactor = 1.0 / maxVal
+        else
+          scalingFactor = 1.0 / minVal.abs
+        end
+
         File.foreach(out_file_path) do |line|
           gosLine = line.split(" ")
           ogFile.read(buf)
           (0...gosLine.length).each do |x|
             frameVal = gosLine[x].to_f
-
-            # scaledVal = (2 * (frameVal - minVal) / (maxVal - minVal)) - 1
-
-            if frameVal > 0.0
-              scaledVal = frameVal / maxVal
-            elsif frameVal < 0.0
-              scaledVal = ((frameVal - minVal) / (0.0 - minVal)) - 1
-            else
-              scaledVal = frameVal
-            end
-
-
-            # byebug
+            scaledVal = frameVal * scalingFactor
 
             if channel == 0
               buf[x] = [scaledVal,buf[x][1]]
