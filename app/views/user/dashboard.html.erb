@@ -101,15 +101,15 @@
       <% user = sharedfile_associated_file.user %>
     <!-- start single file template-->
     <div class="card">
-      <div class="card-header" id=<%= "card-header" + sharedfile.id.to_s %>>
+      <div class="card-header" id=<%= "shared-card-header" + sharedfile.id.to_s %>>
         <h2 class="mb-0">
-          <button class="btn" type="button" data-toggle="collapse" data-target=<%= "#collapse" + sharedfile.id.to_s %> onClick="invertArrow('<%= "card-header" + sharedfile.id.to_s %>')" aria-expanded="false" aria-controls=<%= "collapse" + sharedfile.id.to_s %>>
+          <button class="btn" type="button" data-toggle="collapse" data-target=<%= "#shared-collapse" + sharedfile.id.to_s %> onClick="invertArrow('<%= "shared-card-header" + sharedfile.id.to_s %>')" aria-expanded="false" aria-controls=<%= "shared-collapse" + sharedfile.id.to_s %>>
               <div class="audio-file-name" ><%= sharedfile_associated_file.fileName %></div>
               <div class="collapse-arrow" ><i class="arrow down"></i></div>
           </button>
         </h2>
       </div>
-      <div id=<%= "collapse" + sharedfile.id.to_s %> class="collapse" aria-labelledby=<%= "card-header" + sharedfile.id.to_s %> data-parent="#audio-shared-accordion">
+      <div id=<%= "shared-collapse" + sharedfile.id.to_s %> class="collapse" aria-labelledby=<%= "shared-card-header" + sharedfile.id.to_s %> data-parent="#audio-shared-accordion">
         <div class="card-body">
 
           <div class="preview-container">

@@ -190,6 +190,7 @@ module ApplicationHelper
 
       minVal = -1
       maxVal = 1
+      d_sum = 0.0 # to calculate avg later
       while file.read(buf) != 0
         if gosIndex == 0
           minVal = buf[0][channel]
@@ -306,6 +307,10 @@ module ApplicationHelper
 
           end
 
+          if d > 0.0
+            d_sum += d
+          end
+
           # TEST changed bit
           gosAOAAs = calcGOSAOAAs(buf, channel)
           hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
@@ -329,6 +334,7 @@ module ApplicationHelper
       end
       pp "audible_watermark_count: " + tmp_audible_watermark_count.to_s
       pp "audible GOS percentage: " + (tmp_audible_watermark_count/gosIndex).to_s
+      pp "avg d_avg = " + (d_sum / (gosIndex + 1)).to_s
       pp "minVal: " + (minVal).to_s
       pp "maxVal: " + (maxVal).to_s
 
