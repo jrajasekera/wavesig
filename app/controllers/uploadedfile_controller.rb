@@ -76,7 +76,7 @@ class UploadedfileController < ApplicationController
     @uploadedfile.sharedfiles.each do |shared_file|
       shared_file.audio_file.purge
       if not shared_file.destroy
-        flash.now[:alert] = 'Error associated shared files!'
+        flash.now[:alert] = 'Error deleting associated shared files!'
       end
     end
 

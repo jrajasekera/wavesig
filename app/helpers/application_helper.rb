@@ -293,7 +293,8 @@ module ApplicationHelper
             end
 
             # analyze spectrum
-            watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
+            # watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
+            watermark_audible = false
             if watermark_audible
               d -= 0.01
 
@@ -407,6 +408,26 @@ module ApplicationHelper
     File.delete(og_file_path)
 
     result_file_path
+  end
+
+  def fec_test()
+
+  end
+
+  def fec_encode(msg, constraint = 3, generatorPolynomials = [7,5])
+    dir = '../viterbi/viterbi/'
+    command = 'viterbi_main --encode'
+    # polynomialGenerators = '3 3 5'
+    # polynomialGenerators = '8 3 3'
+    encodedMsg = %x<#{dir}#{command} #{constraint} #{generatorPolynomials.join(" ")} #{msg}>
+    encodedMsg.gsub("\n", "")
+  end
+
+  def fec_decode(msg, constraint = 3, generatorPolynomials = [7,5])
+    dir = '../viterbi/viterbi/'
+    command = 'viterbi_main'
+    encodedMsg = %x<#{dir}#{command} #{constraint} #{generatorPolynomials.join(" ")} #{msg}>
+    encodedMsg.gsub("\n", "")
   end
 
   def generate_watermark
