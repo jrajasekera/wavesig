@@ -6,6 +6,7 @@ module ApplicationHelper
   E2_INDICIES = [(L/3), (2*L/3 - 1)]
   E3_INDICIES = [(2*L/3), (L - 1)]
   SYNC_CODE_LENGTH = 20
+  WATERMARK_DECODED_LENGTH = 18
   WATERMARK_LENGTH = 40
   SYNC_CODES = %w[11110101001111100110 10111111111111111011 01100001110001011000 01111100100000000010 10001111100000111110 10001000101010011101 11000011011100011011 10000101010011110100 00011110010011011010 00101001100100000101 01100010010010100100 00010111011101101000 11101111011010000001 01001000011101110111 11110010101110110000 11111000010101001101 11101100111101100000 11011000111110000011 00000001001010110011 00100100110011101011 10010000000101000010 01101011001111001100 11010011111001000100 01011011000001110001 01010001100101101111]
 
@@ -85,9 +86,12 @@ module ApplicationHelper
       end
     end
 
+    # decode
+    decodedWatermarkCandidates = watermarkCandidates.map { |x| fec_decode(x) }
+
     watermark = nil
     if watermarkCandidates.length > 0
-      watermark = most_common_value(watermarkCandidates)
+      watermark = most_common_value(decodedWatermarkCandidates)
     end
 
     watermark
@@ -186,7 +190,7 @@ module ApplicationHelper
       channel = 0
 
       codeIndex = 0
-      codeBlock = generate_block(watermark)
+      codeBlock = generate_block(fec_encode(watermark))
 
       minVal = -1
       maxVal = 1
@@ -206,7 +210,7 @@ module ApplicationHelper
           embed_bit = nil
 
           if codeIndex == codeBlock.length
-            codeBlock = generate_block(watermark)
+            codeBlock = generate_block(fec_encode(watermark))
             codeIndex = 0
             embed_bit = codeBlock[codeIndex].to_i
           else
@@ -410,15 +414,9 @@ module ApplicationHelper
     result_file_path
   end
 
-  def fec_test()
-
-  end
-
   def fec_encode(msg, constraint = 3, generatorPolynomials = [7,5])
     dir = '../viterbi/viterbi/'
     command = 'viterbi_main --encode'
-    # polynomialGenerators = '3 3 5'
-    # polynomialGenerators = '8 3 3'
     encodedMsg = %x<#{dir}#{command} #{constraint} #{generatorPolynomials.join(" ")} #{msg}>
     encodedMsg.gsub("\n", "")
   end
@@ -435,11 +433,12 @@ module ApplicationHelper
     unique_watermark = false
     while !unique_watermark
       watermark_builder = StringIO.new
-      WATERMARK_LENGTH.times do
+      WATERMARK_DECODED_LENGTH.times do
         watermark_builder << generate_binary_bit
       end
       watermark = watermark_builder.string
 
+      # TODO change to make unique for uploadedFile
       if (Sharedfile.find_by watermark: watermark) == nil
         unique_watermark = true
       end
