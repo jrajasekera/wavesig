@@ -55,7 +55,9 @@ module ApplicationHelper
     encodedBits = encodedBitBuilder.string
     pp "Encoded bits: " + encodedBits
 
-    watermark = extract_watermark_from_bits(encodedBits)
+    allValidWatermarks = original_file.sharedfiles.map { |x| x.watermark }
+    # byebug
+    watermark = extract_watermark_from_bits(encodedBits, allValidWatermarks)
 
     if watermark.nil?
       sharedUser = nil
@@ -73,25 +75,24 @@ module ApplicationHelper
     sharedUser
   end
 
-  def extract_watermark_from_bits(encodedBits)
+  def extract_watermark_from_bits(encodedBits, allValidWatermarks)
     watermarkCandidates = []
 
     index = 0
-    while index < (encodedBits.length - (SYNC_CODE_LENGTH + WATERMARK_LENGTH))
-      if SYNC_CODES.include? encodedBits[index,SYNC_CODE_LENGTH]
-        watermarkCandidates.append(encodedBits[index + SYNC_CODE_LENGTH,WATERMARK_LENGTH])
-        index += SYNC_CODE_LENGTH + WATERMARK_LENGTH
+    while index < (encodedBits.length - WATERMARK_LENGTH)
+      decodedChunk = fec_decode(encodedBits[index,WATERMARK_LENGTH])
+      if allValidWatermarks.include? decodedChunk
+        watermarkCandidates.append(decodedChunk)
+        index += WATERMARK_LENGTH
       else
         index += 1
       end
     end
 
-    # decode
-    decodedWatermarkCandidates = watermarkCandidates.map { |x| fec_decode(x) }
-
     watermark = nil
     if watermarkCandidates.length > 0
-      watermark = most_common_value(decodedWatermarkCandidates)
+      watermark, count = most_common_value(watermarkCandidates)
+      pp "Most Common Value: " + watermark.to_s + " with count: " + count.to_s + " watermarked%: " + (((count * WATERMARK_LENGTH) / encodedBits.length.to_f) * 100 ).to_i.to_s + "%"
     end
 
     watermark
@@ -99,11 +100,8 @@ module ApplicationHelper
 
   def most_common_value(a)
     val, count = a.group_by(&:itself).values.map { |x| [x.first , x.length] }.max { |a, b| a[1] <=> b[1] }
-
-    pp "Most Common Value: " + val.to_s + " with count: " + count.to_s
-    # b = a.group_by(&:itself).values.max_by(&:size)
-    # b.first
-    val
+    # pp "Most Common Value: " + val.to_s + " with count: " + count.to_s
+    [val, count]
   end
 
   def audio_file_to_graph_data(uploadedfile)
@@ -204,7 +202,7 @@ module ApplicationHelper
 
         # clone og buffer for spectrum analysis
         og_buf = copy_buf(buf)
-        d_init = 0.0 # 0.05
+        d_init = 0.05 # 0.05
         if buf.real_size == L
 
           embed_bit = nil
@@ -458,8 +456,9 @@ module ApplicationHelper
   end
 
   def generate_block(watermark)
-    syncCode = SYNC_CODES.sample
-    syncCode + watermark
+    # syncCode = SYNC_CODES.sample
+    # syncCode + watermark
+    watermark
   end
 
   def copy_buf(original)
