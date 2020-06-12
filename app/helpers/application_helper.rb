@@ -202,7 +202,7 @@ module ApplicationHelper
 
         # clone og buffer for spectrum analysis
         og_buf = copy_buf(buf)
-        d_init = 0.05 # 0.05
+        d_init = 0.0 # 0.05
         if buf.real_size == L
 
           embed_bit = nil
@@ -537,7 +537,7 @@ module ApplicationHelper
     under_thresh_per = ((audible_frame_count - over_thresh_count) / audible_frame_count) * 100
     pp "Under Thresh percent: " + under_thresh_per.to_s
 
-    if under_thresh_per < 85
+    if under_thresh_per < 100 # 85
       pp "AUDIBLE WATERMARK@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
       audible_watermark = true
     end
@@ -545,13 +545,32 @@ module ApplicationHelper
     audible_watermark
   end
 
+  # def fft(vec)
+  #   return vec if vec.size <= 1
+  #   evens_odds = vec.partition.with_index{|_,i| i.even?}
+  #   evens, odds = evens_odds.map{|even_odd| fft(even_odd)*2}
+  #   evens.zip(odds).map.with_index do |(even, odd),i|
+  #     even + odd * Math::E ** Complex(0, -2 * Math::PI * i / vec.size)
+  #   end
+  # end
+
   def fft(vec)
     return vec if vec.size <= 1
-    evens_odds = vec.partition.with_index{|_,i| i.even?}
-    evens, odds = evens_odds.map{|even_odd| fft(even_odd)*2}
-    evens.zip(odds).map.with_index do |(even, odd),i|
-      even + odd * Math::E ** Complex(0, -2 * Math::PI * i / vec.size)
-    end
+
+    even = Array.new(vec.size / 2) { |i| vec[2 * i] }
+    odd  = Array.new(vec.size / 2) { |i| vec[2 * i + 1] }
+
+    fft_even = fft(even)
+    fft_odd  = fft(odd)
+
+    fft_even.concat(fft_even)
+    fft_odd.concat(fft_odd)
+
+    Array.new(vec.size) {|i| fft_even[i] + fft_odd [i] * omega(-i, vec.size)}
+  end
+
+  def omega(k, n)
+    Math::E ** Complex(0, 2 * Math::PI * k / n)
   end
 
   def embed_0(buf,channel,hashAOAA, a, b, thd1, d, progressFrames)
