@@ -7,15 +7,15 @@ ruby '2.6.5'
 gem 'rails', '~> 5.2.3'
 
 
-group :development do
-  # Use sqlite3 as the database for Active Record locally
-  gem 'sqlite3'
-end
+# group :development do
+#   # Use sqlite3 as the database for Active Record locally
+#   gem 'sqlite3'
+# end
 
-group :production do
+# group :production do
   # Use postgresql as the database for Active Record in production
-  gem 'pg'
-end
+gem 'pg'
+# end
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
