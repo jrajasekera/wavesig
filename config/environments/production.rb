@@ -109,6 +109,7 @@ Rails.application.configure do
       :authentication => :plain,
   }
   ActionMailer::Base.delivery_method = :smtp
-  Rails.application.routes.default_url_options[:host] = 'immense-thicket-26869.herokuapp.com'
+  # Rails.application.routes.default_url_options[:host] = 'immense-thicket-26869.herokuapp.com'
+  Rails.application.routes.default_url_options[:host] = ENV['DEFAULT_URL_HOST']
 
 end
