@@ -12,10 +12,11 @@ gem 'rails', '~> 5.2.3'
 #   gem 'sqlite3'
 # end
 
-# group :production do
-  # Use postgresql as the database for Active Record in production
+group :production do
+  gem "aws-sdk-s3", require: false
+end
+
 gem 'pg'
-# end
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
