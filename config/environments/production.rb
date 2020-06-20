@@ -39,7 +39,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = :amazon
+  config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
@@ -83,11 +83,11 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
+  # if ENV["RAILS_LOG_TO_STDOUT"].present?
+  #   logger           = ActiveSupport::Logger.new(STDOUT)
+  #   logger.formatter = config.log_formatter
+  #   config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  # end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
@@ -100,16 +100,18 @@ Rails.application.configure do
   #    :domain  => 'yourdomain.com'
   #}
 
-  ActionMailer::Base.smtp_settings = {
-      :port           => ENV['MAILGUN_SMTP_PORT'],
-      :address        => ENV['MAILGUN_SMTP_SERVER'],
-      :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-      :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-      :domain         => 'immense-thicket-26869.herokuapp.com',
-      :authentication => :plain,
-  }
-  ActionMailer::Base.delivery_method = :smtp
-  # Rails.application.routes.default_url_options[:host] = 'immense-thicket-26869.herokuapp.com'
-  Rails.application.routes.default_url_options[:host] = ENV['DEFAULT_URL_HOST']
+  # ActionMailer::Base.smtp_settings = {
+  #     :port           => ENV['MAILGUN_SMTP_PORT'],
+  #     :address        => ENV['MAILGUN_SMTP_SERVER'],
+  #     :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+  #     :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+  #     :domain         => 'immense-thicket-26869.herokuapp.com',
+  #     :authentication => :plain,
+  # }
+  # ActionMailer::Base.delivery_method = :smtp
+  # Rails.application.routes.default_url_options[:host] = ENV['DEFAULT_URL_HOST']
 
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
 end
