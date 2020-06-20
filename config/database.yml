@@ -24,13 +24,16 @@ test:
   <<: *default
   database: wavesig_test
   username: wavesig
-  password: '!Hello123'
+  password: ''
   host: localhost
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  database: wavesig_production
+  pool: 5
   timeout: 5000
+  username: <%= ENV['APPNAME_DATABASE_USER'] %>
+  password: <%= ENV['APPNAME_DATABASE_PASSWORD'] %>
