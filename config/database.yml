@@ -35,5 +35,5 @@ production:
   database: wavesig_production
   pool: 5
   timeout: 5000
-  username: <%= ENV['APPNAME_DATABASE_USER'] %>
-  password: <%= ENV['APPNAME_DATABASE_PASSWORD'] %>
+  username: wavesig
+  password: '!Hello123'
