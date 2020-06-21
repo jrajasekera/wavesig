@@ -14,6 +14,8 @@ group :development do
   gem 'capistrano3-puma',   require: false
 end
 
+gem 'gibbon'
+
 # group :development do
 #   # Use sqlite3 as the database for Active Record locally
 #   gem 'sqlite3'
