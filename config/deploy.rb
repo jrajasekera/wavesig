@@ -1,6 +1,6 @@
 # Change these
-# server '165.227.195.242', port: 22, roles: [:web, :app, :db], primary: true
-server 'wavesig', port: 22, roles: [:web, :app, :db], primary: true
+server '165.227.195.242', port: 22, roles: [:web, :app, :db], primary: true
+# server 'wavesig', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:jrajasekera/wavesig.git'
 set :application,     'wavesig'
