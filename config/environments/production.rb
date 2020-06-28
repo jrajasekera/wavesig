@@ -111,7 +111,14 @@ Rails.application.configure do
   # ActionMailer::Base.delivery_method = :smtp
   # Rails.application.routes.default_url_options[:host] = ENV['DEFAULT_URL_HOST']
 
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
+  config.action_mailer.default_url_options = { :host => 'wavesig.com' }
+  config.action_mailer.smtp_settings = {
+      :address              => "smtp.gmail.com",
+      :port                 => 587,
+      :user_name            => 'wavesig59@gmail.com',
+      :password             => 'alaeofxlhvzygubq',
+      :authentication       => "plain",
+      :enable_starttls_auto => true
+  }
 end
