@@ -26,7 +26,7 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 set :linked_files, %w{config/master.key}
 
-append :linked_dirs, 'public/uploads'
+append :linked_dirs, 'storage'
 ## Defaults:
 # set :scm,           :git
 # set :branch,        :master
