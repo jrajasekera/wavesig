@@ -416,8 +416,9 @@ module ApplicationHelper
 
   def fec_encode(msg, constraint = 3, generatorPolynomials = [7,5])
     command = 'viterbi_main --encode'
+    Rails.logger.debug("Viterbi command: #{VITERBI_DIR}#{command} #{constraint} #{generatorPolynomials.join(" ")} #{msg}")
     encodedMsg = %x<#{VITERBI_DIR}#{command} #{constraint} #{generatorPolynomials.join(" ")} #{msg}>
-    Rails.logger.debug("Viterbi command: #{encodedMsg}")
+    Rails.logger.debug("Viterbi result: #{encodedMsg}")
     encodedMsg.gsub("\n", "")
   end
 
