@@ -8,7 +8,7 @@
   <%= form_for :leaker_file, url: find_origin_path, html: { method: :post } do |f| %>
 
     <div class="field browse-file-field">
-      <%= f.file_field :origin_audio_file %>
+      <%= f.file_field :origin_audio_file, required: true %>
     </div>
 
     <div class="actions submit-btn">

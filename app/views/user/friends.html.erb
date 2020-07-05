@@ -7,7 +7,7 @@
   <%= form_for :something, url: add_friend_path do |f| %>
 
     <div class="field text-field">
-      <%= text_field_tag :friend_email, "", :placeholder => 'Email', :class => 'text-input' %>
+      <%= text_field_tag :friend_email, "", :placeholder => 'Email', :class => 'text-input', required: true %>
     </div>
 
     <div class="actions submit-btn">

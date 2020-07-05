@@ -6,7 +6,7 @@
   <%= form_for @uploadedfile, url: create_upload_file_path, html: { method: :post } do |f| %>
 
     <div class="field text-field">
-      <%= f.text_field :fileName, :placeholder => 'File Name', :class => 'text-input' %>
+      <%= f.text_field :fileName, :placeholder => 'File Name', :class => 'text-input', :id => 'file-name-field', required: true %>
     </div>
 
     <div class="field text-field">
@@ -14,9 +14,9 @@
     </div>
 
     <div class="field browse-file-field">
-      <%= f.file_field :audio_file %>
+      <%= f.file_field :audio_file, :id => 'browse-file-field', required: true %>
     </div>
-    
+
     <%= f.submit "Upload File", :class => 'btn btn-primary btn-block', :id => 'upload_file_btn', :onclick => 'showUploadSpinner()'  %>
 
     <button class="btn btn-primary btn-block" id="upload_file_spinner" style="display: none" type="button" disabled>

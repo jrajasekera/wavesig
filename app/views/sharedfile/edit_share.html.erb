@@ -6,7 +6,7 @@
   <h2>Share File</h2>
   <% if @shareable_users.length > 0 %>
     <%= form_for :something, url: share_file_path(@uploadedfile.id) do |f| %>
-      <%= select_tag("users[]", options_for_select(@shareable_users.map{ |u| [u.fname + ' ' + u.lname, u.id] }), {:multiple => true, :class => "multiselect"}) %>
+      <%= select_tag("users[]", options_for_select(@shareable_users.map{ |u| [u.fname + ' ' + u.lname, u.id] }), {required: true, :multiple => true, :class => "multiselect"}) %>
       <div class="actions submit-btn">
         <%= submit_tag "Add User(s)", :class => 'btn btn-primary btn-block' %>
       </div>
@@ -14,20 +14,6 @@
   <% else %>
     <p>No friends to share the file with.</p>
   <% end %>
-
-
-
-<!--  <h2>Share File</h2>-->
-  <%#= form_for :something, url: share_file_path(@uploadedfile.id) do |f| %>
-
-<!--    <div class="field text-field">-->
-      <%#= text_field_tag :share_email, "", :placeholder => 'Email', :class => 'text-input' %>
-<!--    </div>-->
-
-<!--    <div class="actions submit-btn">-->
-      <%#= submit_tag "Add Shared User", :class => 'btn btn-primary btn-block' %>
-<!--    </div>-->
-  <%# end %>
 
   <div>
     <div class="breaker"></div>

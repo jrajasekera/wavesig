@@ -42,8 +42,10 @@ $(function() {
 });
 
 function showUploadSpinner() {
-    $('#upload_file_btn').hide();
-    $('#upload_file_spinner').show();
+    if($('#file-name-field')[0].value.length > 0 && $('#browse-file-field')[0].value.length > 0) {
+        $('#upload_file_btn').hide();
+        $('#upload_file_spinner').show();
+    }
 }
 
 function invertArrow(card_id) {
