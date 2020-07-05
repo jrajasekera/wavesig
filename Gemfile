@@ -14,6 +14,10 @@ group :development do
   gem 'capistrano3-puma',   require: false
 end
 
+group :production do
+  gem "aws-sdk-s3", require: false
+end
+
 gem 'pg'
 
 # Use Puma as the app server
