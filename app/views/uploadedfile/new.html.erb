@@ -16,9 +16,12 @@
     <div class="field browse-file-field">
       <%= f.file_field :audio_file %>
     </div>
+    
+    <%= f.submit "Upload File", :class => 'btn btn-primary btn-block', :id => 'upload_file_btn', :onclick => 'showUploadSpinner()'  %>
 
-    <div class="actions submit-btn">
-      <%= f.submit "Upload File", :class => 'btn btn-primary btn-block' %>
-    </div>
+    <button class="btn btn-primary btn-block" id="upload_file_spinner" style="display: none" type="button" disabled>
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Uploading...
+    </button>
   <% end %>
 </div>

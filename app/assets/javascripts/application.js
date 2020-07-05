@@ -41,6 +41,11 @@ $(function() {
     }, 2000);
 });
 
+function showUploadSpinner() {
+    $('#upload_file_btn').hide();
+    $('#upload_file_spinner').show();
+}
+
 function invertArrow(card_id) {
     let arrow = $("#" + card_id + " > h2 > button > div.collapse-arrow > i")
     if (arrow.hasClass("down")) {
