@@ -1,11 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Wavesig is a web application for sharing audio files.
+Wavesig embeds an inaudible watermark in the file, allowing the file and receiver of the file to be tracked if the file is misused.
 
-Things you may want to cover:
+Implementation details:
 
-* Ruby version
+* Ruby version 2.6.5
 
 * System dependencies
 
