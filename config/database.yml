@@ -11,9 +11,9 @@ default: &default
 development:
   <<: *default
   database: wavesig_development
-  username: wavesig
-  password: '!Hello123'
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= Rails.application.credentials.development[:database][:username] %>
+  password: <%= Rails.application.credentials.development[:database][:password].dump %>
+  pool: 5
   timeout: 5000
   host: localhost
 
@@ -35,5 +35,5 @@ production:
   database: wavesig_production
   pool: 5
   timeout: 5000
-  username: wavesig
-  password: '!Hello123'
+  username: <%= Rails.application.credentials.production[:database][:username] %>
+  password: <%= Rails.application.credentials.production[:database][:password].dump %>
