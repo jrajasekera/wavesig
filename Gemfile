@@ -14,11 +14,6 @@ group :development do
   gem 'capistrano3-puma',   require: false
 end
 
-# group :development do
-#   # Use sqlite3 as the database for Active Record locally
-#   gem 'sqlite3'
-# end
-
 gem 'pg'
 
 # Use Puma as the app server
@@ -76,9 +71,6 @@ gem "chartkick"
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
