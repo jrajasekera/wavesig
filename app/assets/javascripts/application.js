@@ -17,33 +17,28 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
-//= require toastr
 //= require bootstrap-multiselect
 //= require chartkick
 //= require Chart.bundle
 
 $(document).ready(function() {
 
-    toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": false,
-        "positionClass": "toast-top-center",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
+});
 
-    $('.multiselect').multiselect();
+$(document).on('turbolinks:load', function () {
+    $('.multiselect').multiselect({
+        enableFiltering: true,
+        filterBehavior: 'text',
+        enableCaseInsensitiveFiltering: true,
+        nonSelectedText: 'Select friends'
+    });
+});
 
+// slide alerts away after 2 seconds
+$(function() {
+    setTimeout(function(){
+        $('.alert').slideUp(500);
+    }, 2000);
 });
 
 function invertArrow(card_id) {

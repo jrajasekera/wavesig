@@ -16,7 +16,6 @@
 //= require devise
 //= require uploadedfile
 //= require sharedfile
-//= require toastr
 //= require bootstrap-multiselect
 
 @import "bootstrap";
@@ -69,38 +68,6 @@ body{
   width: 100%;
   color: white;
   text-align: center;
-}
-
-.toast {
-  max-width: initial !important;
-}
-
-.toast-success {
-  background-color: #51A351 !important;
-}
-
-.toast-error{
-  background-color: #BD362F !important;
-}
-
-.toast-info{
-  background-color: #2F96B4 !important;
-}
-
-.toast-warning{
-  background-color: #F89406 !important;
-}
-
-#toast-container {
-  width: 100%;
-  text-align: center;
-}
-
-#toast-container > div {
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 40px;
-  width: 80% !important;
 }
 
 .breaker{

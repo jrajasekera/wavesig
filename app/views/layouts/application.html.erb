@@ -7,7 +7,7 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   </head>
 
   <body>
@@ -17,19 +17,18 @@
     <div id="wrap">
       <div id="main" class="clear-top">
 
-      <!-- toasts-->
-      <% unless flash.empty? %>
-        <script type="text/javascript">
-            <% flash.each do |f| %>
-            <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'success') %>
-            toastr['<%= type %>']('<%= f[1] %>');
-            <% end %>
-        </script>
-      <% end %>
-      <!-- toasts-->
+        <!-- alerts -->
+        <% if notice %>
+          <p class="alert alert-success"><%= notice %></p>
+        <% end %>
+        <% if alert %>
+          <p class="alert alert-danger"><%= alert %></p>
+        <% end %>
+        <!-- alerts -->
 
         <!-- page content-->
         <%= yield %>
+        <!-- page content-->
       </div>
     </div>
 
