@@ -126,6 +126,10 @@ GEM
       responders
       warden (~> 1.2.3)
     erubi (1.9.0)
+    exception_handler (0.8.0.0)
+      bundler
+      rails (>= 4.2.0)
+      responders
     execjs (2.7.0)
     ffi (1.13.1)
     font-awesome-rails (4.7.0.5)
@@ -287,6 +291,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.2)
   devise
+  exception_handler (~> 0.8.0.0)
   font-awesome-rails
   jbuilder (~> 2.5)
   jquery-rails
