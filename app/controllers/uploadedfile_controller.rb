@@ -1,8 +1,6 @@
 class UploadedfileController < ApplicationController
   before_action :verify_correct_user, only: [:delete, :find_origin]
 
-  MAX_UPLOAD_FILE_SIZE = 50.megabytes
-
   def verify_correct_user
     @uploadedfile = Uploadedfile.find_by id: params[:file_id]
 
@@ -19,25 +17,18 @@ class UploadedfileController < ApplicationController
   def create
     @uploadedfile = Uploadedfile.new(uploadedfile_params)
 
-    # validate for correct file type and size
-    if !@uploadedfile.audio_file.attachment.nil? &&
-        @uploadedfile.audio_file.content_type == 'audio/x-wav' &&
-        @uploadedfile.audio_file.byte_size <= MAX_UPLOAD_FILE_SIZE
+    @uploadedfile.user_id = current_user.id
+    pp @uploadedfile.audio_file
 
-      @uploadedfile.user_id = current_user.id
-      pp @uploadedfile.audio_file
-
-      if @uploadedfile.save
-        flash[:notice] = 'File uploaded successfully!'
-        redirect_to show_upload_file_path(@uploadedfile.id)
-      else
-        flash.now[:alert] = 'File upload error! Please try again.'
-        render "new"
-      end
+    if @uploadedfile.save
+      flash[:notice] = 'File uploaded successfully!'
+      redirect_to show_upload_file_path(@uploadedfile.id)
     else
-      flash.now[:alert] = "File upload error! File must be in wav format and with a size of less than #{MAX_UPLOAD_FILE_SIZE/1.megabytes} MB."
+      @uploadedfile.audio_file.purge
+      flash.now[:alert] = "File upload error! " + @uploadedfile.errors.details.values[0].map{ |item| item[:error]}.join(" ")
       render "new"
     end
+
   end
 
   def show
