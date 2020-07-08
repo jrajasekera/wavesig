@@ -6,7 +6,9 @@
   <div id="music-player-container">
     <h5><%= fa_icon "music", class: "fa-lg" %>    <b><%= @uploadedfile.fileName %></b></h5>
     <p><%= fa_icon "file" %>    <%= @audio_file.filename %></p>
-    <p><%= fa_icon "info-circle" %>    <%= @uploadedfile.description %></p>
+    <% if !@uploadedfile.description.blank? %>
+      <p><%= fa_icon "info-circle" %>    <%= @uploadedfile.description %></p>
+    <% end %>
     <% if current_user.id != @uploadedfile.user_id %>
     <p><%= fa_icon "user-circle" %> <% user = @uploadedfile.user %>   <%= user.fname + " " + user.lname %></p>
     <% end %>
@@ -30,7 +32,7 @@
       <% if @uploadedfile.user_id == current_user.id %>
 
       <div data-toggle="tooltip" title="Delete">
-        <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete", data: {confirm: "File will not be recoverable after deletion."} do %>
+        <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete", data: {confirm: "File will not be recoverable after deletion. Anyone you have shared this file will with also lose access. You will not be able to use the Find Origin functionality on ths file."} do %>
           <%= button_tag(class: "btn btn-danger", id: "delete-file-btn") do %>
             <%= fa_icon "trash", class: "fa-2x" %>
           <% end %>

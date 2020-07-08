@@ -56,3 +56,29 @@ function invertArrow(card_id) {
         arrow.removeClass("up").addClass("down");
     }
 }
+
+function validateFiles(inputFile) {
+    var extName;
+    var maxFileSize = $(inputFile).data('max-file-size');
+    var sizeExceeded = false;
+    var extError = false;
+
+    var maxExceededMessage = `This file exceeds the maximum allowed file size ${maxFileSize/1048576} MB`;
+    var extErrorMessage = "Only audio files with extension .wav is allowed";
+    var allowedExtension = ["wav"];
+
+    $.each(inputFile.files, function() {
+        if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
+        extName = this.name.split('.').pop();
+        if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
+    });
+    if (sizeExceeded) {
+        window.alert(maxExceededMessage);
+        $(inputFile).val('');
+    };
+
+    if (extError) {
+        window.alert(extErrorMessage);
+        $(inputFile).val('');
+    };
+}

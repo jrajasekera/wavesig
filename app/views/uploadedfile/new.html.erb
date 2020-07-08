@@ -14,7 +14,12 @@
     </div>
 
     <div class="field browse-file-field">
-      <%= f.file_field :audio_file, :id => 'browse-file-field', required: true %>
+      <%= f.file_field :audio_file,
+                       :id => 'browse-file-field',
+                       required: true,
+                       onchange: "validateFiles(this);",
+                       data: { max_file_size: UploadedfileController::MAX_UPLOAD_FILE_SIZE }
+      %>
     </div>
 
     <%= f.submit "Upload File", :class => 'btn btn-primary btn-block', :id => 'upload_file_btn', :onclick => 'showUploadSpinner()'  %>

@@ -17,7 +17,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
           <% @uploadedfiles.each do |uploadedfile| %>
-            <%= link_to uploadedfile.fileName, delete_upload_file_path(uploadedfile.id), method: "delete", data: {confirm: "File will not be recoverable after deletion."}, class: "dropdown-item" %>
+            <%= link_to uploadedfile.fileName, delete_upload_file_path(uploadedfile.id), method: "delete", data: {confirm: "File will not be recoverable after deletion. Anyone you have shared this file will with also lose access. You will not be able to use the Find Origin functionality on ths file."}, class: "dropdown-item" %>
             <% if !uploadedfile.equal?(@uploadedfiles.last) %>
               <div class="dropdown-divider"></div>
             <% end %>
