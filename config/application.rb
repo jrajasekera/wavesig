@@ -13,7 +13,7 @@ module Wavesig
 
     config.active_job.queue_adapter = :sidekiq
     Redis.exists_returns_integer = false
-    
+
     config.exception_handler = {
       # turn on for testing
       # dev: true

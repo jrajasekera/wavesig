@@ -26,7 +26,7 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 set :linked_files, %w{config/master.key}
 
-append :linked_dirs, 'storage'
+# append :linked_dirs, 'storage'
 ## Defaults:
 # set :scm,           :git
 # set :branch,        :master
@@ -36,7 +36,7 @@ append :linked_dirs, 'storage'
 
 ## Linked Files & Directories (Default None):
 # set :linked_files, %w{config/database.yml}
-# set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
