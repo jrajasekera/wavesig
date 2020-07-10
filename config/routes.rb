@@ -25,6 +25,9 @@ Rails.application.routes.draw do
 
   root 'home#info'
 
-
+  require 'sidekiq/web'
+  authenticate :user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
 end
