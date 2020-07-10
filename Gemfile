@@ -21,7 +21,7 @@ end
 
 gem 'pg'
 
-gem 'sidekiq'
+gem 'sidekiq', '5.2.7'
 
 gem 'devise-async'
 
