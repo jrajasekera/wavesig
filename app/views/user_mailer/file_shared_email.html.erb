@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  <p>Hi <%= @user.fname %>,</p>
+  <p>
+    <%= @sharer.fname + " " + @sharer.lname %> has shared a file with you.<br>
+    <a href=<%= show_upload_file_url(@uploadedfile.id) %>>Click here to see it.</a><br>
+  </p>
+  </body>
+</html>

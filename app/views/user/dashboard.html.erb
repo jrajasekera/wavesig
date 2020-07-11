@@ -50,7 +50,13 @@
                     <th>Description</th>
                   </tr>
                   <tr>
-                    <td><%= uploadedfile.description %></td>
+                    <td>
+                      <% if uploadedfile.description.blank? %>
+                        N/A
+                      <% else %>
+                        <%= uploadedfile.description %>
+                      <% end %>
+                    </td>
                   </tr>
                 </table>
               </div>

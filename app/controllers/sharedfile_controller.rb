@@ -30,7 +30,11 @@ class SharedfileController < ApplicationController
         flash[:alert] = 'You selected a non-active user.'
       elsif @shared_user == current_user
         flash[:alert] = 'You cannot share a file with yourself.'
+      elsif !current_user.friend_with? @shared_user
+        flash[:alert] = 'You can only share files with friends.'
       else
+        ShareFileJob.perform_later(@shared_user, current_user, @uploadedfile)
+
         watermark = helpers.generate_watermark
         newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id, :watermark => watermark
 

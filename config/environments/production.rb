@@ -110,7 +110,6 @@ Rails.application.configure do
   # }
   # ActionMailer::Base.delivery_method = :smtp
   # Rails.application.routes.default_url_options[:host] = ENV['DEFAULT_URL_HOST']
-
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { :host => 'wavesig.com' }
   config.action_mailer.smtp_settings = {
