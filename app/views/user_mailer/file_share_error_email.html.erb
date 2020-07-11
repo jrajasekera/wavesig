@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+  <p>Hi <%= @sharer.fname %>,</p>
+  <p>
+    The file you shared with <%= @user.fname + " " + @user.lname %> ran into an error during processing.<br>
+    <a href=<%= show_upload_file_url(@uploadedfile.id) %>>Click here to see the file.</a><br>
+  </p>
+  </body>
+</html>

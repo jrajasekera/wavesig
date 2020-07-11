@@ -113,13 +113,6 @@ class UploadedfileController < ApplicationController
     leaker_file = leaker_file_params[:origin_audio_file].tempfile.to_io
 
     @leaker = helpers.find_leak_source(@original_file, leaker_file)
-
-    if @leaker == nil
-      @leaker_email = "Unknown"
-    else
-      @leaker_email = @leaker.email
-    end
-
   end
 
 end

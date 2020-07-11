@@ -3,7 +3,10 @@
     <div class="collapse-arrow" ><i class="arrow left"></i> Back to File</div>
   </a>
 
-
-  <h2>Leak Source: <%= @leaker_email %></h2>
+  <% if @leaker.nil? %>
+    <h2>Leak Source: Unknown </h2>
+  <% else %>
+    <h2>Leak Source: <%= "#{@leaker.fname} #{@leaker.lname} (#{@leaker.email})" %></h2>
+  <% end %>
 
 </div>

@@ -152,8 +152,10 @@ module ApplicationHelper
 
   def embed_watermark(uploadedfile, watermark)
 
+    #TODO use Tempfile instead for these files
     # Download the uploadedfile tmp dir
-    og_file_path = "#{Dir.tmpdir}/#{uploadedfile.fileName}"
+    uniqueIdentifier = Time.now.strftime("%Y%m%d%k%M%S%N").to_s + SecureRandom.alphanumeric(10)
+    og_file_path = "#{Dir.tmpdir}/#{uploadedfile.fileName}#{uniqueIdentifier}"
     File.open(og_file_path, 'wb') do |file|
       file.write(uploadedfile.audio_file.download)
     end
@@ -178,7 +180,7 @@ module ApplicationHelper
 
     buf = RubyAudio::Buffer.new("float", L, channelCount)
     out = nil
-    out_file_path = "#{Dir.tmpdir}/#{uploadedfile.fileName + '_watermarked'}"
+    out_file_path = "#{Dir.tmpdir}/#{uploadedfile.fileName + '_watermarked'}#{uniqueIdentifier}"
     result_file_path = out_file_path
     RubyAudio::Sound.open(og_file_path) do |file|
       # out = RubyAudio::Sound.open(out_file_path, 'w', file.info.clone) if out.nil?
@@ -297,7 +299,7 @@ module ApplicationHelper
 
             # analyze spectrum
             # watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
-            watermark_audible = false
+            watermark_audible = false #NOTE analyze sprectrum disabled
             if watermark_audible
               d -= 0.01
 

@@ -32,57 +32,17 @@ class SharedfileController < ApplicationController
         flash[:alert] = 'You cannot share a file with yourself.'
       elsif !current_user.friend_with? @shared_user
         flash[:alert] = 'You can only share files with friends.'
+      elsif @uploadedfile.sharedfiles.map { |sharedfile| sharedfile.user }.include? @shared_user
+        flash[:alert] = "You have already shared this file with #{@shared_user.fname} #{@shared_user.lname}."
       else
         ShareFileJob.perform_later(@shared_user, current_user, @uploadedfile)
-
-        watermark = helpers.generate_watermark
-        newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id, :watermark => watermark
-
-        watermarkedFilePath = helpers.embed_watermark(@uploadedfile, watermark)
-        newShare.audio_file.attach io: File.open(watermarkedFilePath),
-                                   filename: @uploadedfile.audio_file.filename,
-                                   content_type: @uploadedfile.audio_file.content_type
-        File.delete(watermarkedFilePath)
-
-        if newShare.save
-          flash[:notice] = 'Shared file with ' + @shared_user.email + '!'
-        else
-          flash[:alert] = 'Error sharing file with ' + @shared_user.email + '!'
-        end
+        flash[:notice] = 'Your file is being processed and shared!'
       end
 
     end
 
     redirect_to edit_share_file_path id: @uploadedfile.id
   end
-
-  # def share
-  #   @shared_user_email_param = params[:share_email].downcase
-  #   @shared_user = User.find_by email: @shared_user_email_param
-  #
-  #   if @shared_user.nil?
-  #     flash[:alert] = @shared_user_email_param + ' is not a current user.'
-  #   elsif @shared_user == current_user
-  #     flash[:alert] = @shared_user_email_param + ' you cannot share a file with yourself.'
-  #   else
-  #     watermark = helpers.generate_watermark
-  #     newShare = Sharedfile.new :user_id => @shared_user.id, :uploadedfile_id => @uploadedfile.id, :watermark => watermark
-  #
-  #     #newShare.audio_file.attach io: StringIO.new(helpers.embed_watermark(@uploadedfile)),
-  #     newShare.audio_file.attach io: File.open(helpers.embed_watermark(@uploadedfile, watermark)),
-  #                              filename: @uploadedfile.audio_file.filename,
-  #                              content_type: @uploadedfile.audio_file.content_type
-  #
-  #     if newShare.save
-  #       flash[:notice] = 'Shared file with ' + @shared_user.email + '!'
-  #     else
-  #       flash[:alert] = 'Error sharing file with ' + @shared_user.email + '!'
-  #     end
-  #
-  #   end
-  #
-  #   redirect_to edit_share_file_path id: @uploadedfile.id
-  # end
 
   def remove_user
     shared_user = User.find params[:user_id]
