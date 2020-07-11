@@ -25,7 +25,7 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
 set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 set :linked_files, %w{config/master.key}
-set :sidekiq_config, -> { File.join(shared_path, 'config', 'sidekiq.yml') }
+set :sidekiq_config, -> { File.join(release_path, 'config', 'sidekiq.yml') }
 
 # append :linked_dirs, 'storage'
 ## Defaults:
