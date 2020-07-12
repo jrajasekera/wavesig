@@ -5,27 +5,27 @@
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="field text-field">
-      <%= f.text_field :fname, autofocus: true, autocomplete: "name", :placeholder => 'First Name', :class => 'text-input' %>
+      <%= f.text_field :fname, autofocus: true, autocomplete: "name", :placeholder => 'First Name', :class => 'text-input form-control' %>
     </div>
 
     <div class="field text-field">
-      <%= f.text_field :lname, autofocus: true, autocomplete: "name", :placeholder => 'Last Name', :class => 'text-input' %>
+      <%= f.text_field :lname, autofocus: true, autocomplete: "name", :placeholder => 'Last Name', :class => 'text-input form-control' %>
     </div>
 
     <div class="field text-field">
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => 'Email', :class => 'text-input' %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => 'Email', :class => 'text-input form-control' %>
     </div>
 
     <div class="field text-field">
       <% if @minimum_password_length %>
-        <%= f.password_field :password, autocomplete: "new-password", :placeholder => ("Password ( > " + @minimum_password_length.to_s + " letters)"), :class => 'text-input' %>
+        <%= f.password_field :password, autocomplete: "new-password", :placeholder => ("Password ( > " + @minimum_password_length.to_s + " letters)"), :class => 'text-input form-control' %>
       <% else %>
-        <%= f.password_field :password, autocomplete: "new-password", :placeholder => "Password", :class => 'text-input' %>
+        <%= f.password_field :password, autocomplete: "new-password", :placeholder => "Password", :class => 'text-input form-control' %>
       <% end %>
     </div>
 
     <div class="field text-field">
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'Password Confirmation', :class => 'text-input' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'Password Confirmation', :class => 'text-input form-control' %>
     </div>
 
     <div class="actions submit-btn">

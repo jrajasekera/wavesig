@@ -6,11 +6,11 @@
   <%= form_for @uploadedfile, url: create_upload_file_path, html: { method: :post } do |f| %>
 
     <div class="field text-field">
-      <%= f.text_field :fileName, :placeholder => 'File Name', :class => 'text-input', :id => 'file-name-field', required: true %>
+      <%= f.text_field :fileName, :placeholder => 'File Name', :class => 'text-input form-control', :id => 'file-name-field', required: true %>
     </div>
 
     <div class="field text-field">
-      <%= f.text_field :description, :placeholder => 'Description', :class => 'text-input' %>
+      <%= f.text_field :description, :placeholder => 'Description', :class => 'text-input form-control' %>
     </div>
 
     <div class="field browse-file-field">

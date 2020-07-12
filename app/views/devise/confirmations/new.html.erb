@@ -6,7 +6,7 @@
 
     <div class="field text-field">
 <!--      <%#= f.label :email %><br />-->
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => 'Email', :class => 'text-input', value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => 'Email', :class => 'text-input form-control', value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
     </div>
 
     <div class="actions submit-btn">

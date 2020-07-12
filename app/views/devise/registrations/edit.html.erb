@@ -6,17 +6,17 @@
 
     <div class="field text-field">
       <%= f.label "First Name" %><br />
-      <%= f.text_field :fname, autofocus: true, autocomplete: "name", :class => 'text-input' %>
+      <%= f.text_field :fname, autofocus: true, autocomplete: "name", :class => 'text-input form-control' %>
     </div>
 
     <div class="field text-field">
       <%= f.label "Last Name" %><br />
-      <%= f.text_field :lname, autofocus: true, autocomplete: "name", :class => 'text-input' %>
+      <%= f.text_field :lname, autofocus: true, autocomplete: "name", :class => 'text-input form-control' %>
     </div>
 
     <div class="field text-field">
       <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", :class => 'text-input' %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", :class => 'text-input form-control' %>
     </div>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -31,17 +31,17 @@
       <% end %>
       <br />
 
-      <%= f.password_field :password, autocomplete: "new-password", :placeholder => 'New Password', :class => 'text-input' %>
+      <%= f.password_field :password, autocomplete: "new-password", :placeholder => 'New Password', :class => 'text-input form-control' %>
     </div>
 
     <div class="field text-field">
       <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'New Password', :class => 'text-input' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'New Password', :class => 'text-input form-control' %>
     </div>
 
     <div class="field text-field">
       <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-      <%= f.password_field :current_password, autocomplete: "current-password", :placeholder => 'Current Password', :class => 'text-input' %>
+      <%= f.password_field :current_password, autocomplete: "current-password", :placeholder => 'Current Password', :class => 'text-input form-control' %>
     </div>
 
     <div class="actions submit-btn">

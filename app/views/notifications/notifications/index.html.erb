@@ -1,0 +1,33 @@
+<div id="notifications-container">
+
+  <a href=<%= main_app.user_dashboard_path %> class="btn btn-secondary btn-sm back-btn">
+    <div class="collapse-arrow" ><i class="arrow left"></i> Back to Dashboard</div>
+  </a>
+
+  <div class="notifications-title-button-container">
+    <h2>Notifications</h2>
+    <div class="notifications-clear-btn-container">
+      <%= link_to "Clear All", notifications.clean_notifications_path, class: 'btn btn-sm btn-secondary', method: 'delete' %>
+    </div>
+  </div>
+
+  <div>
+    <% if @notifications.blank? %>
+      <div class="notification-no-records"><%= t('notifications.no_records') %></div>
+    <% else %>
+      <div class="notifications-list-container">
+        <% @notification_groups.each do |group, notifications| %>
+          <div class="notifications-group-container">
+            <div class="notification-group-title">
+              <%= group %>
+            </div>
+            <%= render notifications %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <%= paginate @notifications %>
+<!--  </div>-->
+
+</div>

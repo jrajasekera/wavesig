@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Notifications::Engine => "/notifications"
   devise_for :users
 
   get "/home/info" => "home#info", as: "home_info"

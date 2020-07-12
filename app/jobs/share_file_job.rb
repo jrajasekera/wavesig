@@ -26,6 +26,7 @@ class ShareFileJob < ApplicationJob
     shared_user = arguments[0]
     sharer = arguments[1]
     uploadedfile = arguments[2]
+    pp "I DIDNT SAVE PROPERLY!!!!!!!!!!!!!!!!!!!!!"
     share_failed_notify(shared_user,sharer,uploadedfile)
   end
 
