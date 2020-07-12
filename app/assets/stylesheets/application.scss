@@ -77,6 +77,28 @@ body{
   margin-bottom : 20px;
 }
 
+.expand-down-arrow {
+  margin-left: 5px;
+}
+
+.nav-link-item {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.collapsed-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.menu-item-text {
+  margin-left: 10px;
+  display: inline;
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+
 .collapse-arrow {
   i {
     border: solid black;

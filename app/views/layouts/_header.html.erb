@@ -9,7 +9,8 @@
 
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="navbar-toggler-icon">
+    </span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarsExample03">
@@ -25,25 +26,44 @@
       <% else %>
 
         <li class="nav-item" data-toggle="tooltip" title="Dashboard">
-          <a class="nav-link" href=<%= main_app.user_dashboard_path(current_user.id) %>><%= fa_icon "home", class: "fa-2x" %></a>
+          <a class="nav-link nav-link-item" href=<%= main_app.user_dashboard_path(current_user.id) %>>
+            <div class="collapsed-menu-item">
+              <%= fa_icon "home", class: "fa-2x" %>
+              <div class="d-sm-none menu-item-text">Home</div>
+            </div>
+          </a>
         </li>
 
         <li class="nav-item" data-toggle="tooltip" title="Notifications">
-          <a class="nav-link" href=<%= notifications_path %>>
-            <span id=<%= (Notification.unread_count(current_user) < 10 ? "notifications-count-single-digit" : "notifications-count-double-digit") %>
-                  class="fa-stack has-badge"
-                  data-count=<%= (Notification.unread_count(current_user) > 9 ? "9+" : (Notification.unread_count(current_user) == 0 ? "" : Notification.unread_count(current_user).to_s) ) %>>
+          <a class="nav-link nav-link-item" href=<%= notifications_path %>>
+            <div class="collapsed-menu-item">
+              <span id=<%= (Notification.unread_count(current_user) < 10 ? "notifications-count-single-digit" : "notifications-count-double-digit") %>
+                    class="fa-stack has-badge"
+                    data-count=<%= (Notification.unread_count(current_user) > 9 ? "9+" : (Notification.unread_count(current_user) == 0 ? "" : Notification.unread_count(current_user).to_s) ) %>>
               <%= fa_icon "bell", class: "fa-2x" %>
-            </span>
+              </span>
+              <div class="d-sm-none menu-item-text">Notifications</div>
+            </div>
           </a>
         </li>
 
         <li class="nav-item" data-toggle="tooltip" title="Friends">
-          <a class="nav-link" href=<%= main_app.friends_path(current_user.id) %>><%= fa_icon "users", class: "fa-2x" %></a>
+          <a class="nav-link nav-link-item" href=<%= main_app.friends_path(current_user.id) %>>
+            <div class="collapsed-menu-item">
+              <%= fa_icon "users", class: "fa-2x" %>
+              <div class="d-sm-none menu-item-text">Friends</div>
+            </div>
+          </a>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" title="Account" aria-haspopup="true" aria-expanded="false"><%= fa_icon "user", class: "fa-2x" %></a>
+          <a class="nav-link nav-link-item" id="dropdown03" data-toggle="dropdown" title="Account" aria-haspopup="true" aria-expanded="false">
+            <div class="collapsed-menu-item">
+              <%= fa_icon "user", class: "fa-2x" %>
+              <div class="d-sm-none menu-item-text">Account</div>
+              <%= fa_icon "angle-down", class: "expand-down-arrow" %>
+            </div>
+          </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown03">
             <%= link_to "Logout", main_app.destroy_user_session_path, method: :delete, :class => 'dropdown-item'  %>
             <div class="dropdown-divider"></div>

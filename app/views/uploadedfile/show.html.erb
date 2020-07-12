@@ -32,11 +32,9 @@
       <% if @uploadedfile.user_id == current_user.id %>
 
       <div data-toggle="tooltip" title="Delete">
-        <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete", data: {confirm: "File will not be recoverable after deletion. Anyone you have shared this file will with also lose access. You will not be able to use the Find Origin functionality on ths file."} do %>
-          <%= button_tag(class: "btn btn-danger", id: "delete-file-btn") do %>
-            <%= fa_icon "trash", class: "fa-2x" %>
-          <% end %>
-        <% end %>
+        <button id="delete-file-btn" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+          <%= fa_icon "trash", class: "fa-2x" %>
+        </button>
       </div>
 
       <a class="btn btn-success" href=<%= edit_share_file_path(@uploadedfile.id) %> data-toggle="tooltip" title="Share">
@@ -49,6 +47,33 @@
       <% end %>
 
       </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="exampleModalLongTitle">Confirm Deletion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
+          File will not be recoverable after deletion.
+          Anyone you have shared this file will with also lose access.
+          You will not be able to use the Find Origin functionality on ths file.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <%= form_tag delete_upload_file_path(@uploadedfile.id), method: "delete" do %>
+            <%= button_tag(class: "btn btn-danger") do %>
+              Delete
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
