@@ -4,22 +4,6 @@
   </a>
 
   <h2>Share File</h2>
-  <% if @shareable_users.length > 0 %>
-    <%= form_for :something, url: share_file_path(@uploadedfile.id) do |f| %>
-      <%= select_tag("users[]", options_for_select(@shareable_users.map{ |u| [u.fname + ' ' + u.lname, u.id] }), {required: true, :multiple => true, :class => "multiselect"}) %>
-      <div class="actions submit-btn">
-        <%= submit_tag "Add User(s)", :class => 'btn btn-primary btn-block' %>
-      </div>
-    <% end %>
-  <% else %>
-    <p>No friends to share the file with.</p>
-  <% end %>
+  <%= render_async shared_users_path(@uploadedfile.id), event_name: "shared-users-loaded", interval: (10*1000) %>
 
-  <div>
-    <div class="breaker"></div>
-    <h2>Shared With</h2>
-
-    <%= render_async shared_users_path(@uploadedfile.id), interval: (10*1000) %>
-<!--    , interval: (10*1000)-->
-  </div>
 </div>

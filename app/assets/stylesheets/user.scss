@@ -1,4 +1,4 @@
-#notifications-count-single-digit.fa-stack[data-count]:after{
+.notifications-count-single-digit.fa-stack[data-count]:after{
   position: absolute;
   right: 5%;
   top: 10%;
@@ -12,7 +12,7 @@
   font-weight: bold;
 }
 
-#notifications-count-double-digit.fa-stack[data-count]:after{
+.notifications-count-double-digit.fa-stack[data-count]:after{
   left: 1%;
   position: absolute;
   right: 0%;

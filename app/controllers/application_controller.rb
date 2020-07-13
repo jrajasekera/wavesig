@@ -8,6 +8,18 @@ class ApplicationController < ActionController::Base
     stored_location_for(resource) || user_dashboard_path(resource.id)
   end
 
+  def notifications_count
+    @notificationCount = Notification.unread_count(current_user)
+    @notificationDisplayCount = @notificationCount.to_s
+    if @notificationCount > 9
+      @notificationDisplayCount = "9+"
+    elsif @notificationCount == 0
+      @notificationDisplayCount = ""
+    end
+
+    render partial: "notifications_count"
+  end
+
   protected
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:fname, :lname, :email, :password)}

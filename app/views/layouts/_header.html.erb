@@ -11,6 +11,9 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon">
     </span>
+    <span class="badge badge-light">
+      <%= render_async main_app.notifications_count_path, event_name: "notifications-count-loaded", interval: (10*1000) %>
+    </span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarsExample03">
@@ -34,12 +37,13 @@
           </a>
         </li>
 
+        <%#= render_async main_app.notifications_icon_path %>
         <li class="nav-item" data-toggle="tooltip" title="Notifications">
-          <a class="nav-link nav-link-item" href=<%= notifications_path %>>
+          <a class="nav-link nav-link-item" href=<%= main_app.notifications_path %>>
             <div class="collapsed-menu-item">
-              <span id=<%= (Notification.unread_count(current_user) < 10 ? "notifications-count-single-digit" : "notifications-count-double-digit") %>
+              <span id="notification-icon"
                     class="fa-stack has-badge"
-                    data-count=<%= (Notification.unread_count(current_user) > 9 ? "9+" : (Notification.unread_count(current_user) == 0 ? "" : Notification.unread_count(current_user).to_s) ) %>>
+                    data-count="">
               <%= fa_icon "bell", class: "fa-2x" %>
               </span>
               <div class="d-sm-none menu-item-text">Notifications</div>

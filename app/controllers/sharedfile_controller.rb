@@ -16,8 +16,8 @@ class SharedfileController < ApplicationController
   end
 
   def edit_share
-    @shared_records = @uploadedfile.sharedfiles
-    @shareable_users = current_user.friends - @shared_records.map { |record| record.user }
+    # @shared_records = @uploadedfile.sharedfiles
+    # @shareable_users = current_user.friends - @shared_records.map { |record| record.user }
   end
 
   def share
@@ -52,6 +52,7 @@ class SharedfileController < ApplicationController
 
   def shared_users
     @shared_records = @uploadedfile.sharedfiles
+    @shareable_users = current_user.friends - @shared_records.map { |record| record.user }
     # byebug
     userJobs = RunningJob.where("user_id = ? AND job_type = ?", current_user.id, "share")
     @share_users = userJobs.map { |job| User.find(job.target_id) }

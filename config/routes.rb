@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   get "user/sharedfile/:file_id/remove_share/:user_id" => "sharedfile#remove_user", as: "remove_user_share_file"
   get "user/sharedfile/:file_id/shared_users" => "sharedfile#shared_users", as: "shared_users"
 
+  get "notifications_count" => "application#notifications_count", as: "notifications_count"
+
   root 'home#info'
 
   require 'sidekiq/web'

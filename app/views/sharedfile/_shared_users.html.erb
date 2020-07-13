@@ -1,35 +1,53 @@
-<% @share_users.each do |user| %>
-  <div class="field text-field shared-user-container">
-    <% userInfo = "#{user.fname} #{user.lname} (#{user.email})" %>
+<% if @shareable_users.length > 0 %>
+  <%= form_for :something, url: share_file_path(@uploadedfile.id) do |f| %>
+    <%= select_tag("users[]", options_for_select(@shareable_users.map{ |u| [u.fname + ' ' + u.lname, u.id] }), {required: true, :multiple => true, :class => "multiselect"}) %>
+    <div class="actions submit-btn">
+      <%= submit_tag "Add User(s)", :class => 'btn btn-primary btn-block' %>
+    </div>
+  <% end %>
+<% else %>
+  <p>No friends to share the file with.</p>
+<% end %>
 
-    <div class="input-group mb-3">
-      <input class="form-control shared-user-disabled-input" type="text" name="share_email" value='<%= userInfo %>' disabled>
-      <div class="input-group-append">
-        <button class="btn btn-sm btn-secondary" disabled>
-          <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </button>
+<div>
+  <div class="breaker"></div>
+  <h2>Shared With</h2>
+
+  <% @share_users.each do |user| %>
+    <div class="field text-field shared-user-container">
+      <% userInfo = "#{user.fname} #{user.lname} (#{user.email})" %>
+
+      <div class="input-group mb-3">
+        <input class="form-control shared-user-disabled-input" type="text" name="share_email" value='<%= userInfo %>' disabled>
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-secondary" disabled>
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
 
-<% @shared_records.each do |shared_record| %>
-  <div class="field text-field shared-user-container">
-    <% user = shared_record.user %>
-    <% userInfo = "#{user.fname} #{user.lname} (#{user.email})" %>
+  <% @shared_records.each do |shared_record| %>
+    <div class="field text-field shared-user-container">
+      <% user = shared_record.user %>
+      <% userInfo = "#{user.fname} #{user.lname} (#{user.email})" %>
 
-    <div class="input-group mb-3">
-      <input class="form-control shared-user-disabled-input" type="text" name="share_email" value='<%= userInfo %>' disabled>
-      <div class="input-group-append">
-        <a href=<%= remove_user_share_file_path(@uploadedfile.id, shared_record.user_id) %> type="button" class="btn btn-danger"><%= fa_icon "trash", class: "fa-2x" %></a>
+      <div class="input-group mb-3">
+        <input class="form-control shared-user-disabled-input" type="text" name="share_email" value='<%= userInfo %>' disabled>
+        <div class="input-group-append">
+          <a href=<%= remove_user_share_file_path(@uploadedfile.id, shared_record.user_id) %> type="button" class="btn btn-danger"><%= fa_icon "trash", class: "fa-2x" %></a>
+        </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
-<% if @shared_records.length == 0 && @share_users.length == 0 %>
-  <p>File has not been shared with anyone.</p>
-<% end %>
+  <% if @shared_records.length == 0 && @share_users.length == 0 %>
+    <p>File has not been shared with anyone.</p>
+  <% end %>
+
+</div>
+<%= content_for :render_async %>

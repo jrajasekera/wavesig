@@ -81,3 +81,33 @@ function validateFiles(inputFile) {
         $(inputFile).val('');
     };
 }
+
+document.addEventListener("shared-users-loaded", function(event) {
+    $('.multiselect').multiselect({
+        enableFiltering: true,
+        filterBehavior: 'text',
+        enableCaseInsensitiveFiltering: true,
+        nonSelectedText: 'Select friends'
+    });
+});
+
+document.addEventListener("notifications-count-loaded", function(event) {
+    let notificationsDisplayCount = event.container[0].innerText.trim();
+
+    let iconTag = $("#notification-icon");
+    let oldCount = iconTag.attr('data-count');
+    if(oldCount != notificationsDisplayCount) {
+        let singleDigitClass = "notifications-count-single-digit";
+        let doubleDigitClass = "notifications-count-double-digit";
+        iconTag.removeClass(`${singleDigitClass} ${doubleDigitClass}`);
+        if(notificationsDisplayCount == "") {
+            iconTag.addClass(singleDigitClass);
+        } else if(notificationsDisplayCount == "9+") {
+            iconTag.addClass(doubleDigitClass);
+        } else {
+            iconTag.addClass(singleDigitClass);
+        }
+
+        iconTag.attr("data-count",notificationsDisplayCount);
+    }
+});
