@@ -19,6 +19,11 @@ module Wavesig
       # dev: true
     }
 
+    RenderAsync.configure do |config|
+      config.jquery = true # This will render jQuery code, and skip Vanilla JS code
+      config.turbolinks = true # Enable this option if you are using Turbolinks 5+
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading

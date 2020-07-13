@@ -35,13 +35,31 @@ class SharedfileController < ApplicationController
       elsif @uploadedfile.sharedfiles.map { |sharedfile| sharedfile.user }.include? @shared_user
         flash[:alert] = "You have already shared this file with #{@shared_user.fname} #{@shared_user.lname}."
       else
-        ShareFileJob.perform_later(@shared_user, current_user, @uploadedfile)
-        flash[:notice] = 'Your file is being processed and shared!'
+        shareJob = ShareFileJob.perform_later(@shared_user, current_user, @uploadedfile)
+
+        runningJob = RunningJob.new :user_id => current_user.id, :job_id => shareJob.job_id, :job_type => "share", :target_type => "User", :target_id => @shared_user.id
+        if runningJob.save
+          flash[:notice] = 'Your file is being processed and shared!'
+        else
+          flash[:alert] = 'Your file is being processed and shared. Refresh the page in a few minutes.'
+        end
       end
 
     end
 
     redirect_to edit_share_file_path id: @uploadedfile.id
+  end
+
+  def shared_users
+    @shared_records = @uploadedfile.sharedfiles
+    # byebug
+    userJobs = RunningJob.where("user_id = ? AND job_type = ?", current_user.id, "share")
+    @share_users = userJobs.map { |job| User.find(job.target_id) }
+
+    # @share_users = [User.find(1),User.find(2)]
+    # rails generate migration AddTargetsToRunning_Jobs target_type:string target_id:bigint
+
+    render partial: "shared_users"
   end
 
   def remove_user

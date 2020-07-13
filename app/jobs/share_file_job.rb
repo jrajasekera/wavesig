@@ -20,6 +20,9 @@ class ShareFileJob < ApplicationJob
       #It failed, create notification for sharer
       share_failed_notify(shared_user,sharer,uploadedfile)
     end
+
+    runningJob = RunningJob.find_by(job_id: self.job_id)
+    runningJob.destroy
   end
 
   rescue_from(StandardError) do |exception|
@@ -28,6 +31,8 @@ class ShareFileJob < ApplicationJob
     uploadedfile = arguments[2]
     pp "I DIDNT SAVE PROPERLY!!!!!!!!!!!!!!!!!!!!!"
     share_failed_notify(shared_user,sharer,uploadedfile)
+    runningJob = RunningJob.find_by(job_id: self.job_id)
+    runningJob.destroy
   end
 
   def share_failed_notify(shared_user,sharer,uploadedfile)

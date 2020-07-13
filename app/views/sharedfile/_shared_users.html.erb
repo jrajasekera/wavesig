@@ -1,0 +1,35 @@
+<% @share_users.each do |user| %>
+  <div class="field text-field shared-user-container">
+    <% userInfo = "#{user.fname} #{user.lname} (#{user.email})" %>
+
+    <div class="input-group mb-3">
+      <input class="form-control shared-user-disabled-input" type="text" name="share_email" value='<%= userInfo %>' disabled>
+      <div class="input-group-append">
+        <button class="btn btn-sm btn-secondary" disabled>
+          <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+<% @shared_records.each do |shared_record| %>
+  <div class="field text-field shared-user-container">
+    <% user = shared_record.user %>
+    <% userInfo = "#{user.fname} #{user.lname} (#{user.email})" %>
+
+    <div class="input-group mb-3">
+      <input class="form-control shared-user-disabled-input" type="text" name="share_email" value='<%= userInfo %>' disabled>
+      <div class="input-group-append">
+        <a href=<%= remove_user_share_file_path(@uploadedfile.id, shared_record.user_id) %> type="button" class="btn btn-danger"><%= fa_icon "trash", class: "fa-2x" %></a>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% if @shared_records.length == 0 && @share_users.length == 0 %>
+  <p>File has not been shared with anyone.</p>
+<% end %>

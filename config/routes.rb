@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   get "user/sharedfile/edit/:file_id" => "sharedfile#edit_share", as: "edit_share_file"
   post "user/sharedfile/:file_id" => "sharedfile#share", as: "share_file"
   get "user/sharedfile/:file_id/remove_share/:user_id" => "sharedfile#remove_user", as: "remove_user_share_file"
-
+  get "user/sharedfile/:file_id/shared_users" => "sharedfile#shared_users", as: "shared_users"
 
   root 'home#info'
 
