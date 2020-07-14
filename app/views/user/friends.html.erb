@@ -3,7 +3,7 @@
     <div class="collapse-arrow" ><i class="arrow left"></i> Back to Dashboard</div>
   </a>
 
-  <h2>Add Friends</h2>
+  <h3>Add Friends</h3>
   <%= form_for :something, url: add_friend_path do |f| %>
 
     <div class="field text-field">
@@ -17,13 +17,17 @@
 
   <div>
     <div class="breaker"></div>
-    <h2>Pending Friend Requests</h2>
+    <h3>Sent Requests</h3>
 
     <% @sentRequests.each do |request| %>
-          <div class="field text-field row shared-user-container">
+          <div class="field text-field shared-user-container">
             <% userInfo = "#{request.fname} #{request.lname} (#{request.email})" %>
-            <input type="text" name="share_email" value='<%= userInfo %>' class="col-9" disabled>
-            <a href=<%= remove_friend_path(request) %> type="button" class="btn btn-danger col-3"><%= fa_icon "minus", class: "fa-2x" %></a>
+            <div class="input-group mb-3">
+              <input type="text" name="share_email" value='<%= userInfo %>' class="form-control shared-user-disabled-input" disabled>
+              <div class="input-group-append">
+                <a href=<%= remove_friend_path(request) %> type="button" class="btn btn-danger"><%= fa_icon "minus", class: "fa-2x" %></a>
+              </div>
+            </div>
           </div>
     <% end %>
 
@@ -34,13 +38,17 @@
 
   <div>
     <div class="breaker"></div>
-    <h2>Received Friend Requests</h2>
+    <h3>Received Requests</h3>
 
     <% @receivedRequests.each do |request| %>
-          <div class="field text-field row shared-user-container">
+          <div class="field text-field shared-user-container">
             <% userInfo = "#{request.fname} #{request.lname} (#{request.email})" %>
-            <input type="text" name="share_email" value='<%= userInfo %>' class="col-9" disabled>
-            <a href=<%= accept_friend_path(request) %> type="button" class="btn btn-danger col-3"><%= fa_icon "plus", class: "fa-2x" %></a>
+            <div class="input-group mb-3">
+              <input type="text" name="share_email" value='<%= userInfo %>' class="form-control shared-user-disabled-input" disabled>
+              <div class="input-group-append">
+                <a href=<%= accept_friend_path(request) %> type="button" class="btn btn-danger"><%= fa_icon "plus", class: "fa-2x" %></a>
+              </div>
+            </div>
           </div>
     <% end %>
 
@@ -51,13 +59,17 @@
 
   <div>
     <div class="breaker"></div>
-    <h2>Friends</h2>
+    <h3>Friends</h3>
 
     <% @friends.each do |friend| %>
-      <div class="field text-field row shared-user-container">
+      <div class="field text-field shared-user-container">
         <% userInfo = "#{friend.fname} #{friend.lname} (#{friend.email})" %>
-        <input type="text" name="share_email" value='<%= userInfo %>' class="col-9" disabled>
-        <a href=<%= remove_friend_path(friend) %> type="button" class="btn btn-danger col-3"><%= fa_icon "user-times", class: "fa-2x" %></a>
+        <div class="input-group mb-3">
+          <input type="text" name="share_email" value='<%= userInfo %>' class="form-control shared-user-disabled-input" disabled>
+          <div class="input-group-append">
+            <a href=<%= remove_friend_path(friend) %> type="button" class="btn btn-danger"><%= fa_icon "user-times", class: "fa-2x" %></a>
+          </div>
+        </div>
       </div>
     <% end %>
 
