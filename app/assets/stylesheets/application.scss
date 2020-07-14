@@ -58,6 +58,25 @@ body{
   background-size: cover;
 }
 
+#nav-bar-logo {
+  height: 60px;
+  width: auto;
+}
+
+#nav-bar-logo-container {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+#footer-spacer {
+  padding-right:60px;
+}
+
+#footer-logo {
+  height: 80px;
+  width: auto;
+}
+
 #wrap {
   min-height: 100%;
   flex: 1 0 auto;

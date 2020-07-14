@@ -1,9 +1,13 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 
   <% if user_signed_in? %>
-  <a class="navbar-brand" href=<%= main_app.user_dashboard_path(current_user.id) %>><img src=<%= image_url('wavesiglogo.png') %> alt=""></a>
+    <a id="nav-bar-logo-container" class="navbar-brand" href=<%= main_app.user_dashboard_path(current_user.id) %>>
+      <img id="nav-bar-logo" src=<%= image_url('logo.svg') %> alt="">
+    </a>
   <% else %>
-  <a class="navbar-brand" href=<%= main_app.home_info_path %>><img src=<%= image_url('wavesiglogo.png') %> alt=""></a>
+    <a id="nav-bar-logo-container" class="navbar-brand" href=<%= main_app.home_info_path %>>
+      <img id="nav-bar-logo" src=<%= image_url('logo.svg') %> alt="">
+    </a>
   <% end %>
 
 
@@ -11,8 +15,8 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon">
     </span>
-    <span class="badge badge-light">
-      <%= render_async main_app.notifications_count_path, event_name: "notifications-count-loaded", interval: (10*1000) %>
+    <span id="mobile-notification-badge" class="">
+      <%= render_async main_app.notifications_count_path, event_name: "notifications-count-loaded", interval: (30*1000) %>
     </span>
   </button>
 

@@ -93,19 +93,27 @@ document.addEventListener("shared-users-loaded", function(event) {
 
 document.addEventListener("notifications-count-loaded", function(event) {
     let notificationsDisplayCount = event.container[0].innerText.trim();
-
     let iconTag = $("#notification-icon");
+    let mobileBadge = $("#mobile-notification-badge");
     let oldCount = iconTag.attr('data-count');
+
     if(oldCount != notificationsDisplayCount) {
         let singleDigitClass = "notifications-count-single-digit";
         let doubleDigitClass = "notifications-count-double-digit";
-        iconTag.removeClass(`${singleDigitClass} ${doubleDigitClass}`);
+        let hasBadgeClass = "has-badge";
+        let mobileBadgeClass = "badge badge-light";
+
+        iconTag.removeClass(`${singleDigitClass} ${doubleDigitClass} ${hasBadgeClass}`);
+        mobileBadge.removeClass(mobileBadgeClass);
+
         if(notificationsDisplayCount == "") {
             iconTag.addClass(singleDigitClass);
         } else if(notificationsDisplayCount == "9+") {
-            iconTag.addClass(doubleDigitClass);
+            iconTag.addClass(`${doubleDigitClass} ${hasBadgeClass}`);
+            mobileBadge.addClass(mobileBadgeClass);
         } else {
-            iconTag.addClass(singleDigitClass);
+            iconTag.addClass(`${singleDigitClass} ${hasBadgeClass}`);
+            mobileBadge.addClass(mobileBadgeClass);
         }
 
         iconTag.attr("data-count",notificationsDisplayCount);
