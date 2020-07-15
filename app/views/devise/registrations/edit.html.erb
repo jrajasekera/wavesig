@@ -50,9 +50,11 @@
   <% end %>
 
   <br />
+
+  <div class="breaker"></div>
   <h4>Cancel My Account</h4>
 
-  <p>Unhappy? <%= button_to "Cancel My Account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :class => 'btn btn-primary btn-block' %></p>
+  <p><%= button_to "Cancel My Account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :class => 'btn btn-primary btn-block' %></p>
 
   <%= link_to "Back", :back %>
 </div>

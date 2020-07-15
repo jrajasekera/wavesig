@@ -16,6 +16,7 @@
     <div class="field browse-file-field">
       <%= f.file_field :audio_file,
                        :id => 'browse-file-field',
+                       :class => "form-control-file",
                        required: true,
                        onchange: "validateFiles(this);",
                        data: { max_file_size: Uploadedfile::MAX_UPLOAD_FILE_SIZE }

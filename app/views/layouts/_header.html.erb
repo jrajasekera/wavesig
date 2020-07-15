@@ -15,9 +15,11 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon">
     </span>
-    <span id="mobile-notification-badge" class="">
-      <%= render_async main_app.notifications_count_path, event_name: "notifications-count-loaded", interval: (30*1000) %>
-    </span>
+    <% if user_signed_in? %>
+      <span id="mobile-notification-badge" class="">
+        <%= render_async main_app.notifications_count_path, event_name: "notifications-count-loaded", interval: (30*1000) %>
+      </span>
+    <% end %>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarsExample03">
@@ -25,10 +27,10 @@
 
       <% if not user_signed_in? %>
         <li class="nav-item">
-          <a class="nav-link" href=<%= main_app.new_user_session_path %> >Login <span class="sr-only">(current)</span></a>
+          <a class="nav-link menu-item-text" href=<%= main_app.new_user_session_path %> >Login <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href=<%= main_app.new_user_registration_path %> >Sign Up <span class="sr-only">(current)</span></a>
+          <a class="nav-link menu-item-text" href=<%= main_app.new_user_registration_path %> >Sign Up <span class="sr-only">(current)</span></a>
         </li>
       <% else %>
 
@@ -41,7 +43,6 @@
           </a>
         </li>
 
-        <%#= render_async main_app.notifications_icon_path %>
         <li class="nav-item" data-toggle="tooltip" title="Notifications">
           <a class="nav-link nav-link-item" href=<%= main_app.notifications_path %>>
             <div class="collapsed-menu-item">

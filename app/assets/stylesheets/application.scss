@@ -58,6 +58,10 @@ body{
   background-size: cover;
 }
 
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+
 #nav-bar-logo {
   height: 60px;
   width: auto;
@@ -66,6 +70,7 @@ body{
 #nav-bar-logo-container {
   padding-top: 0px;
   padding-bottom: 0px;
+  margin-left: -15px;
 }
 
 #footer-spacer {
@@ -115,7 +120,7 @@ body{
   margin-left: 10px;
   display: inline;
   font-size: 1.5em;
-  font-weight: bolder;
+  //font-weight: bolder;
 }
 
 .collapse-arrow {
