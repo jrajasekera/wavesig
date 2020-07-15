@@ -1,35 +1,19 @@
 <%= cache(['notifications', Notifications::VERSION, notification]) do %>
 
 <div class="card notification-card">
-
-
+  <div class="card-header">
+<!--    Notification Name-->
+  </div>
   <div id="notification-<%= notification.id %>"
        data-id="<%= notification.id %>"
-       class="media notification notification-<%= notification.notify_type %><%= ' unread' unless notification.read? %>">
+       class="notification-body media notification notification-<%= notification.notify_type %><%= ' unread' unless notification.read? %>">
     <div class="media-left">
       <% if notification.actor_profile_url && notification.actor_avatar_url %>
         <%= link_to image_tag(notification.actor_avatar_url), notification.actor_profile_url, title: notification.actor_name, class: 'user-avatar' %>
       <% end %>
     </div>
     <div class="row notification-row">
-      <div class="col-sm-6 justify-content-center align-self-center">
-        <%= render partial: "/notifications/#{notification.notify_type}", locals: { notification: notification } %>
-      </div>
-
-      <div class="col-sm-3 notification-time justify-content-center align-self-center">
-        <%= notification.created_at.strftime("%l:%M %p") %>
-      </div>
-
-      <div class="col-sm-3 notification-view-btn">
-        <% if notification.target.nil? %>
-          <button type="button" class="btn btn-light btn-sm" disabled>File No Longer Available</button>
-        <% else %>
-          <a href=<%= main_app.show_upload_file_path(notification.target.uploadedfile.id) %> class="btn btn-light btn-sm">
-            <div class="collapse-arrow" >View File <i class="arrow right"></i></div>
-          </a>
-        <% end %>
-      </div>
-
+      <%= render partial: "/notifications/#{notification.notify_type}", locals: { notification: notification } %>
     </div>
   </div>
 

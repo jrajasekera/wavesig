@@ -73,6 +73,20 @@ body{
   margin-left: -15px;
 }
 
+.content-container-left-align {
+  width: 90%;
+  display: inline-block;
+  text-align: left;
+  margin-top: 3%;
+}
+
+.content-container-center-align {
+  width: 90%;
+  display: inline-block;
+  text-align: center;
+  margin-top: 3%;
+}
+
 #footer-spacer {
   padding-right:60px;
 }
@@ -119,8 +133,7 @@ body{
 .menu-item-text {
   margin-left: 10px;
   display: inline;
-  font-size: 1.5em;
-  //font-weight: bolder;
+  font-size: 1.2em;
 }
 
 .collapse-arrow {

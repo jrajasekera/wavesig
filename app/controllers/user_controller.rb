@@ -38,6 +38,12 @@ class UserController < ApplicationController
 
     if not request_issuer.nil?
       if current_user.approve(request_issuer)
+        Notification.create do |notification|
+          notification.notify_type = 'accepted_friend_request'
+          notification.actor = current_user
+          notification.user = request_issuer
+        end
+
         flash[:notice] = 'Accepted friend request from ' + request_issuer.email
       else
         flash[:alert] = 'Failed to accepted friend request from ' + request_issuer.email

@@ -27,13 +27,6 @@
   font-weight: bold;
 }
 
-#notifications-container {
-  width: 90%;
-  display: inline-block;
-  text-align: left;
-  margin-top: 30px;
-}
-
 .notifications-title-button-container {
   padding-top: 10px;
   align-items: center;
@@ -68,6 +61,11 @@
   background-color: slategray !important;
 }
 
+.notification-body {
+  background-color: white;
+  color:black
+}
+
 .notification-text {
   margin-left: 10px;
 }
@@ -84,22 +82,11 @@
   margin-bottom: 5px;
 }
 
-#friends-container {
-  width: 90%;
-  display: inline-block;
-  text-align: left;
-  margin-top: 30px;
-  //background-color: #343a40!important;
-  //padding: 30px 30px 40px;
-
-  //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 #dashboard-container {
   width: 90%;
   display: inline-block;
   text-align: center;
-  margin-top: 50px;
+  margin-top: 3%;
   //background-color: #343a40!important;
   //padding: 30px 30px 40px;
   //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -143,7 +130,9 @@
 }
 
 .card-header {
-  background-color: slategray!important;
+  //background-color: slategray!important;
+  background-color:	#6c757d!important;
+  border-bottom: 1px solid rgba(0,0,0,.125);
 
   button {
     color: white;
