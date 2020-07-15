@@ -136,6 +136,11 @@ body{
   font-size: 1.2em;
 }
 
+.logged-in-as-text {
+  display: inline;
+  padding: 0.25rem 1.5rem;
+}
+
 .collapse-arrow {
   i {
     border: solid black;
@@ -176,6 +181,10 @@ body{
   font-size: .875rem;
   line-height: .5;
   border-radius: .2rem;
+}
+
+.dropdown-menu {
+  min-width: 20em;
 }
 
 // start footer

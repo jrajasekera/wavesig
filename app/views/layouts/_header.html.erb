@@ -77,6 +77,9 @@
             <%= link_to "Logout", main_app.destroy_user_session_path, method: :delete, :class => 'dropdown-item'  %>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href=<%= main_app.edit_user_registration_path %>>Edit Profile</a>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-divider"></div>
+            <div class="logged-in-as-text">Logged in as <%= current_user.fname + " " + current_user.lname %></div>
           </div>
         </li>
 
