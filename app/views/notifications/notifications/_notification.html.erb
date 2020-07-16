@@ -1,8 +1,8 @@
 <%= cache(['notifications', Notifications::VERSION, notification]) do %>
 
-<div class="card notification-card">
+<div class="card notification-card shadow rounded">
   <div class="card-header">
-<!--    Notification Name-->
+    <%= notification.created_at.strftime("%l:%M %p") %>
   </div>
   <div id="notification-<%= notification.id %>"
        data-id="<%= notification.id %>"

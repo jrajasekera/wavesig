@@ -24,6 +24,12 @@ class UserController < ApplicationController
     else
       invited = @user.invite(@add_friend_user)
       if invited
+        Notification.create do |notification|
+          notification.notify_type = 'sent_friend_request'
+          notification.actor = current_user
+          notification.user = @add_friend_user
+        end
+
         flash[:notice] = 'Friend Request Sent to ' + @add_friend_user.email + ' (' + @add_friend_user.fname + ' ' + @add_friend_user.lname + ')!'
       else
         flash[:alert] = 'Failed to Friend Request ' + @add_friend_user.email + '!'
