@@ -68,8 +68,8 @@ function validateFiles(inputFile) {
 
     $.each(inputFile.files, function() {
         if (this.size && maxFileSize && this.size > parseInt(maxFileSize)) {sizeExceeded=true;};
-        extName = this.name.split('.').pop();
-        if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
+        //extName = this.name.split('.').pop();
+        //if ($.inArray(extName, allowedExtension) == -1) {extError=true;};
     });
     if (sizeExceeded) {
         window.alert(maxExceededMessage);
