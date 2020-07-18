@@ -66,14 +66,14 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link nav-link-item btn" id="dropdown03" data-toggle="dropdown" title="Account" aria-haspopup="true" aria-expanded="false" href="#">
+          <a class="nav-link nav-link-item" id="account-dropdown" data-toggle="dropdown" title="Account" aria-haspopup="true" aria-expanded="false" href="#">
             <div class="collapsed-menu-item">
               <%= fa_icon "user", class: "fa-2x" %>
               <div class="d-sm-none menu-item-text">Account</div>
               <%= fa_icon "angle-down", class: "expand-down-arrow" %>
             </div>
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown03">
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-dropdown">
             <%= link_to "Logout", main_app.destroy_user_session_path, method: :delete, :class => 'dropdown-item'  %>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href=<%= main_app.edit_user_registration_path %>>Edit Profile</a>
