@@ -111,7 +111,13 @@
                     <th>Description</th>
                   </tr>
                   <tr>
-                    <td><%= sharedfile_associated_file.description %></td>
+                    <td>
+                      <% if sharedfile_associated_file.description.blank? %>
+                        N/A
+                      <% else %>
+                        <%= sharedfile_associated_file.description %>
+                      <% end %>
+                    </td>
                   </tr>
                 </table>
               </div>

@@ -33,11 +33,13 @@ $(document).on('turbolinks:load', function () {
     });
 });
 
-// slide alerts away after 2 seconds
-$(function() {
-    setTimeout(function(){
-        $('.alert').slideUp(500);
-    }, 2000);
+$(document).on('turbolinks:load', function(){
+    $(".alert-success").delay(2500).slideUp(500, function(){
+        $(".alert-success").alert('close');
+    });
+    $(".alert-danger").delay(4000).slideUp(500, function(){
+        $(".alert-danger").alert('close');
+    });
 });
 
 function showUploadSpinner() {
