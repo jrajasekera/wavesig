@@ -59,7 +59,7 @@ body{
 }
 
 .navbar {
-  //min-height: 70px;
+  min-height: fit-content;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -101,7 +101,8 @@ body{
 }
 
 #footer-logo {
-  height: 80px;
+  max-height: 80px;
+  min-height: 55px;
   width: auto;
 }
 
