@@ -7,7 +7,7 @@ class Uploadedfile < ApplicationRecord
   validate :audio_file_incorrect_format
   validate :filename_is_incorrect_format
 
-  MAX_UPLOAD_FILE_SIZE = 50.megabytes
+  MAX_UPLOAD_FILE_SIZE = 100.megabytes
 
   def filename_is_incorrect_format
     if fileName.blank?
