@@ -37,7 +37,13 @@ class SharedfileController < ApplicationController
       else
         shareJob = ShareFileJob.perform_later(@shared_user, current_user, @uploadedfile)
 
-        runningJob = RunningJob.new :user_id => current_user.id, :job_id => shareJob.job_id, :job_type => "share", :target_type => "User", :target_id => @shared_user.id
+        runningJob = RunningJob.new :user_id => current_user.id,
+                                    :job_id => shareJob.job_id,
+                                    :job_type => "share",
+                                    :target_type => "User",
+                                    :target_id => @shared_user.id,
+                                    :second_target_type => "Uploadedfile",
+                                    :second_target_id => @uploadedfile.id
         if runningJob.save
           flash[:notice] = 'Your file is being processed and shared!'
         else
@@ -52,13 +58,10 @@ class SharedfileController < ApplicationController
 
   def shared_users
     @shared_records = @uploadedfile.sharedfiles
-    @shareable_users = current_user.friends - @shared_records.map { |record| record.user }
-    # byebug
-    userJobs = RunningJob.where("user_id = ? AND job_type = ?", current_user.id, "share")
-    @share_users = userJobs.map { |job| User.find(job.target_id) }
-
-    # @share_users = [User.find(1),User.find(2)]
-    # rails generate migration AddTargetsToRunning_Jobs target_type:string target_id:bigint
+    currentShareJobs = RunningJob.where("user_id = ? AND job_type = ? AND second_target_id = ?", current_user.id, "share", @uploadedfile.id)
+    currentShareJobReceivers = currentShareJobs.map { |job| job.target_id }
+    @shareable_users = (current_user.friends - @shared_records.map { |record| record.user }).filter { |user| !currentShareJobReceivers.include?(user.id) }
+    @share_users = currentShareJobs.map { |job| User.find(job.target_id) }
 
     render partial: "shared_users"
   end
