@@ -113,10 +113,10 @@ class UploadedfileController < ApplicationController
 
     leaker_file = leaker_file_params[:origin_audio_file]
 
+
+
     if leaker_file.nil?
       flash[:alert] = 'No file attached.'
-    elsif leaker_file.content_type != 'audio/x-wav'
-      flash[:alert] = 'File has to be in wav format.'
     else
       leaker_file_io = leaker_file.tempfile.to_io
       if(leaker_file_io.size > (Uploadedfile::MAX_UPLOAD_FILE_SIZE * 1.3) )

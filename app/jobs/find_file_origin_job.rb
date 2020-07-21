@@ -15,6 +15,10 @@ class FindFileOriginJob < ApplicationJob
     original_file = arguments[0]
     leaker_file_path = arguments[1]
     pp "JOB DIDNT RUN PROPERLY!!!!!!!!!!!!!!!!!!!!!"
+    findOriginResult = FindOriginResult.new :uploadedfile_id => original_file.id,
+                                            :origin_user_id => (nil)
+    findOriginResult.save
+
     File.delete(leaker_file_path) if File.exists? leaker_file_path
     runningJob = RunningJob.find_by(job_id: self.job_id)
     runningJob.destroy
