@@ -3,7 +3,8 @@
   <div class="collapse-arrow" ><i class="arrow left"></i> Back to File</div>
   </a>
 
-  <h2 class="page-title">Upload Leaked File</h2>
+  <h2 class="page-title centered-title font-weight-bold">File Origin Analyzer</h2>
+  <div class="breaker"></div>
 
   <%= form_for :leaker_file, url: find_origin_path, html: { method: :post } do |f| %>
 
@@ -17,8 +18,10 @@
     </div>
 
     <div class="actions submit-btn">
-      <%= f.submit "Find Leaker", :class => 'btn btn-primary btn-block' %>
+      <%= f.submit "Analyze", :class => 'btn btn-primary btn-block' %>
     </div>
   <% end %>
+
+  <%= render_async find_origin_results_path(@uploadedfile.id), interval: (10*1000) %>
 
 </div>

@@ -12,4 +12,8 @@ class User < ApplicationRecord
   validates_presence_of     :fname
   validates_presence_of     :lname
 
+  def fullName
+    "#{self[:fname]} #{self[:lname]}"
+  end
+
 end

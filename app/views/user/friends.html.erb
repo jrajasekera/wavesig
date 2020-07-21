@@ -3,6 +3,9 @@
     <div class="collapse-arrow" ><i class="arrow left"></i> Back to Dashboard</div>
   </a>
 
+  <h2 class="page-title centered-title font-weight-bold">Friends</h2>
+  <div class="breaker"></div>
+
   <h3>Add Friends</h3>
   <%= form_for :something, url: add_friend_path do |f| %>
 
@@ -32,7 +35,7 @@
     <% end %>
 
     <% if @sentRequests.length == 0 %>
-          <p>You have not sent any friend requests.</p>
+          <p>You have no pending friend requests</p>
     <% end %>
   </div>
 
@@ -53,7 +56,7 @@
     <% end %>
 
     <% if @receivedRequests.length == 0 %>
-          <p>You have not received added any friend requests.</p>
+          <p>You have not received added any friend requests</p>
     <% end %>
   </div>
 

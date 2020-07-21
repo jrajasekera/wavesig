@@ -2,6 +2,7 @@ class Uploadedfile < ApplicationRecord
   belongs_to :user
   has_one_attached :audio_file
   has_many :sharedfiles
+  has_many :find_origin_results
 
   # validates :fileName, presence: true
   validate :audio_file_incorrect_format

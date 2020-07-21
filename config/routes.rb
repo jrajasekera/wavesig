@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   post "/user/upload_file/:file_id/find_origin" => "uploadedfile#find_origin", as: "find_origin"
   get "/user/upload_file/:file_id/find_origin/upload" => "uploadedfile#find_origin_form", as: "find_origin_form"
+  get "/user/upload_file/:file_id/find_origin/results" => "uploadedfile#find_origin_results", as: "find_origin_results"
 
   get "user/sharedfile/edit/:file_id" => "sharedfile#edit_share", as: "edit_share_file"
   post "user/sharedfile/:file_id" => "sharedfile#share", as: "share_file"

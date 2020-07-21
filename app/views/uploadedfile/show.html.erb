@@ -23,7 +23,7 @@
       </audio>
     </div>
 
-    <div class="btn-group" role="group" aria-label="Show btn group">
+    <div class="btn-group shadow rounded" role="group" aria-label="Show btn group">
 
       <div id="download-link-container" class="btn btn-info" data-toggle="tooltip" title="Download">
         <a href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name"><%= fa_icon "download", class: "fa-2x" %></a>

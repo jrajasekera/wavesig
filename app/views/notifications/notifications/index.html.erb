@@ -1,13 +1,16 @@
 <div class="content-container-left-align">
 
-  <a href=<%= main_app.user_dashboard_path %> class="btn btn-secondary btn-sm back-btn">
+  <a href=<%= main_app.user_dashboard_path %> class="btn btn-secondary btn-sm back-btn shadow rounded">
     <div class="collapse-arrow" ><i class="arrow left"></i> Back to Dashboard</div>
   </a>
 
+  <h2 class="page-title centered-title font-weight-bold">Notifications</h2>
+  <div class="breaker"></div>
+
   <div class="notifications-title-button-container">
-    <h2>Notifications</h2>
+
     <div class="notifications-clear-btn-container">
-      <%= link_to "Clear All", notifications.clean_notifications_path, class: 'btn btn-sm btn-secondary', method: 'delete' %>
+      <%= link_to "Clear All", notifications.clean_notifications_path, class: 'btn btn-sm btn-secondary shadow rounded', method: 'delete' %>
     </div>
   </div>
 

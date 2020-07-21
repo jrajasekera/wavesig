@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_19_170629) do
+ActiveRecord::Schema.define(version: 2020_07_19_223958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,14 @@ ActiveRecord::Schema.define(version: 2020_07_19_170629) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "find_origin_results", force: :cascade do |t|
+    t.bigint "uploadedfile_id", null: false
+    t.bigint "origin_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uploadedfile_id"], name: "index_find_origin_results_on_uploadedfile_id"
   end
 
   create_table "friendships", force: :cascade do |t|

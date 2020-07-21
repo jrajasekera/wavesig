@@ -11,11 +11,9 @@ module ApplicationHelper
   SYNC_CODES = %w[11110101001111100110 10111111111111111011 01100001110001011000 01111100100000000010 10001111100000111110 10001000101010011101 11000011011100011011 10000101010011110100 00011110010011011010 00101001100100000101 01100010010010100100 00010111011101101000 11101111011010000001 01001000011101110111 11110010101110110000 11111000010101001101 11101100111101100000 11011000111110000011 00000001001010110011 00100100110011101011 10010000000101000010 01101011001111001100 11010011111001000100 01011011000001110001 01010001100101101111]
   VITERBI_DIR = Rails.application.credentials[Rails.env.to_sym][:viterbi_dir]
 
-  def find_leak_source(original_file, leaker_file)
-
+  def find_leak_source(original_file, leaker_file_path)
     # open leaker file
-    lkr_file = RubyAudio::Sound.open(leaker_file)
-
+    lkr_file = RubyAudio::Sound.open(leaker_file_path)
     # get file info
     channelCount = lkr_file.info.channels
     sampleRate = lkr_file.info.samplerate
@@ -72,6 +70,8 @@ module ApplicationHelper
         sharedUser = User.find_by id: sharedfile.user_id
       end
     end
+
+    File.delete(leaker_file_path) if File.exists? leaker_file_path
 
     sharedUser
   end
