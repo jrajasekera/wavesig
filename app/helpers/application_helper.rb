@@ -851,4 +851,23 @@ module ApplicationHelper
     sync_codes.sample + watermark
   end
 
+  # deletes uploaded files and all associated records with that file
+  def deleteUploadedFile(uploadedfile)
+    # delete shared copies
+    uploadedfile.sharedfiles.each do |shared_file|
+      shared_file.audio_file.purge
+      shared_file.destroy
+    end
+
+    # delete find origin results
+    FindOriginResult.where(uploadedfile: uploadedfile.id).destroy_all
+
+    # delete attachment
+    uploadedfile.audio_file.purge
+    #@uploadedfile.audio_file.purge_later ASYNC
+
+    # delete record
+    uploadedfile.destroy
+  end
+
 end

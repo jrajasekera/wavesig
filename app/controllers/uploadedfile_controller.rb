@@ -73,25 +73,9 @@ class UploadedfileController < ApplicationController
   end
 
   def delete
-    # delete shared copies
-    @uploadedfile.sharedfiles.each do |shared_file|
-      shared_file.audio_file.purge
-      if not shared_file.destroy
-        flash.now[:alert] = 'Error deleting associated shared files!'
-      end
-    end
-
-    # delete attachment
-    @uploadedfile.audio_file.purge
-    #@uploadedfile.audio_file.purge_later ASYNC
-
-    #delete file row
-    if @uploadedfile.destroy
-      flash[:notice] = 'File Deleted!'
-      redirect_to user_dashboard_path(current_user.id)
-    else
-      flash.now[:alert] = 'Error deleting file! Please try again.'
-    end
+    helpers.deleteUploadedFile(@uploadedfile)
+    flash[:notice] = 'File Deleted!'
+    redirect_to user_dashboard_path(current_user.id)
   end
 
   def uploadedfile_params

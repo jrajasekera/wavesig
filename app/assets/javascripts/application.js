@@ -49,6 +49,13 @@ function showUploadSpinner() {
     }
 }
 
+function showAnalyzingSpinner() {
+    if($('#browse-file-field')[0].value.length > 0) {
+        $('#analyze_file_btn').hide();
+        $('#analyzing_file_spinner').show();
+    }
+}
+
 function invertArrow(card_id) {
     let arrow = $("#" + card_id + " > h2 > button > div.collapse-arrow > i")
     if (arrow.hasClass("down")) {
