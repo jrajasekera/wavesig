@@ -73,9 +73,15 @@ class UploadedfileController < ApplicationController
   end
 
   def delete
-    helpers.deleteUploadedFile(@uploadedfile)
-    flash[:notice] = 'File Deleted!'
-    redirect_to user_dashboard_path(current_user.id)
+    runningDeleteJobs = RunningJob.where("(job_type = ? AND second_target_id = ?) OR (job_type=? AND target_id=?)", "share", @uploadedfile.id, "find_origin", @uploadedfile.id)
+    if runningDeleteJobs.length > 0
+      flash[:alert] = 'This file cannot be deleted as it is currently being processed. Please try again later.'
+      redirect_to show_upload_file_path(@uploadedfile.id)
+    else
+      helpers.deleteUploadedFile(@uploadedfile)
+      flash[:notice] = 'File Deleted!'
+      redirect_to user_dashboard_path(current_user.id)
+    end
   end
 
   def uploadedfile_params

@@ -853,6 +853,7 @@ module ApplicationHelper
 
   # deletes uploaded files and all associated records with that file
   def deleteUploadedFile(uploadedfile)
+
     # delete shared copies
     uploadedfile.sharedfiles.each do |shared_file|
       shared_file.audio_file.purge
