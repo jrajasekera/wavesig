@@ -52,9 +52,15 @@
   <br />
 
   <div class="breaker"></div>
-  <h4>Cancel My Account</h4>
+  <h4>Delete My Account</h4>
 
-  <p><%= button_to "Cancel My Account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :class => 'btn btn-primary btn-block' %></p>
+<!--  <p><%#= button_to "Cancel My Account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :class => 'btn btn-primary btn-block' %></p>-->
+  <p>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-file-modal">
+      Delete My Account
+    </button>
+  </p>
+  <%= render partial: "delete_modal" %>
 
   <%= link_to "Back", :back %>
 </div>

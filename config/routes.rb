@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   mount Notifications::Engine => "/notifications"
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => 'registrations' }
 
   get "/home/info" => "home#info", as: "home_info"
 

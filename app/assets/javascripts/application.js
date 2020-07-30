@@ -92,12 +92,7 @@ function validateFiles(inputFile) {
 }
 
 document.addEventListener("shared-users-loaded", function(event) {
-    $('.multiselect').multiselect({
-        enableFiltering: true,
-        filterBehavior: 'text',
-        enableCaseInsensitiveFiltering: true,
-        nonSelectedText: 'Select friends'
-    });
+
 });
 
 document.addEventListener("notifications-count-loaded", function(event) {

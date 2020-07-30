@@ -16,8 +16,20 @@ class SharedfileController < ApplicationController
   end
 
   def edit_share
-    # @shared_records = @uploadedfile.sharedfiles
-    # @shareable_users = current_user.friends - @shared_records.map { |record| record.user }
+    shared_records = @uploadedfile.sharedfiles
+    currentShareJobs = RunningJob.where("user_id = ? AND job_type = ? AND second_target_id = ?", current_user.id, "share", @uploadedfile.id)
+    currentShareJobReceivers = currentShareJobs.map { |job| job.target_id }
+    @shareable_users = (current_user.friends - shared_records.map { |record| record.user }).filter { |user| !currentShareJobReceivers.include?(user.id) }
+  end
+
+  def shared_users
+    @shared_records = @uploadedfile.sharedfiles
+    currentShareJobs = RunningJob.where("user_id = ? AND job_type = ? AND second_target_id = ?", current_user.id, "share", @uploadedfile.id)
+    currentShareJobReceivers = currentShareJobs.map { |job| job.target_id }
+    @shareable_users = (current_user.friends - @shared_records.map { |record| record.user }).filter { |user| !currentShareJobReceivers.include?(user.id) }
+    @share_users = currentShareJobs.map { |job| User.find(job.target_id) }
+
+    render partial: "shared_users"
   end
 
   def share
@@ -54,16 +66,6 @@ class SharedfileController < ApplicationController
     end
 
     redirect_to edit_share_file_path id: @uploadedfile.id
-  end
-
-  def shared_users
-    @shared_records = @uploadedfile.sharedfiles
-    currentShareJobs = RunningJob.where("user_id = ? AND job_type = ? AND second_target_id = ?", current_user.id, "share", @uploadedfile.id)
-    currentShareJobReceivers = currentShareJobs.map { |job| job.target_id }
-    @shareable_users = (current_user.friends - @shared_records.map { |record| record.user }).filter { |user| !currentShareJobReceivers.include?(user.id) }
-    @share_users = currentShareJobs.map { |job| User.find(job.target_id) }
-
-    render partial: "shared_users"
   end
 
   def remove_user
