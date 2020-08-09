@@ -51,7 +51,7 @@
                     <th>Uploaded</th>
                   </tr>
                   <tr>
-                    <td><%= uploadedfile.updated_at.strftime("%m/%d/%Y") %></td>
+                    <td><%= local_time(uploadedfile.updated_at, '%m/%d/%Y') %></td>
                   </tr>
                 </table>
               </div>
@@ -138,7 +138,7 @@
                     <th>Uploaded</th>
                   </tr>
                   <tr>
-                    <td><%= sharedfile_associated_file.updated_at.strftime("%m/%d/%Y") %></td>
+                    <td><%= local_time(sharedfile_associated_file.updated_at, '%m/%d/%Y') %></td>
                   </tr>
                 </table>
               </div>

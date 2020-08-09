@@ -2,7 +2,7 @@
 
 <div class="card notification-card shadow rounded">
   <div class="card-header">
-    <%= notification.created_at.strftime("%l:%M %p") %>
+    <%= local_time(notification.created_at, '%l:%M %p') %>
   </div>
   <div id="notification-<%= notification.id %>"
        data-id="<%= notification.id %>"

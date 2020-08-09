@@ -20,7 +20,7 @@
 
   <% @originResults.each do |result| %>
     <tr>
-      <td><%= result[0] %></td>
+      <td><%= local_time(result[0], '%m/%d/%Y %I:%M %p') %></td>
       <td><%= result[1] %></td>
     </tr>
   <% end %>

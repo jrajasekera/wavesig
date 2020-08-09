@@ -20,6 +20,7 @@
 //= require bootstrap-multiselect
 //= require chartkick
 //= require Chart.bundle
+//= require local-time
 
 $(document).ready(function() {
 });

@@ -131,7 +131,7 @@ class UploadedfileController < ApplicationController
   def find_origin_results
     @originJobs = RunningJob.where("user_id = ? AND job_type = ? AND target_id = ?", current_user.id, "find_origin", @uploadedfile.id)
     @originResults =  @uploadedfile.find_origin_results.order('created_at DESC').map { |result| [
-        result.created_at.strftime("%m/%d/%Y %I:%M %p"),
+        result.created_at,
         (result.origin_user_id.nil? ? "Unknown" : (User.find(result.origin_user_id).fullName))
     ] }
     render partial: "find_origin_results"

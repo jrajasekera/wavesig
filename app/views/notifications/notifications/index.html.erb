@@ -22,7 +22,7 @@
         <% @notification_groups.each do |group, notifications| %>
           <div class="notifications-group-container">
             <div class="notification-group-title">
-              <%= group %>
+              <%= local_time(group, '%m/%d/%Y') %>
             </div>
             <%= render notifications %>
           </div>
