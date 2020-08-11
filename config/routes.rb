@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get "/home/info" => "home#info", as: "home_info"
 
+
   get "/user/dashboard" => "user#dashboard", as: "user_dashboard"
   get "/user/friends" => "user#friends", as: "friends"
   post "/user/friends/addfriend" => "user#add_friend", as: "add_friend"

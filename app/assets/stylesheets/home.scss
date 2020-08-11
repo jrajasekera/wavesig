@@ -37,7 +37,36 @@ header.masthead h1 {
   padding: 1.25rem 2.25rem;
   font-size: 0.85rem;
   font-weight: 700;
-  text-transform: uppercase;
   border: none;
   border-radius: 10rem;
+}
+
+#try-now-title {
+  font-weight: bold;
+  margin-bottom: 5%;
+}
+
+#try-now-description {
+  margin-bottom: 40px;
+}
+
+#try-now-jumbotron {
+  padding-top: 20%;
+  padding-right: 5%;
+  padding-left: 5%;
+}
+
+#how-it-works-jumbotron {
+  padding-top: 10%;
+  padding-right: 5%;
+  padding-left: 5%;
+}
+
+.how-it-works-card {
+  background-color: transparent !important;
+}
+
+.how-it-works-image {
+  min-width: 50%;
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(296deg) brightness(107%) contrast(102%);
 }

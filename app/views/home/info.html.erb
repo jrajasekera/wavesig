@@ -1,14 +1,42 @@
-<header class="masthead">
-  <div class="container h-100">
-    <div class="row h-100 align-items-center justify-content-center text-center">
-      <div class="col-lg-10 align-self-end">
-        <h1 class="text-uppercase text-white font-weight-bold">Share Music With Confidence</h1>
-        <hr class="divider my-4">
+<div class="jumbotron jumbotron-fluid" id="try-now-jumbotron">
+  <h1 class="display-5" id="try-now-title">Share Music With Confidence</h1>
+  <p class="lead" id="try-now-description">WaveSig embeds inaudible watermarks in shared files, allowing you to track files with ease.</p>
+  <a class="btn-primary btn-xl" href=<%#= new_user_registration_path %> role="button">Try it now</a>
+</div>
+
+<div class="jumbotron jumbotron-fluid" id="how-it-works-jumbotron">
+  <h1 class="display-5" id="try-now-title">How It Works</h1>
+  <div class="d-flex flex-wrap justify-content-center">
+    <div class="p-2">
+
+      <div class="card how-it-works-card" style="width: 18rem;">
+        <img class="how-it-works-image" src=<%= image_url('share.svg') %> alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">You can upload files to WaveSig and share them with friends and collaborators. Friends can listen to and download these file.</p>
+        </div>
       </div>
-      <div class="col-lg-8 align-self-baseline">
-        <p class="text-white-75 font-weight-light text-white mb-5">WaveSig allows you to share music with others while keeping listeners accountable</p>
-        <a class="btn-primary btn-xl js-scroll-trigger" href=<%= new_user_registration_path %>>Try it now</a>
+
+    </div>
+
+    <div class="p-2">
+
+      <div class="card how-it-works-card" style="width: 18rem;">
+        <img class="how-it-works-image" src=<%= image_url('soundwave.svg') %> alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">WaveSig embeds a unique, inaudible watermark in every shared file. This watermark is very difficult to remove without severely degrading the audio quality.</p>
+        </div>
       </div>
+
+    </div>
+    <div class="p-2">
+
+      <div class="card how-it-works-card" style="width: 18rem;">
+        <img class="how-it-works-image" src=<%= image_url('find-file-origin.svg') %> alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">To find the origin of a file and it's associated sharee, WaveSig analyzes the file to detect the unique watermark.</p>
+        </div>
+      </div>
+
     </div>
   </div>
-</header>
+</div>
