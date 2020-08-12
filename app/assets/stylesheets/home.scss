@@ -43,7 +43,6 @@ header.masthead h1 {
 
 #try-now-title {
   font-weight: bold;
-  margin-bottom: 5%;
 }
 
 #try-now-description {
@@ -56,10 +55,15 @@ header.masthead h1 {
   padding-left: 5%;
 }
 
-#how-it-works-jumbotron {
+#how-it-works {
   padding-top: 10%;
   padding-right: 5%;
   padding-left: 5%;
+}
+
+#how-it-works-title {
+  font-weight: bold;
+  margin-bottom: 5%;
 }
 
 .how-it-works-card {
