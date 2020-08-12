@@ -1,5 +1,5 @@
 <div class="content-container-centered-dark">
-  <h2>Log in</h2>
+  <h2>Login</h2>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="field text-field">
@@ -11,6 +11,11 @@
     <div class="field text-field">
 <!--      <%#= f.label :password %><br />-->
       <%= f.password_field :password, autocomplete: "current-password", :placeholder => 'Password', :class => 'text-input form-control' %>
+    </div>
+
+    <div class="field recaptcha-field">
+      <%= flash[:recaptcha_error] %>
+      <%= recaptcha_tags %>
     </div>
 
     <% if devise_mapping.rememberable? %>

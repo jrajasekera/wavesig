@@ -28,6 +28,11 @@
       <%= f.password_field :password_confirmation, autocomplete: "new-password", :placeholder => 'Password Confirmation', :class => 'text-input form-control' %>
     </div>
 
+    <div class="field recaptcha-field">
+        <%= flash[:recaptcha_error] %>
+        <%= recaptcha_tags %>
+    </div>
+
     <div class="actions submit-btn">
       <%= f.submit "Sign up", :class => 'btn btn-primary btn-block' %>
     </div>

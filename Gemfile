@@ -78,6 +78,8 @@ gem "chartkick"
 
 gem 'local_time'
 
+gem "recaptcha"
+
 # narray to be used fot FFT
 # gem 'narray', '~> 0.6.1.2'
 #

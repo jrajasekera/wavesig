@@ -126,6 +126,18 @@ body{
   text-align: center;
 }
 
+.g-recaptcha {
+  display: block;
+  //transform:scale(0.82);
+  //-webkit-transform:scale(0.82);
+  //transform-origin:0 0;
+  //-webkit-transform-origin:0 0;
+  transform:scale(0.77);
+  -webkit-transform:scale(0.70);
+  transform-origin:4% 0 ;
+  -webkit-transform-origin:7% 0
+}
+
 .breaker{
   color : white;
   border : 1px solid white;
