@@ -14,19 +14,9 @@ module ApplicationHelper
   def find_leak_source(original_file, leaker_file_path)
     # open leaker file
     lkr_file = RubyAudio::Sound.open(leaker_file_path)
-    # get file info
-    channelCount = lkr_file.info.channels
-    sampleRate = lkr_file.info.samplerate
-    frames = lkr_file.info.frames
-    sections = lkr_file.info.sections
-    lengthS = lkr_file.info.length
 
-    pp "******************OG File*************************"
-    pp "channels: " + channelCount.to_s
-    pp "sample rate: " + sampleRate.to_s
-    pp "frames: " + frames.to_s
-    pp "sections: " + sections.to_s
-    pp "length: " + lengthS.to_s
+    # get file info
+    channelCount, sampleRate, frames, sections, lengthS = get_file_metadata(lkr_file)
 
     encodedBits = ""
     encodedBitBuilder = StringIO.new
@@ -152,7 +142,6 @@ module ApplicationHelper
 
   def embed_watermark(uploadedfile, watermark)
 
-    #TODO use Tempfile instead for these files
     # copy uploadedfile to tmp dir
     og_file_path, uniqueIdentifier = generateTemporaryUploadedfilePath(uploadedfile)
 
@@ -160,24 +149,13 @@ module ApplicationHelper
     og_file = RubyAudio::Sound.open(og_file_path)
 
     # get file info
-    channelCount = og_file.info.channels
-    sampleRate = og_file.info.samplerate
-    frames = og_file.info.frames
-    sections = og_file.info.sections
-    lengthS = og_file.info.length
-
-    pp "******************OG File*************************"
-    pp "channels: " + channelCount.to_s
-    pp "sample rate: " + sampleRate.to_s
-    pp "frames: " + frames.to_s
-    pp "sections: " + sections.to_s
-    pp "length: " + lengthS.to_s
-
+    channelCount, sampleRate, frames, sections, lengthS = get_file_metadata(og_file)
 
     buf = RubyAudio::Buffer.new("float", L, channelCount)
     out = nil
     out_file_path = "#{Dir.tmpdir}/#{uploadedfile.fileName + '_watermarked'}#{uniqueIdentifier}"
     result_file_path = out_file_path
+
     RubyAudio::Sound.open(og_file_path) do |file|
       out = File.open(out_file_path, 'w') if out.nil?
 
@@ -219,25 +197,8 @@ module ApplicationHelper
           while watermark_audible && (d >= 0.0)
             buf = copy_buf(og_buf)
 
-            # calculate AOAAs
-            gosAOAAs = calcGOSAOAAs(buf, channel)
-
-            # sort AOAAs
-            hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
-
-            #pp "eMin: " + hashAOAA["eMin"].to_s
-            #pp "eMid: " + hashAOAA["eMid"].to_s
-            #pp "eMax: " + hashAOAA["eMax"].to_s
-
-            a,b = calcA_B(hashAOAA)
-
-            if a >= b
-              pp "Initial GOS Value: 1"
-            else
-              pp "Initial GOS Value: 0"
-            end
-
-            thd1 = calcThd1(hashAOAA, d)
+            # compute values from GOS
+            hashAOAA, a, b, thd1 = computeGOSValues(buf, channel, d)
 
             if embed_bit == 1
               pp "Embedding 1 bit"
@@ -249,14 +210,12 @@ module ApplicationHelper
               else
                 pp "Scaling amplitudes with d = " + d.to_s
                 embed_1(buf,channel,hashAOAA, a, b, thd1, d, PROGRESS_FRAMES)
-
                 # # analyze spectrum
                 # watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
                 # if watermark_audible
                 #   tmp_audible_watermark_count += 1
                 #   d -= 0.01
                 # end
-
               end
             else
               pp "Embedding 0 bit"
@@ -278,13 +237,7 @@ module ApplicationHelper
             end
 
             # find min, max vals
-            (0...L).each do |x|
-              if buf[x][channel] > maxVal
-                maxVal = buf[x][channel]
-              elsif buf[x][channel] < minVal
-                minVal = buf[x][channel]
-              end
-            end
+            maxVal, minVal = findGOSMinMax(buf, channel, maxVal, minVal)
 
             # analyze spectrum
             # watermark_audible = analyze_spectrum(buf, og_buf, channel, sampleRate)
@@ -356,12 +309,9 @@ module ApplicationHelper
           (0...gosLine.length).each do |x|
             frameVal = gosLine[x].to_f
             scaledVal = frameVal * scalingFactor
-
-            if channel == 0
-              buf[x] = [scaledVal,buf[x][1]]
-            else
-              buf[x] = [buf[x][0], scaledVal]
-            end
+            tmp = buf[x].clone
+            tmp[channel] = scaledVal
+            buf[x] = tmp
           end
           out.write(buf)
         end
@@ -379,12 +329,9 @@ module ApplicationHelper
           ogFile.read(buf)
           (0...gosLine.length).each do |x|
             frameVal = gosLine[x].to_f
-
-            if channel == 0
-              buf[x] = [frameVal,buf[x][1]]
-            else
-              buf[x] = [buf[x][0], frameVal]
-            end
+            tmp = buf[x].clone
+            tmp[channel] = frameVal
+            buf[x] = tmp
           end
           out.write(buf)
         end
@@ -401,6 +348,58 @@ module ApplicationHelper
     File.delete(og_file_path)
 
     result_file_path
+  end
+
+  def findGOSMinMax(buf, channel, maxVal, minVal)
+    (0...L).each do |x|
+      if buf[x][channel] > maxVal
+        maxVal = buf[x][channel]
+      elsif buf[x][channel] < minVal
+        minVal = buf[x][channel]
+      end
+    end
+    [maxVal, minVal]
+  end
+
+  def computeGOSValues(buf, channel, d)
+    # calculate AOAAs
+    gosAOAAs = calcGOSAOAAs(buf, channel)
+
+    # sort AOAAs
+    hashAOAA = sortAOAAs(gosAOAAs[0], gosAOAAs[1], gosAOAAs[2])
+
+    #pp "eMin: " + hashAOAA["eMin"].to_s
+    #pp "eMid: " + hashAOAA["eMid"].to_s
+    #pp "eMax: " + hashAOAA["eMax"].to_s
+
+    a,b = calcA_B(hashAOAA)
+
+    if a >= b
+      pp "Initial GOS Value: 1"
+    else
+      pp "Initial GOS Value: 0"
+    end
+
+    thd1 = calcThd1(hashAOAA, d)
+
+    [hashAOAA, a, b, thd1]
+  end
+
+  def get_file_metadata(file)
+    channelCount = file.info.channels
+    sampleRate = file.info.samplerate
+    frames = file.info.frames
+    sections = file.info.sections
+    lengthS = file.info.length
+
+    pp "******************OG File*************************"
+    pp "channels: " + channelCount.to_s
+    pp "sample rate: " + sampleRate.to_s
+    pp "frames: " + frames.to_s
+    pp "sections: " + sections.to_s
+    pp "length: " + lengthS.to_s
+
+    [channelCount,sampleRate,frames,sections,lengthS]
   end
 
   def generateTemporaryUploadedfilePath(uploadedfile)
