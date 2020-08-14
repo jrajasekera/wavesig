@@ -1,2 +1,32 @@
+<div class="content-container-left-align">
+  <a href=<%= home_info_path %> class="btn btn-secondary btn-sm back-btn">
+  <div class="collapse-arrow" ><i class="arrow left"></i> Back</div>
+  </a>
+
+  <h2 class="page-title centered-title font-weight-bold">Contact Us</h2>
+  <div class="breaker"></div>
+
+  <%= form_with(url: contact_submit_path, method: "post") do %>
+
+    <div class="field text-field">
+    <%= text_field_tag 'name', nil,  placeholder: 'Full Name', class: 'text-input form-control', required: true %>
+    </div>
+
+    <div class="field text-field">
+      <%= email_field_tag 'email', nil,  placeholder: 'Email', class: 'text-input form-control', required: true %>
+    </div>
+
+    <div class="field text-field">
+      <%= text_area_tag 'message', nil,  placeholder: 'Message', class: 'text-input form-control', required: true %>
+    </div>
+
+    <div class="field recaptcha-field">
+      <%= flash[:recaptcha_error] %>
+      <%= recaptcha_tags %>
+    </div>
+
+    <%= submit_tag("Send", class: 'btn btn-primary btn-block') %>
+  <% end %>
+</div>
 
 

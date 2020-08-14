@@ -1,5 +1,6 @@
 class UserMailer < ApplicationMailer
-  default from: 'wavesig59@gmail.com'
+  WAVESIG_EMAIL = 'wavesig59@gmail.com'
+  default from: WAVESIG_EMAIL
 
   def file_shared_email(user, sharer, uploadedfile)
     @user = user
@@ -13,6 +14,13 @@ class UserMailer < ApplicationMailer
     @sharer = sharer
     @uploadedfile = uploadedfile
     mail(to: @sharer.email, subject: 'A File You Shared Has Run Into a Processing Error')
+  end
+
+  def contact_us_email(name, email, message)
+    @name = name
+    @email = email
+    @message = message
+    mail(to: WAVESIG_EMAIL, subject: "Contact Us - Message from #{email}")
   end
 
 end
