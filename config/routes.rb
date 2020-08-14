@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get "/home/info" => "home#info", as: "home_info"
   get "home/contact" => "home#contact", as: "contact"
   post "home/contact/submit" => "home#contactSubmit", as: "contact_submit"
+  get"home/faq" => "home#faq", as: "faq"
 
   get "/user/dashboard" => "user#dashboard", as: "user_dashboard"
   get "/user/friends" => "user#friends", as: "friends"
