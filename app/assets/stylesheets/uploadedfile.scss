@@ -26,38 +26,44 @@
   margin-top: 3%;
 }
 
-.audio-player {
-  padding-bottom: 20px;
-}
-
-audio {
-  width: 70%;
-  box-shadow: 5px 5px 20px rgba(0,0, 0, 0.4);
-  border-radius: 90px;
-  transform: scale(1.05);
-}
+//.audio-player {
+//  padding-bottom: 20px;
+//}
+//
+//audio {
+//  width: 70%;
+//  box-shadow: 5px 5px 20px rgba(0,0, 0, 0.4);
+//  border-radius: 90px;
+//  transform: scale(1.05);
+//}
 
 #download-link-container {
   a {
     color: white;
     text-decoration: none;
   }
+  width: 100%;
 }
 
 #delete-file-btn {
-  border-radius: 0px;
+  //border-radius: 0px;
+  width: 100%;
+}
+
+#share-file-btn {
+  width: 100%;
+}
+#find-leaker-btn {
+  //border-top-right-radius: 0.25rem;
+  //border-top-left-radius: 0rem;
+  //border-bottom-left-radius: 0rem;
+  //border-bottom-right-radius: 0.25rem;
+  //color: white;
+  width: 100%;
 }
 
 .browse-file-field {
   margin-bottom: 15px;
-}
-
-#find-leaker-btn {
-  border-top-right-radius: 0.25rem;
-  border-top-left-radius: 0rem;
-  border-bottom-left-radius: 0rem;
-  border-bottom-right-radius: 0.25rem;
-  color: white;
 }
 
 #music-player-container {
@@ -69,6 +75,13 @@ audio {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.music-player-columns {
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
 #graph-page-container {
   text-align: center;
   margin-top: 10px;
@@ -78,4 +91,97 @@ audio {
 #graph-container {
   background-color: whitesmoke;
   margin-top: 10px;
+}
+
+// MUSIC PLAYER
+.progress {
+  width: 150px;
+  height: 150px !important;
+  //background: none;
+  position: relative;
+  background-color: transparent !important;
+}
+
+.progress::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress>span {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.progress .progress-left {
+  left: 0;
+}
+
+.progress .progress-bar {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-width: 6px;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+}
+
+.progress .progress-left .progress-bar {
+  left: 100%;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-left: 0;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+
+.progress .progress-right {
+  right: 0;
+}
+
+.progress .progress-right .progress-bar {
+  left: -100%;
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-right: 0;
+  -webkit-transform-origin: center right;
+  transform-origin: center right;
+}
+
+.progress .progress-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#progress-circle-container {
+  padding-bottom: 1rem;
+}
+
+#progress-circle {
+  transform: scale(1.5);
+}
+
+#current-playback-time {
+  display: none;
+}
+
+#play-music-btn {
+  z-index: 100;
+  //display: none;
+}
+
+#pause-music-btn {
+  z-index: 100;
+  display: none;
 }
