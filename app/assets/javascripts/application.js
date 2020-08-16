@@ -51,7 +51,6 @@ $(document).ready(function() {
         document.getElementById('progress-circle').setAttribute("data-value",completionPercentage.toString());
         setProgress();
         document.getElementById("current-playback-time").innerText = currentTime.toString().toMMSS();
-        // console.log(completionPercentage);
     });
 
     player.addEventListener("ended", function(event) {
@@ -59,6 +58,9 @@ $(document).ready(function() {
         document.getElementById('progress-circle').setAttribute("data-value","0");
         setProgress();
         document.getElementById("current-playback-time").innerText = "00:00";
+        document.getElementById('play-music-btn').style.display = "initial";
+        document.getElementById('pause-music-btn').style.display = "none";
+        document.getElementById("current-playback-time").style.display = "none";
     });
 
 });
@@ -136,10 +138,6 @@ function validateFiles(inputFile) {
     };
 }
 
-document.addEventListener("shared-users-loaded", function(event) {
-
-});
-
 document.addEventListener("notifications-count-loaded", function(event) {
     let notificationsDisplayCount = event.container[0].innerText.trim();
     let iconTag = $("#notification-icon");
@@ -204,16 +202,20 @@ String.prototype.toMMSS = function () {
     return minutes + ':' + seconds;
 }
 function clickPlay() {
-    playing = true;
-    document.getElementById('player').play();
-    document.getElementById('play-music-btn').style.display = "none";
-    document.getElementById('pause-music-btn').style.display = "initial";
+    if(!playing) {
+        playing = true;
+        document.getElementById('player').play();
+        document.getElementById('play-music-btn').style.display = "none";
+        document.getElementById('pause-music-btn').style.display = "initial";
+    }
 }
 
 function clickPause() {
-    playing = false;
-    document.getElementById('player').pause();
-    document.getElementById('pause-music-btn').style.display = "none";
-    document.getElementById('play-music-btn').style.display = "initial";
+    if(playing) {
+        playing = false;
+        document.getElementById('player').pause();
+        document.getElementById('pause-music-btn').style.display = "none";
+        document.getElementById('play-music-btn').style.display = "initial";
+    }
 }
 
