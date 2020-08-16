@@ -56,29 +56,33 @@
     <div class="p-2 align-self-center music-player-columns">
       <div class="d-flex flex-column">
         <div class="p-2">
-          <div id="download-link-container" class="btn btn-info" data-toggle="tooltip" title="Download">
-            <a href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name">
-              <%= fa_icon "download", class: "fa-2x" %> Download
+          <div data-toggle="tooltip" title="Download">
+            <a id="download-link-container" class="btn btn-info d-flex justify-content-center" href=<%= rails_blob_path(@audio_file, disposition: "attachment") %> download="proposed_file_name">
+              <div class="p-2 align-self-center"><%= fa_icon "download", class: "fa-2x" %></div>
+              <div class="p-2 align-self-center"> Download</div>
             </a>
           </div>
         </div>
         <% if @uploadedfile.user_id == current_user.id %>
           <div class="p-2">
+            <a id="share-file-btn" class="btn btn-success d-flex justify-content-center" href=<%= edit_share_file_path(@uploadedfile.id) %> data-toggle="tooltip" title="Share">
+              <div class="p-2 align-self-center"><%= fa_icon "share-alt", class: "fa-2x" %></div>
+              <div class="p-2 align-self-center">Share</div>
+            </a>
+          </div>
+          <div class="p-2">
+            <a id="find-leaker-btn" class="btn btn-warning d-flex justify-content-center" href=<%= find_origin_form_path(@uploadedfile.id) %> data-toggle="tooltip" title="Find Leaker">
+              <div class="p-2 align-self-center"><%= fa_icon "search", class: "fa-2x" %></div>
+              <div class="p-2 align-self-center">Find Origin</div>
+            </a>
+          </div>
+          <div class="p-2">
             <div data-toggle="tooltip" title="Delete">
-              <button id="delete-file-btn" type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-file-modal">
-                <%= fa_icon "trash", class: "fa-2x" %> Delete
+              <button id="delete-file-btn" type="button" class="btn btn-danger d-flex justify-content-center" data-toggle="modal" data-target="#delete-file-modal">
+                <div class="p-2 align-self-center"><%= fa_icon "trash", class: "fa-2x" %></div>
+                <div class="p-2 align-self-center"> Delete</div>
               </button>
             </div>
-          </div>
-          <div class="p-2">
-            <a id="share-file-btn" class="btn btn-success" href=<%= edit_share_file_path(@uploadedfile.id) %> data-toggle="tooltip" title="Share">
-              <%= fa_icon "share-alt", class: "fa-2x" %> Share
-            </a>
-          </div>
-          <div class="p-2">
-            <a id="find-leaker-btn" class="btn btn-warning" href=<%= find_origin_form_path(@uploadedfile.id) %> data-toggle="tooltip" title="Find Leaker">
-              <%= fa_icon "search", class: "fa-2x" %> Find Origin
-            </a>
           </div>
         <% end %>
       </div>
