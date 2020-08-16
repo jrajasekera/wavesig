@@ -44,12 +44,6 @@ $(document).ready(function() {
 
     let player = document.getElementById('player');
 
-
-
-    player.addEventListener("loadedmetadata", function(event) {
-        document.getElementById('file-duration').innerText = player.duration.toString().toMMSS();
-    });
-
     player.addEventListener("timeupdate", function(event) {
         let duration = player.duration;
         let currentTime = player.currentTime;
@@ -77,6 +71,11 @@ $(document).on('turbolinks:load', function () {
         nonSelectedText: 'Select friends'
     });
 
+    let player = document.getElementById('player');
+
+    player.addEventListener("loadedmetadata", function(event) {
+        document.getElementById('file-duration').innerText = player.duration.toString().toMMSS();
+    });
 });
 
 $(document).on('turbolinks:load', function(){
