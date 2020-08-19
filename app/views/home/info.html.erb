@@ -4,6 +4,27 @@
   <a class="btn-primary btn-xl" href=<%= new_user_registration_path %> role="button">Try it now</a>
 </div>
 
+<div class="jumbotron jumbotron-fluid" id="what-is-is">
+  <!--  <h1 class="display-5" id="what-it-is-title">What It Is</h1>-->
+  <div class="d-flex flex-column justify-content-center">
+
+    <div class="what-is-it-img-container">
+      <img class="what-it-is-img" src=<%= image_url('wavesig-audio-player-ipad-demo.png') %> alt="Card image cap">
+      <div class="what-is-it-img-caption">
+        <p>Upload, Share, and Track Files</p>
+      </div>
+    </div>
+
+    <div class="what-is-it-img-container">
+      <img class="what-it-is-img" src=<%= image_url('wavesig-all-devices-home-demo.png') %> alt="Card image cap">
+      <div class="what-is-it-img-caption">
+        <p>Optimized For All Your Devices</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div class="jumbotron jumbotron-fluid" id="how-it-works">
   <h1 class="display-5" id="how-it-works-title">How It Works</h1>
   <div class="d-flex flex-wrap justify-content-center">
@@ -12,7 +33,7 @@
       <div class="card how-it-works-card" style="width: 18rem;">
         <img class="how-it-works-image" src=<%= image_url('share.svg') %> alt="Card image cap">
         <div class="card-body">
-          <p class="card-text">You can upload files to WaveSig and share them with friends and collaborators.</p>
+          <p class="card-text">Upload files to WaveSig and share them with friends and collaborators.</p>
         </div>
       </div>
 
@@ -23,7 +44,7 @@
       <div class="card how-it-works-card" style="width: 18rem;">
         <img class="how-it-works-image" src=<%= image_url('soundwave.svg') %> alt="Card image cap">
         <div class="card-body">
-          <p class="card-text">WaveSig embeds a unique, inaudible watermark in every shared file. This watermark is very difficult to remove without severely degrading the audio quality.</p>
+          <p class="card-text">WaveSig embeds a unique, inaudible watermark in every shared file. This watermark is difficult to remove without severely degrading the audio quality.</p>
         </div>
       </div>
 
@@ -40,4 +61,5 @@
     </div>
   </div>
 </div>
+
 
