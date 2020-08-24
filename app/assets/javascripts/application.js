@@ -23,45 +23,9 @@
 //= require local-time
 
 let playing = false;
+let player = null;
 
 $(document).ready(function() {
-
-    $(".progress").hover(function(){
-        document.getElementById("current-playback-time").style.display = "none";
-        if(playing) {
-            document.getElementById('pause-music-btn').style.display = "initial";
-        } else {
-            document.getElementById('play-music-btn').style.display = "initial";
-        }
-    }, function(){
-        document.getElementById("current-playback-time").style.display = "initial";
-        if(playing) {
-            document.getElementById('pause-music-btn').style.display = "none";
-        } else {
-            document.getElementById('play-music-btn').style.display = "none";
-        }
-    });
-
-    let player = document.getElementById('player');
-
-    player.addEventListener("timeupdate", function(event) {
-        let duration = player.duration;
-        let currentTime = player.currentTime;
-        let completionPercentage = Math.round((currentTime / duration) * 100);
-        document.getElementById('progress-circle').setAttribute("data-value",completionPercentage.toString());
-        setProgress();
-        document.getElementById("current-playback-time").innerText = currentTime.toString().toMMSS();
-    });
-
-    player.addEventListener("ended", function(event) {
-        playing = false;
-        document.getElementById('progress-circle').setAttribute("data-value","0");
-        setProgress();
-        document.getElementById("current-playback-time").innerText = "00:00";
-        document.getElementById('play-music-btn').style.display = "initial";
-        document.getElementById('pause-music-btn').style.display = "none";
-        document.getElementById("current-playback-time").style.display = "none";
-    });
 
 });
 
@@ -73,19 +37,59 @@ $(document).on('turbolinks:load', function () {
         nonSelectedText: 'Select friends'
     });
 
-    let player = document.getElementById('player');
+    player = document.getElementById('player');
 
-    player.addEventListener("loadedmetadata", function(event) {
-        document.getElementById('file-duration').innerText = player.duration.toString().toMMSS();
-    });
+    if(player) {
+
+        let progressCircleElement = document.getElementById('progress-circle');
+        let currentPlaybackTimeElement = document.getElementById("current-playback-time");
+        let pauseBtnElement = document.getElementById('pause-music-btn');
+        let playBtnElement = document.getElementById('play-music-btn');
+
+        $(".progress").hover(function(){
+            currentPlaybackTimeElement.style.display = "none";
+            playing ? pauseBtnElement.style.display = "initial" : playBtnElement.style.display = "initial";
+        }, function(){
+            currentPlaybackTimeElement.style.display = "initial";
+            playing ? pauseBtnElement.style.display = "none" : playBtnElement.style.display = "none";
+        });
+
+        player.addEventListener("timeupdate", function(event) {
+            let duration = player.duration;
+            let currentTime = player.currentTime;
+            let completionPercentage = Math.round((currentTime / duration) * 100);
+            progressCircleElement.setAttribute("data-value",completionPercentage.toString());
+            setProgress();
+            currentPlaybackTimeElement.innerText = currentTime.toString().toMMSS();
+        });
+
+        player.addEventListener("loadedmetadata", function(event) {
+            document.getElementById('file-duration').innerText = player.duration.toString().toMMSS();
+        });
+
+        player.addEventListener("ended", function(event) {
+            playing = false;
+            progressCircleElement.setAttribute("data-value","0");
+            setProgress();
+            currentPlaybackTimeElement.innerText = "00:00";
+            playBtnElement.style.display = "initial";
+            pauseBtnElement.style.display = "none";
+            currentPlaybackTimeElement.style.display = "none";
+        });
+
+    }
+
 });
 
 $(document).on('turbolinks:load', function(){
-    $(".alert-success").delay(2500).slideUp(500, function(){
-        $(".alert-success").alert('close');
+    let alertSuccessElement = $(".alert-success");
+    let alertDangerElement = $(".alert-danger");
+
+    alertSuccessElement.delay(2500).slideUp(500, function(){
+        alertSuccessElement.alert('close');
     });
-    $(".alert-danger").delay(4000).slideUp(500, function(){
-        $(".alert-danger").alert('close');
+    alertDangerElement.delay(4000).slideUp(500, function(){
+        alertDangerElement.alert('close');
     });
 });
 
@@ -201,6 +205,7 @@ String.prototype.toMMSS = function () {
     if (seconds < 10) {seconds = "0"+seconds;}
     return minutes + ':' + seconds;
 }
+
 function clickPlay() {
     if(!playing) {
         playing = true;
