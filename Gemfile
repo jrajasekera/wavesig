@@ -26,7 +26,7 @@ gem 'sidekiq', '5.2.7'
 gem 'devise-async'
 
 # Use Puma as the app server
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 5.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use boostrap for styling
